@@ -25,7 +25,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
           <div className="w-full bg-black/80 backdrop-blur-xl rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 backface-hidden flex flex-col">
             <div className="relative w-full aspect-video overflow-hidden rounded-2xl mb-4 border border-white/10 bg-gray-800 group cursor-pointer" onClick={() => setIsFlipped(true)}>
                <img 
-                 src="https://www.apple.com/tv-pr/articles/2025/10/apple-tv-debuts-trailer-for-vince-gilligans-highly-anticipated-drama-pluribus-starring-emmy-award-nominee-rhea-seehorn/images/big-image/big-image-01/102225_Apple_Debuts_Trailer_Drama_Pluribus_Big_Image_01_big_image_post.jpg.large_2x.jpg?q=80&w=600&auto=format&fit=crop" 
+                 src="https://resizing.flixster.com/91Fo4LevY-qZQa6x5gYgOBUN6EQ=/fit-in/705x460/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p30824090_b_h8_ac.jpg?q=80&w=600&auto=format&fit=crop" 
                  alt="Secret 1"
                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter sepia-[0.2] brightness-90 group-hover:brightness-100"
                />
