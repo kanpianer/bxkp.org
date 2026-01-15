@@ -154,7 +154,7 @@ export default function App() {
               {filteredSites.map((site) => (
                 <div 
                   key={site.name} 
-                  className="group relative bg-paper-100/50 backdrop-blur-[2px] rounded-2xl border border-ink-500/10 p-5 flex flex-col items-center hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30 hover:-translate-y-1 transition-all duration-500 cursor-pointer"
+                  className="group relative bg-paper-100/75 backdrop-blur-[2px] rounded-2xl border border-ink-500/10 p-5 flex flex-col items-center hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30 hover:-translate-y-1 transition-all duration-500 cursor-pointer"
                   onClick={() => window.open(site.main_url, "_blank")}
                 >
                     <span className="text-lg font-bold text-ink-800 mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20">
@@ -191,7 +191,7 @@ export default function App() {
 
         {/* Page Bottom Notes & Footer */}
         <div className="mt-4 w-full flex flex-col items-center gap-4">
-            <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
+            <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
                  EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
                  备份网址：<a href="https://www.bxkp.org" target="_blank" className={linkClass}>3w</a>、
