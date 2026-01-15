@@ -16,7 +16,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
     if (!ctx) return;
 
     let width = window.innerWidth;
@@ -25,7 +25,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
     let time = 0;
 
     // --- Configuration ---
-    const LAYERS = 3; // Reduced slightly for cleaner composition
+    const LAYERS = 3; 
     
     // --- Classes ---
     
@@ -42,7 +42,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         this.y = height * (0.2 + Math.random() * 0.6); 
         this.w = width * (0.4 + Math.random() * 0.4);
         this.h = height * 0.2;
-        this.speed = Math.random() * 0.1 + 0.05; // Very slow drift
+        this.speed = Math.random() * 0.1 + 0.05; 
         this.opacity = Math.random() * 0.15 + 0.05;
       }
 
@@ -96,7 +96,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         this.scale = 0.5 + Math.random() * 0.8;
         this.x = randomX ? Math.random() * width : -300 * this.scale;
         this.y = Math.random() * height * 0.25; 
-        this.speed = (0.1 + Math.random() * 0.1); // Extremely slow
+        this.speed = (0.1 + Math.random() * 0.1); 
         
         this.puffs = [];
         const puffCount = 3 + Math.floor(Math.random() * 3);
@@ -121,7 +121,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         ctx.translate(this.x, this.y);
         ctx.scale(this.scale, this.scale);
 
-        const opacity = isNight ? 0.05 : 0.6; // Slightly more visible
+        const opacity = isNight ? 0.05 : 0.6; 
         const r = isNight ? 150 : 255;
         const g = isNight ? 150 : 255;
         const b = isNight ? 160 : 255;
@@ -166,7 +166,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       init(randomX = false) {
         this.x = randomX ? Math.random() * width : -200;
         this.y = height * (0.15 + Math.random() * 0.2);
-        this.speed = 0.5; // Constant migration speed
+        this.speed = 0.5; 
         this.geese = [];
         
         this.geese.push(new Goose(0, 0));
@@ -227,28 +227,22 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       constructor(index: number) {
         this.index = index;
         this.offset = Math.random() * 10000;
-        // Slower, consistent scroll like a handscroll painting
         this.speed = 0.2 + (index * 0.1); 
       }
 
       getHeight(x: number) {
-        // Increased frequency multiplier for steeper slopes (0.0025 -> 0.0035)
         const xOff = (x * 0.0035) + this.offset + (time * 0.0005 * this.speed);
-        
         const detail = 1 + (this.index * 0.2);
         
-        // Harmonics
         let y = Math.sin(xOff) * 1.0 +
                 Math.sin(xOff * 2.2 * detail) * 0.5 + 
                 Math.sin(xOff * 4.5) * 0.15;
         
-        // Add some noise only for the closest layer
         if (this.index === LAYERS - 1) {
             y += Math.sin(xOff * 12) * 0.08;
         }
         
         const baseLevel = height * (0.65 + (this.index * 0.1)); 
-        // Increased amplitude (0.18 -> 0.23) for taller, steeper peaks
         const amplitude = height * (0.23 + (this.index * 0.08));
         
         return baseLevel - (y * amplitude); 
@@ -257,11 +251,8 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       draw(ctx: CanvasRenderingContext2D, darkness: number) {
         const depth = this.index / (LAYERS - 1); 
         
-        // Traditional Ink Wash Colors
-        // Far: Wet, faint wash. Near: Dry, dark concentrated ink.
-        
-        const dayVal = 180 - (depth * 140); // 180 (light grey) -> 40 (dark grey)
-        const dayAlpha = 0.3 + (depth * 0.6); // Far is transparent
+        const dayVal = 180 - (depth * 140); 
+        const dayAlpha = 0.3 + (depth * 0.6); 
         
         const nightVal = 20 + (depth * 10);
         const nightAlpha = 0.9;
@@ -272,12 +263,15 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         const g = val + 2; 
         const b = val + 5; 
         
+        // Fill for the mountain body
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
         
         ctx.beginPath();
         ctx.moveTo(0, height);
         
-        const step = 15; 
+        // --- CRITICAL CHANGE FOR SMOOTHNESS ---
+        // Reduced step size from 15 to 2 for ultra-fine, delicate curves without aliasing
+        const step = 2; 
         for (let x = 0; x <= width + step; x += step) {
            const y = this.getHeight(x);
            ctx.lineTo(x, y);
@@ -286,6 +280,20 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         ctx.lineTo(width, height);
         ctx.closePath();
         ctx.fill();
+
+        // --- FINE BRUSH OUTLINE ---
+        // Adds a very thin, delicate line to the top of the mountains to mimic fine ink strokes
+        ctx.beginPath();
+        const startY = this.getHeight(0);
+        ctx.moveTo(0, startY);
+        for (let x = 0; x <= width + step; x += step) {
+           const y = this.getHeight(x);
+           ctx.lineTo(x, y);
+        }
+        
+        ctx.lineWidth = 0.5 + (depth * 0.5); // Nearer mountains have slightly bolder lines
+        ctx.strokeStyle = `rgba(${r - 20}, ${g - 20}, ${b - 20}, ${alpha * 0.8})`;
+        ctx.stroke();
       }
     }
 
@@ -322,6 +330,13 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.scale(dpr, dpr);
+      
+      // Ensure smooth drawing context settings
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      
       init();
     };
 
@@ -339,7 +354,6 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         c.draw(ctx, currentDarkness > 0.5);
       });
 
-      // Draw distant mist
       mists.forEach((m, i) => {
           if (i % 2 === 0) {
              m.update();
@@ -347,11 +361,10 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
           }
       });
 
-      // Draw Mountains and interleave mist
       layers.forEach((l, i) => {
           l.draw(ctx, currentDarkness);
           
-          if (i === 0) { // Mist between far and mid mountains
+          if (i === 0) { 
              mists.forEach((m, mi) => {
                  if (mi % 2 !== 0) {
                     m.update();
@@ -382,6 +395,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
   return (
     <canvas
       ref={canvasRef}
+      style={{ imageRendering: 'auto' }}
       className={`fixed inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-1000 ${darkMode ? 'opacity-50 mix-blend-multiply' : 'opacity-100 mix-blend-multiply'}`}
     />
   );
