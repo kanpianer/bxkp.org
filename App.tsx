@@ -56,7 +56,7 @@ export default function App() {
     `px-6 h-10 flex items-center justify-center rounded-full font-serif font-bold text-base transition-all duration-500 transform border cursor-pointer select-none whitespace-nowrap
     ${isActive 
       ? 'bg-cinnabar/50 backdrop-blur-md text-paper-50 shadow-md shadow-cinnabar/30 scale-105 border-cinnabar/50' 
-      : `bg-paper-100/40 backdrop-blur-sm hover:bg-paper-200/60 hover:scale-105 hover:border-cinnabar/30 border-ink-500/10 ${isRedText ? 'text-cinnabar' : 'text-ink-700 hover:text-ink-900'}`
+      : `bg-paper-100/40 backdrop-blur-sm hover:bg-paper-200/60 hover:scale-105 hover:border-cinnabar/30 border-ink-500/10 ${isRedText ? (isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar') : 'text-ink-700 hover:text-ink-900'}`
     }`;
 
   // Dynamic link classes for better readability on different backgrounds
@@ -77,7 +77,7 @@ export default function App() {
       <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-24 flex flex-col items-center min-h-screen">
         
         {/* Header */}
-        <header className="mt-9 md:mt-12 mb-3 text-center select-none">
+        <header className="mt-7 md:mt-9 mb-3 text-center select-none">
           <h1 className={`text-6xl font-bold tracking-[0.2em] mb-4 drop-shadow-sm opacity-90 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-gray-300' : 'text-ink-900'}`} style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.05)' }}>
             不想看片
           </h1>
@@ -200,7 +200,7 @@ export default function App() {
         </div>
 
         {/* Page Bottom Notes & Footer */}
-        <div className="mt-6 w-full text-center flex flex-col items-center gap-6">
+        <div className="mt-5 w-full text-center flex flex-col items-center gap-5">
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
                  EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
@@ -212,7 +212,7 @@ export default function App() {
                </p>
             </div>
 
-            <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-300/60' : 'text-cinnabar'}`}>
+            <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
                 <span className="flex items-center gap-1">
                     Made with <span className="text-cinnabar animate-pulse">❤</span>
                 </span>
