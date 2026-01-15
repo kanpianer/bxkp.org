@@ -21,6 +21,8 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
 
     let width = window.innerWidth;
     let height = window.innerHeight;
+    // Capture an initial "base height" to prevent mountains from jumping when mobile URL bars show/hide
+    let baseHeight = height; 
     let animationFrameId: number;
     let time = 0;
 
@@ -39,9 +41,9 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
 
       constructor() {
         this.x = Math.random() * width;
-        this.y = height * (0.2 + Math.random() * 0.6); 
+        this.y = baseHeight * (0.2 + Math.random() * 0.6); 
         this.w = width * (0.4 + Math.random() * 0.4);
-        this.h = height * 0.2;
+        this.h = baseHeight * 0.2;
         this.speed = Math.random() * 0.1 + 0.05; 
         this.opacity = Math.random() * 0.15 + 0.05;
       }
@@ -50,7 +52,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         this.x += this.speed; 
         if (this.x - this.w > width) {
           this.x = -this.w;
-          this.y = height * (0.2 + Math.random() * 0.6);
+          this.y = baseHeight * (0.2 + Math.random() * 0.6);
         }
       }
 
@@ -95,7 +97,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       init(randomX = false) {
         this.scale = 0.5 + Math.random() * 0.8;
         this.x = randomX ? Math.random() * width : -300 * this.scale;
-        this.y = Math.random() * height * 0.25; 
+        this.y = Math.random() * baseHeight * 0.25; 
         this.speed = (0.1 + Math.random() * 0.1); 
         
         this.puffs = [];
@@ -165,7 +167,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
 
       init(randomX = false) {
         this.x = randomX ? Math.random() * width : -200;
-        this.y = height * (0.15 + Math.random() * 0.2);
+        this.y = baseHeight * (0.15 + Math.random() * 0.2);
         this.speed = 0.5; 
         this.geese = [];
         
@@ -242,8 +244,9 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
             y += Math.sin(xOff * 12) * 0.08;
         }
         
-        const baseLevel = height * (0.65 + (this.index * 0.1)); 
-        const amplitude = height * (0.23 + (this.index * 0.08));
+        // Use baseHeight instead of height to prevent vertical jitter on mobile scroll
+        const baseLevel = baseHeight * (0.65 + (this.index * 0.1)); 
+        const amplitude = baseHeight * (0.23 + (this.index * 0.08));
         
         return baseLevel - (y * amplitude); 
       }
@@ -263,26 +266,22 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         const g = val + 2; 
         const b = val + 5; 
         
-        // Fill for the mountain body
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
         
         ctx.beginPath();
-        ctx.moveTo(0, height);
+        // Draw to actual current height to cover potential extra space
+        ctx.moveTo(0, Math.max(height, baseHeight));
         
-        // --- CRITICAL CHANGE FOR SMOOTHNESS ---
-        // Reduced step size from 15 to 2 for ultra-fine, delicate curves without aliasing
         const step = 2; 
         for (let x = 0; x <= width + step; x += step) {
            const y = this.getHeight(x);
            ctx.lineTo(x, y);
         }
         
-        ctx.lineTo(width, height);
+        ctx.lineTo(width, Math.max(height, baseHeight));
         ctx.closePath();
         ctx.fill();
 
-        // --- FINE BRUSH OUTLINE ---
-        // Adds a very thin, delicate line to the top of the mountains to mimic fine ink strokes
         ctx.beginPath();
         const startY = this.getHeight(0);
         ctx.moveTo(0, startY);
@@ -291,7 +290,7 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
            ctx.lineTo(x, y);
         }
         
-        ctx.lineWidth = 0.5 + (depth * 0.5); // Nearer mountains have slightly bolder lines
+        ctx.lineWidth = 0.5 + (depth * 0.5);
         ctx.strokeStyle = `rgba(${r - 20}, ${g - 20}, ${b - 20}, ${alpha * 0.8})`;
         ctx.stroke();
       }
@@ -324,20 +323,33 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
     };
 
     const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+      
+      // On mobile, height changes frequently due to URL bar. 
+      // We only re-init if the width changes significantly (orientation change)
+      const widthChanged = Math.abs(newWidth - width) > 50;
+      
+      width = newWidth;
+      height = newHeight;
+      
+      if (widthChanged) {
+        baseHeight = height; // Update baseline on orientation change
+      }
+
       const dpr = window.devicePixelRatio || 1;
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.scale(dpr, dpr);
       
-      // Ensure smooth drawing context settings
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
       
-      init();
+      if (widthChanged || layers.length === 0) {
+        init();
+      }
     };
 
     let currentDarkness = 0;
