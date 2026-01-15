@@ -25,8 +25,8 @@ export default function App() {
     }
   };
 
-  const getButtonClass = (isActive: boolean, isRedText: boolean = false) => 
-    `px-6 h-10 flex items-center justify-center rounded-full font-serif font-bold text-base transition-all duration-500 transform border cursor-pointer select-none whitespace-nowrap
+  const getButtonClass = (isActive: boolean, isRedText: boolean = false, isSmall: boolean = false) => 
+    `${isSmall ? 'px-4 h-8 text-sm' : 'px-6 h-10 text-base'} flex items-center justify-center rounded-full font-serif font-bold transition-all duration-500 transform border cursor-pointer select-none whitespace-nowrap
     ${isActive 
       ? 'bg-cinnabar/50 backdrop-blur-md text-paper-50 shadow-md shadow-cinnabar/30 scale-105 border-cinnabar/50' 
       : `bg-paper-100/40 backdrop-blur-sm hover:bg-paper-200/60 hover:scale-105 hover:border-cinnabar/30 border-ink-500/10 ${isRedText ? (isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar') : 'text-ink-700 hover:text-ink-900'}`
@@ -65,7 +65,7 @@ export default function App() {
       <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
 
       {/* Main Container */}
-      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-36 lg:pb-16 flex flex-col items-center min-h-screen">
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-36 md:pb-16 flex flex-col items-center min-h-screen">
         
         {/* Header - Reduced spacing again by ~20% */}
         <header className="mt-5 md:mt-7 mb-3 text-center select-none">
@@ -189,8 +189,8 @@ export default function App() {
 
         </div>
 
-        {/* Page Bottom Notes & Footer - Reduced mt-5 to mt-4, gap-5 to gap-4 */}
-        <div className="mt-4 w-full text-center flex flex-col items-center gap-4">
+        {/* Page Bottom Notes & Footer */}
+        <div className="mt-4 w-full flex flex-col items-center gap-4">
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
                  EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
@@ -202,24 +202,43 @@ export default function App() {
                </p>
             </div>
 
-            <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
-                <span className="flex items-center gap-1">
-                    Made with <span className="text-cinnabar animate-pulse">❤</span>
-                </span>
-                <a href="https://github.com/kanpianer/pianer" target="_blank" className={footerLinkClass}>Github</a>
-                <a href="https://x.com/bxkp_org" target="_blank" className={footerLinkClass}>𝕏</a>
-            </div>
-        </div>
+            {/* Bottom Row: Buttons & Links aligned tightly */}
+            <div className="w-full flex items-center justify-center gap-4 relative px-2 md:px-0">
+                {/* Left Button (Desktop/Tablet) */}
+                <div className="hidden md:block">
+                    <button 
+                        onClick={() => toggleInfo('emby')}
+                        className={getButtonClass(infoType === 'emby', true, true)}
+                    >
+                        Emby服
+                    </button>
+                </div>
 
-        {/* Desktop Buttons (Static, below footer) */}
-        <div className="hidden lg:flex justify-center items-center gap-6 mt-8">
-            <ActionButtons />
+                {/* Center Links */}
+                <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
+                    <span className="flex items-center gap-1">
+                        Made with <span className="text-cinnabar animate-pulse">❤</span>
+                    </span>
+                    <a href="https://github.com/kanpianer/pianer" target="_blank" className={footerLinkClass}>Github</a>
+                    <a href="https://x.com/bxkp_org" target="_blank" className={footerLinkClass}>𝕏</a>
+                </div>
+
+                {/* Right Button (Desktop/Tablet) */}
+                <div className="hidden md:block">
+                    <button 
+                        onClick={() => toggleInfo('ok')}
+                        className={getButtonClass(infoType === 'ok', true, true)}
+                    >
+                        OK影视
+                    </button>
+                </div>
+            </div>
         </div>
 
       </div>
 
-      {/* Mobile/Tablet Fixed Buttons (Floating) - Hidden on desktop */}
-      <div className="lg:hidden fixed bottom-4 left-0 w-full z-30 flex justify-center py-2 pointer-events-none">
+      {/* Mobile Fixed Buttons (Floating) - Hidden on tablet/desktop */}
+      <div className="md:hidden fixed bottom-4 left-0 w-full z-30 flex justify-center py-2 pointer-events-none">
         <div className="flex justify-center items-center gap-6 pointer-events-auto px-2">
             <ActionButtons />
         </div>
