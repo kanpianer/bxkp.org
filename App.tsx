@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { SITES } from './constants';
 import { Category, InfoType } from './types';
 import InkCanvas from './components/InkCanvas';
@@ -10,33 +10,6 @@ export default function App() {
   const [infoType, setInfoType] = useState<InfoType>(null);
   const [isSecretOpen, setIsSecretOpen] = useState(false);
   
-  // Ref for width synchronization
-  const navRef = useRef<HTMLDivElement>(null);
-  const [navWidth, setNavWidth] = useState(0);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (navRef.current) {
-        setNavWidth(navRef.current.offsetWidth);
-      }
-    };
-
-    updateWidth();
-    
-    // Observer for robust resize handling
-    const observer = new ResizeObserver(updateWidth);
-    if (navRef.current) {
-      observer.observe(navRef.current);
-    }
-    
-    window.addEventListener('resize', updateWidth);
-    
-    return () => {
-      window.removeEventListener('resize', updateWidth);
-      observer.disconnect();
-    };
-  }, []);
-
   const filteredSites = useMemo(() => {
     let tag = "在线";
     if (currentCategory === "pan") tag = "网盘";
@@ -66,6 +39,24 @@ export default function App() {
 
   const footerLinkClass = `transition-colors duration-300 ${isSecretOpen ? 'hover:text-cinnabar-light' : 'hover:text-cinnabar'}`;
 
+  // Action Buttons Component to avoid duplication
+  const ActionButtons = () => (
+    <>
+        <button 
+            onClick={() => toggleInfo('emby')}
+            className={getButtonClass(infoType === 'emby', true)}
+        >
+            Emby服
+        </button>
+        <button 
+            onClick={() => toggleInfo('ok')}
+            className={getButtonClass(infoType === 'ok', true)}
+        >
+                OK影视
+        </button>
+    </>
+  );
+
   return (
     <div className={`min-h-screen relative font-serif selection:bg-cinnabar/30 selection:text-ink-900 transition-colors duration-[1500ms] ease-in-out ${isSecretOpen ? 'bg-black' : ''}`}>
       <InkCanvas darkMode={isSecretOpen} />
@@ -74,10 +65,10 @@ export default function App() {
       <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
 
       {/* Main Container */}
-      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-24 flex flex-col items-center min-h-screen">
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-36 lg:pb-16 flex flex-col items-center min-h-screen">
         
-        {/* Header */}
-        <header className="mt-7 md:mt-9 mb-3 text-center select-none">
+        {/* Header - Reduced spacing again by ~20% */}
+        <header className="mt-5 md:mt-7 mb-3 text-center select-none">
           <h1 className={`text-6xl font-bold tracking-[0.2em] mb-4 drop-shadow-sm opacity-90 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-gray-300' : 'text-ink-900'}`} style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.05)' }}>
             不想看片
           </h1>
@@ -89,7 +80,6 @@ export default function App() {
         {/* Category Filters - Sticky Top */}
         <div className="sticky top-0 z-40 w-full flex justify-center py-3 pointer-events-none">
           <div 
-            ref={navRef}
             className="flex gap-4 flex-wrap justify-center pointer-events-auto p-2 rounded-full transition-all duration-500"
           >
             <button 
@@ -164,7 +154,7 @@ export default function App() {
               {filteredSites.map((site) => (
                 <div 
                   key={site.name} 
-                  className="group relative bg-paper-100/[0.35] backdrop-blur-[2px] rounded-2xl border border-ink-500/10 p-5 flex flex-col items-center hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30 hover:-translate-y-1 transition-all duration-500 cursor-pointer"
+                  className="group relative bg-paper-100/50 backdrop-blur-[2px] rounded-2xl border border-ink-500/10 p-5 flex flex-col items-center hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30 hover:-translate-y-1 transition-all duration-500 cursor-pointer"
                   onClick={() => window.open(site.main_url, "_blank")}
                 >
                     <span className="text-lg font-bold text-ink-800 mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20">
@@ -199,8 +189,8 @@ export default function App() {
 
         </div>
 
-        {/* Page Bottom Notes & Footer */}
-        <div className="mt-5 w-full text-center flex flex-col items-center gap-5">
+        {/* Page Bottom Notes & Footer - Reduced mt-5 to mt-4, gap-5 to gap-4 */}
+        <div className="mt-4 w-full text-center flex flex-col items-center gap-4">
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
                  EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
@@ -221,26 +211,17 @@ export default function App() {
             </div>
         </div>
 
+        {/* Desktop Buttons (Static, below footer) */}
+        <div className="hidden lg:flex justify-center items-center gap-6 mt-8">
+            <ActionButtons />
+        </div>
+
       </div>
 
-      {/* Fixed Bottom Buttons - Synchronized Layout */}
-      <div className="fixed bottom-4 left-0 w-full z-30 flex justify-center py-2 pointer-events-none">
-        <div 
-          className="flex justify-between items-center pointer-events-auto px-2 transition-all duration-300"
-          style={{ width: navWidth > 0 ? navWidth : 'auto', gap: navWidth > 0 ? 0 : '1.5rem' }}
-        >
-            <button 
-                onClick={() => toggleInfo('emby')}
-                className={getButtonClass(infoType === 'emby', true)}
-            >
-                Emby服
-            </button>
-            <button 
-                onClick={() => toggleInfo('ok')}
-                className={getButtonClass(infoType === 'ok', true)}
-            >
-                 OK影视
-            </button>
+      {/* Mobile/Tablet Fixed Buttons (Floating) - Hidden on desktop */}
+      <div className="lg:hidden fixed bottom-4 left-0 w-full z-30 flex justify-center py-2 pointer-events-none">
+        <div className="flex justify-center items-center gap-6 pointer-events-auto px-2">
+            <ActionButtons />
         </div>
       </div>
       
