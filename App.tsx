@@ -67,12 +67,12 @@ export default function App() {
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-36 md:pb-6 flex flex-col items-center min-h-screen">
         
-        {/* Header - Reduced spacing again by ~20% */}
+        {/* Header - Sizes reduced by ~1/3 */}
         <header className="mt-5 md:mt-7 mb-3 text-center select-none">
-          <h1 className={`text-6xl font-bold tracking-[0.2em] mb-4 drop-shadow-sm opacity-90 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-gray-300' : 'text-ink-900'}`} style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.05)' }}>
+          <h1 className={`text-4xl font-bold tracking-[0.2em] mb-3 drop-shadow-sm opacity-90 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-gray-300' : 'text-ink-900'}`} style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.05)' }}>
             不想看片
           </h1>
-          <h2 className={`text-xl font-medium tracking-widest opacity-80 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
+          <h2 className={`text-base font-medium tracking-widest opacity-80 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
             精选全球影视资源
           </h2>
         </header>
