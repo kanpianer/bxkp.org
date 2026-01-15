@@ -59,6 +59,13 @@ export default function App() {
       : `bg-paper-100/40 backdrop-blur-sm hover:bg-paper-200/60 hover:scale-105 hover:border-cinnabar/30 border-ink-500/10 ${isRedText ? 'text-cinnabar' : 'text-ink-700 hover:text-ink-900'}`
     }`;
 
+  // Dynamic link classes for better readability on different backgrounds
+  const linkClass = isSecretOpen 
+    ? "text-paper-50 hover:text-cinnabar-light border-b border-transparent hover:border-cinnabar-light transition-all font-bold"
+    : "text-indigo-stone hover:text-cinnabar border-b border-transparent hover:border-cinnabar transition-all font-bold";
+
+  const footerLinkClass = `transition-colors duration-300 ${isSecretOpen ? 'hover:text-cinnabar-light' : 'hover:text-cinnabar'}`;
+
   return (
     <div className={`min-h-screen relative font-serif selection:bg-cinnabar/30 selection:text-ink-900 transition-colors duration-[1500ms] ease-in-out ${isSecretOpen ? 'bg-black' : ''}`}>
       <InkCanvas darkMode={isSecretOpen} />
@@ -67,10 +74,10 @@ export default function App() {
       <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
 
       {/* Main Container */}
-      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-10 pb-40 flex flex-col items-center min-h-screen">
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-24 flex flex-col items-center min-h-screen">
         
         {/* Header */}
-        <header className="mt-12 mb-6 text-center select-none">
+        <header className="mt-9 md:mt-12 mb-3 text-center select-none">
           <h1 className={`text-6xl font-bold tracking-[0.2em] mb-4 drop-shadow-sm opacity-90 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-gray-300' : 'text-ink-900'}`} style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.05)' }}>
             不想看片
           </h1>
@@ -80,7 +87,7 @@ export default function App() {
         </header>
 
         {/* Category Filters - Sticky Top */}
-        <div className="sticky top-0 z-40 w-full flex justify-center py-6 pointer-events-none">
+        <div className="sticky top-0 z-40 w-full flex justify-center py-3 pointer-events-none">
           <div 
             ref={navRef}
             className="flex gap-4 flex-wrap justify-center pointer-events-auto p-2 rounded-full transition-all duration-500"
@@ -107,7 +114,7 @@ export default function App() {
         </div>
 
         {/* Content Area */}
-        <div className="w-[95%] min-h-[150px] relative transition-all duration-[800ms] ease-in-out mt-4">
+        <div className="w-[95%] min-h-[150px] relative transition-all duration-[800ms] ease-in-out mt-3">
           
           {infoType ? (
              /* Info Panel View */
@@ -192,24 +199,32 @@ export default function App() {
 
         </div>
 
-        {/* Page Bottom Notes */}
-        <div className="mt-12 w-full text-center space-y-6">
-            <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 transition-colors duration-[1500ms] ${isSecretOpen ? 'text-gray-500' : 'text-ink-700'}`}>
+        {/* Page Bottom Notes & Footer */}
+        <div className="mt-6 w-full text-center flex flex-col items-center gap-6">
+            <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
-                 EE3 邀请码：<span className="text-indigo-stone select-all font-bold cursor-text">mpgh</span> &nbsp;|&nbsp; 
-                 备份网址：<a href="https://www.bxkp.org" target="_blank" className="text-indigo-stone hover:text-cinnabar border-b border-transparent hover:border-cinnabar transition-all font-bold">3w</a>、
-                 <a href="https://v.bxkp.org" target="_blank" className="text-indigo-stone hover:text-cinnabar border-b border-transparent hover:border-cinnabar transition-all font-bold">Vercel</a>
+                 EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
+                 备份网址：<a href="https://www.bxkp.org" target="_blank" className={linkClass}>3w</a>、
+                 <a href="https://v.bxkp.org" target="_blank" className={linkClass}>Vercel</a>
                </p>
                <p>
-                 推荐使用 <a href="https://4get.nadeko.net/web?s=Brave浏览器" target="_blank" className="text-indigo-stone hover:text-cinnabar font-bold">Brave</a> 或 <a href="https://4get.canine.tools/web?s=Vivaldi浏览器" target="_blank" className="text-indigo-stone hover:text-cinnabar font-bold">Vivaldi</a> 浏览器
+                 推荐使用 <a href="https://4get.nadeko.net/web?s=Brave浏览器" target="_blank" className={linkClass}>Brave</a> 或 <a href="https://4get.canine.tools/web?s=Vivaldi浏览器" target="_blank" className={linkClass}>Vivaldi</a> 浏览器
                </p>
+            </div>
+
+            <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-300/60' : 'text-cinnabar'}`}>
+                <span className="flex items-center gap-1">
+                    Made with <span className="text-cinnabar animate-pulse">❤</span>
+                </span>
+                <a href="https://github.com/kanpianer/pianer" target="_blank" className={footerLinkClass}>Github</a>
+                <a href="https://x.com/bxkp_org" target="_blank" className={footerLinkClass}>𝕏</a>
             </div>
         </div>
 
       </div>
 
       {/* Fixed Bottom Buttons - Synchronized Layout */}
-      <div className="fixed bottom-14 left-0 w-full z-30 flex justify-center py-2 pointer-events-none">
+      <div className="fixed bottom-4 left-0 w-full z-30 flex justify-center py-2 pointer-events-none">
         <div 
           className="flex justify-between items-center pointer-events-auto px-2 transition-all duration-300"
           style={{ width: navWidth > 0 ? navWidth : 'auto', gap: navWidth > 0 ? 0 : '1.5rem' }}
@@ -228,17 +243,6 @@ export default function App() {
             </button>
         </div>
       </div>
-
-      {/* Fixed Footer */}
-      <footer className="fixed bottom-0 left-0 w-full z-40 py-3">
-        <div className="flex justify-center items-center text-ink-400 text-sm tracking-widest gap-6 font-serif">
-            <span className="flex items-center gap-1">
-                Made with <span className="text-cinnabar animate-pulse">❤</span>
-            </span>
-            <a href="https://github.com/kanpianer/pianer" target="_blank" className="hover:text-cinnabar transition-colors duration-300">Github</a>
-            <a href="https://x.com/bxkp_org" target="_blank" className="hover:text-cinnabar transition-colors duration-300">𝕏</a>
-        </div>
-      </footer>
       
       <style>{`
         @keyframes fadeInUp {
