@@ -219,7 +219,7 @@ export default function App() {
                     <span className="flex items-center gap-1">
                         Made with <span className="text-cinnabar animate-pulse">❤</span>
                     </span>
-                    <a href="https://github.com/kanpianer/bxkp" target="_blank" className={footerLinkClass}>Github</a>
+                    <a href="https://github.com/kanpianer/bxkp.org" target="_blank" className={footerLinkClass}>Github</a>
                     <a href="https://x.com/bxkp_org" target="_blank" className={footerLinkClass}>𝕏</a>
                 </div>
 
