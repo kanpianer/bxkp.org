@@ -1,20 +1,8 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+## 不想看片 ##
 
-# Run and deploy your AI Studio app
+### 网址备份：[Vercel](https://v.bxkp.org/) ###
+### 网站备份：[Affine](https://app.affine.pro/workspace/43839213-da83-415f-98f9-204fcd910d54/8UjZEIrLtL-PHOqZwH7b4) ###
 
-This contains everything you need to run your app locally.
+欢迎提交优质网站、报告失效网址、或把网站做得更好
 
-View your app in AI Studio: https://ai.studio/apps/50c4621c-b4af-448a-ad57-5af630c48885
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+画质要求：网站视频内容不能有硬字幕、图片、音频、视频广告，画质靠齐 [NO视频](https://www.novipnoad.us/)
