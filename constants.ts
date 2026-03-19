@@ -8,7 +8,7 @@ export const SITES: Site[] = [
     { name: "修罗影视", main_url: "https://xl01.com.de/", backup_url: "https://xlys.me/", tags: ["在线", "BT"] },
     { name: "七味", main_url: "https://www.qmp4.com", backup_url: "https://www.qn63.com/", tags: ["网盘", "BT"] },
     { name: "GoPlay", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
-    { name: "趣盘 Alist", main_url: "https://pan.mediy.cn", backup_url: "https://al.chirmyram.com", tags: ["在线, 网盘"] },
+    { name: "趣盘 Alist", main_url: "https://pan.mediy.cn", backup_url: "https://al.chirmyram.com", tags: ["在线", "网盘"] },
     { name: "两个BT", main_url: "https://www.bttwo.me", backup_url: "https://bttwo.vip/", tags: ["在线", ""] },
     { name: "玩偶哥哥", main_url: "https://www.wogg.net/", backup_url: "", tags: ["网盘"] },
     { name: "老K", main_url: "https://docs.qq.com/doc/DTk5EaVdWY2R6ZnBk", backup_url: "", tags: ["网盘"] },
