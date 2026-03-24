@@ -1,7 +1,6 @@
 import { Site } from './types';
 
 export const SITES: Site[] = [
-    { name: "厂长资源", main_url: "https://www.czzymovie.com/", backup_url: "https://www.czzy.site/", tags: ["在线", "BT"] },
     { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },
     { name: "PPnix", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
     { name: "在线之家", main_url: "https://www.zxzjhd.com/", backup_url: "https://www.zxzjys.com", tags: ["在线"] },
@@ -18,6 +17,7 @@ export const SITES: Site[] = [
     { name: "爱盼", main_url: "https://www.aipan.me", backup_url: "", tags: ["网盘"] },
     { name: "阿里云资源", main_url: "https://slowread.net/", backup_url: "", tags: ["网盘"] },
     { name: "ShowBox", main_url: "https://www.showbox.media/", backup_url: "", tags: ["网盘"] },
+    { name: "Aether", main_url: "https://aether.mom", backup_url: "https://discord.gg/MadMF7xb5q", tags: ["在线", ""] },
     { name: "AGE动漫", main_url:"https://www.agedm.io/", backup_url:"https://www.age.tv/", tags:["在线"]},
     { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
     { name: "Flixer", main_url:"https://flixer.su/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},
