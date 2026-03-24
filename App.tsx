@@ -203,7 +203,7 @@ export default function App() {
                  <a href="https://v.bxkp.org" target="_blank" className={linkClass}>Vercel</a>
                </p>
                <p>
-                 推荐使用 <a href="https://4get.nadeko.net/web?s=Brave浏览器" target="_blank" className={linkClass}>Brave</a> 或 <a href="https://4get.canine.tools/web?s=Vivaldi浏览器" target="_blank" className={linkClass}>Vivaldi</a> 浏览器
+                 推荐使用 <a href="https://search.fuckoffgoogle.net/searxng/search?q=Brave浏览器" target="_blank" className={linkClass}>Brave</a> 或 <a href="https://4get.canine.tools/web?s=Vivaldi浏览器" target="_blank" className={linkClass}>Vivaldi</a> 浏览器
                </p>
             </div>
 
