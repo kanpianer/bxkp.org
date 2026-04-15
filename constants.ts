@@ -41,5 +41,6 @@ export const SITES: Site[] = [
     { name: "网盘俱乐部", main_url: "https://pan.club/", backup_url: "", tags: ["网盘"] },
     { name: "超能搜", main_url: "https://www.chaonengsou.com/", backup_url: "", tags: ["网盘"] },
     { name: "夸盘资源网", main_url: "https://www.ppat.top/", backup_url: "", tags: ["网盘"] },
+    { name: "Pomo", main_url: "https://pomo.mom/", backup_url: "", tags: ["BT"] },
     
 ];
