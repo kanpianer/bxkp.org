@@ -18,7 +18,8 @@ export const SITES: Site[] = [
     { name: "阿里云资源", main_url: "https://slowread.net/", backup_url: "", tags: ["网盘"] },
     { name: "ShowBox", main_url: "https://www.showbox.media/", backup_url: "", tags: ["网盘"] },
    /* { name: "Aether", main_url: "https://aether.mom", backup_url: "https://discord.gg/MadMF7xb5q", tags: ["在线", ""] }, */
-    { name: "TouStream[含客户端]", main_url:"https://toustream.movietrunk.com/", backup_url:"https://discord.gg/us5-and-toustream-1157125685178007672", tags:["在线"]},
+    { name: "TouStream
+        [含客户端]", main_url:"https://toustream.movietrunk.com/", backup_url:"https://discord.gg/us5-and-toustream-1157125685178007672", tags:["在线"]},
     { name: "AGE动漫", main_url:"https://www.agedm.io/", backup_url:"https://www.age.tv/", tags:["在线"]},
     { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
     { name: "Flixer", main_url:"https://flixer.su/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},
