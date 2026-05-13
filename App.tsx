@@ -117,7 +117,7 @@ export default function App() {
               {infoType === 'emby' ? (
                 <div className="space-y-4 text-ink-800">
                   <h3 className="text-2xl font-bold text-cinnabar text-center mb-6 border-b border-paper-300 pb-2">Emby服</h3>
-                  <p>没有各种广告和高画质是Emby服的特点，ta一般大致分为以下两类：</p>
+                  <p>没有各种广告和高画质是Emby服/Jellyfin服的特点，大致分为以下两类：</p>
                   <ul className="list-disc pl-6 space-y-2 text-ink-700">
                      <li><span className="font-bold text-ink-900">公益服：</span>无需付费，但可能有一定入服门槛。
                         <div className="mt-1 text-sm text-indigo-stone flex flex-wrap gap-2">
@@ -141,14 +141,15 @@ export default function App() {
               ) : (
                 <div className="space-y-4 text-ink-800">
                     <h3 className="text-2xl font-bold text-cinnabar text-center mb-6 border-b border-paper-300 pb-2">OK影视</h3>
-                    <p>OK影视使用起来和Emby差不多，一般在客户端填写好配置接口的地址就可以了。</p>
+                    <p>OK影视/Nuvio播放器使用起来和Emby差不多，一般在客户端填写好仓库接口地址就可以了。</p>
                     <ul className="list-disc pl-6 space-y-2 text-ink-700">
+                        <li><a href="https://nuvio-plugin-library.vercel.app" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">Nuvio 仓库地址</a></li>
                         <li><a href="https://blog.ccino.org/p/tvbox-tv-version-installation-and-configuration-complete-guide/" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">TVBox电视版安装配置全指南</a></li>
                         <li><a href="https://t.me/tvb_ys" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">TVB/影視(OK) 电报频道</a></li>
                         <li><a href="https://github.com/qist/tvbox" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">OK影视各种客户端和配置接口</a></li>
                     </ul>
                      <p className="text-sm mt-4 text-ink-500 italic border-t border-paper-300 pt-4">
-                        * OK影视是资源聚合的播放器，高清内容通常需要配合网盘VIP使用。
+                        * OK影视和Nuvio都是资源聚合的播放器，OK影视高清内容通常需要配合网盘VIP使用。
                     </p>
                 </div>
               )}
