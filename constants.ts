@@ -20,9 +20,9 @@ export const SITES: Site[] = [
     { name: "Aether", main_url: "https://aether.mom", backup_url: "https://aether.bar/", tags: ["在线", ""] }, 
     { name: "TouStream", main_url:"https://toustream.movietrunk.com/", backup_url:"https://discord.gg/us5-and-toustream-1157125685178007672", tags:["在线"]},
     { name: "XPrime", main_url: "https://xprime.su", backup_url: "contact@xprime.tv", tags: ["在线", ""] },
-    { name: "AGE动漫", main_url:"https://www.agedm.io/", backup_url:"https://www.age.tv/", tags:["在线"]},
-    { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
     { name: "Flixer/中文", main_url:"https://flixer.su/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},
+    { name: "Neshi动漫", main_url:"https://neshi.to", backup_url:"https://www.miruro.to", tags:["在线"]},
+    { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
     { name: "Cineby", main_url:"https://www.cineby.sc/", backup_url:"https://www.fmovies.gd/", tags:["在线"]},
     { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
   /*  { name: "BrocoFlix", main_url:"https://brocoflix.xyz/", backup_url:"https://rentry.co/KipsSites", tags:["在线"]}, */
