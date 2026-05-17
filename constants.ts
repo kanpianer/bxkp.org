@@ -18,7 +18,7 @@ export const SITES: Site[] = [
     { name: "阿里云资源", main_url: "https://slowread.net/", backup_url: "", tags: ["网盘"] },
     { name: "ShowBox", main_url: "https://www.showbox.media/", backup_url: "", tags: ["网盘"] },
     { name: "Aether", main_url: "https://aether.mom", backup_url: "https://aether.bar/", tags: ["在线", ""] }, 
-    { name: "TouStream", main_url:"https://toustream.movietrunk.com/", backup_url:"https://discord.gg/us5-and-toustream-1157125685178007672", tags:["在线"]},
+   /* { name: "TouStream", main_url:"https://toustream.movietrunk.com/", backup_url:"https://discord.gg/us5-and-toustream-1157125685178007672", tags:["在线"]},*/
     { name: "XPrime", main_url: "https://xprime.su", backup_url: "contact@xprime.tv", tags: ["在线", ""] },
     { name: "Flixer/中文", main_url:"https://flixer.su/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},
     { name: "Neshi动漫", main_url:"https://neshi.to", backup_url:"https://www.miruro.to", tags:["在线"]},
@@ -27,7 +27,7 @@ export const SITES: Site[] = [
     { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
   /*  { name: "BrocoFlix", main_url:"https://brocoflix.xyz/", backup_url:"https://rentry.co/KipsSites", tags:["在线"]}, */
     { name: "Cinemaos", main_url:"https://cinemaos.live/", backup_url:"https://cinemaos.tech/", tags:["在线"]},
-  /*  { name: "Cinegram", main_url:"https://cinegram.net/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]}, */
+    { name: "Cinegram", main_url:"https://cinegram.net/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]},
     { name: "BT之家", main_url: "https://1lou.one/", backup_url: "https://1lou.cc/", tags: ["BT", "网盘"] },
     { name: "磁力熊", main_url: "https://www.cilixiong.org", backup_url: "https://www.cilixiong.cc", tags: ["BT"] },
     { name: "磁力帝", main_url: "https://cldcld.cc", backup_url: "https://cldcld.top", tags: ["BT"] },
