@@ -3,7 +3,7 @@ import { Site } from './types';
 export const SITES: Site[] = [
     { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },
     { name: "PPnix/中文", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
-    { name: "在线之家", main_url: "https://www.zxzjhd.com/", backup_url: "https://www.zxzjys.com", tags: ["在线"] },
+    { name: "厂长资源", main_url: "https://czzyv.com", backup_url: "https://cz01.vip", tags: ["在线"] },
     { name: "修罗影视", main_url: "https://xl01.com.de/", backup_url: "https://xlys.me/", tags: ["在线", "BT"] },
     { name: "七味", main_url: "https://www.qmp4.com", backup_url: "https://www.qn63.com/", tags: ["网盘", "BT"] },
   /*  { name: "GoPlay", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] }, */
@@ -13,7 +13,7 @@ export const SITES: Site[] = [
     { name: "老K", main_url: "https://docs.qq.com/doc/DTk5EaVdWY2R6ZnBk", backup_url: "", tags: ["网盘"] },
     { name: "4k指南[原盘]", main_url: "https://4kzn.com", backup_url: "", tags: ["网盘"] },
     { name: "混合盘", main_url: "https://hunhepan.com/search", backup_url: "https://hhp.panso.me", tags: ["网盘"] },
-    { name: "PanSearch", main_url: "https://pansearch.me/", backup_url: "", tags: ["网盘"] },
+    { name: "网盘资源避难所", main_url: "https://www.daiguaji.com/index.php", backup_url: "", tags: ["网盘"] },
     { name: "爱盼", main_url: "https://www.aipan.me", backup_url: "", tags: ["网盘"] },
     { name: "阿里云资源", main_url: "https://slowread.net/", backup_url: "", tags: ["网盘"] },
     { name: "ShowBox", main_url: "https://www.showbox.media/", backup_url: "", tags: ["网盘"] },
