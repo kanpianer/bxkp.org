@@ -57,7 +57,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
             </div>
             <div className="flex gap-3 justify-between">
               <SecretButton label="网盘" url="https://www.qmp4.com/mv/460912.html" />
-              <SecretButton label="在线" url="https://www.novipnoad.cc/tv/western/152182.html" />
+              <SecretButton label="在线" url="https://www.novipnoad.us/tv/western/152182.html" />
               <SecretButton label="磁力" url="https://www.cilixiong.org/drama/4552.html" />
             </div>
           </div>
@@ -77,7 +77,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
             </div>
             <div className="flex gap-3 justify-between mt-auto">
               <SecretButton label="网盘" url="https://www.qmp4.com/mv/459048.html" />
-              <SecretButton label="在线" url="https://www.novipnoad.cc/tv/western/152181.html" />
+              <SecretButton label="在线" url="https://www.novipnoad.us/tv/western/152181.html" />
               <SecretButton label="磁力" url="https://www.cilixiong.org/drama/4567.html" />
             </div>
           </div>
