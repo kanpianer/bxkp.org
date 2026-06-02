@@ -4,7 +4,7 @@ export const SITES: Site[] = [
     { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },
     { name: "PPnix/中文", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
     { name: "厂长资源", main_url: "https://czzyv.com", backup_url: "https://cz01.vip", tags: ["在线"] },
-    { name: "修罗影视", main_url: "https://xl01.com.de/", backup_url: "https://xlys.me/", tags: ["在线", "BT"] },
+    { name: "雪落影视", main_url: "https://xl01.com.de/", backup_url: "https://xlys.me/", tags: ["在线", "BT"] },
     { name: "七味", main_url: "https://www.qmp4.com", backup_url: "https://www.qn63.com/", tags: ["网盘", "BT"] },
   /*  { name: "GoPlay", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] }, */
     { name: "趣盘 Alist", main_url: "https://pan.mediy.cn", backup_url: "https://al.chirmyram.com", tags: ["在线", "网盘"] },
@@ -18,16 +18,16 @@ export const SITES: Site[] = [
     { name: "阿里云资源", main_url: "https://slowread.net/", backup_url: "", tags: ["网盘"] },
     { name: "ShowBox", main_url: "https://www.showbox.media/", backup_url: "", tags: ["网盘"] },
     { name: "Aether", main_url: "https://aether.mom", backup_url: "https://aether.bar/", tags: ["在线", ""] }, 
-   /* { name: "TouStream", main_url:"https://toustream.movietrunk.com/", backup_url:"https://discord.gg/us5-and-toustream-1157125685178007672", tags:["在线"]},*/
-    { name: "XPrime", main_url: "https://xprime.su", backup_url: "contact@xprime.tv", tags: ["在线", ""] },
+    { name: "TouStream", main_url:"toustream.xyz/", backup_url:"https://discord.gg/us5-and-toustream-1157125685178007672", tags:["在线"]},
+    { name: "XPrime", main_url: "https://xprime.su", backup_url: "https://xpdomains.net", tags: ["在线", ""] },
     { name: "Flixer/中文", main_url:"https://flixer.su/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},
-    { name: "Neshi动漫", main_url:"https://neshi.to", backup_url:"https://www.miruro.to", tags:["在线"]},
+    { name: "Miruro/动漫", main_url:"https://www.miruro.to", backup_url:"https://www.miruro.com/", tags:["在线"]},
     { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
     { name: "Cineby", main_url:"https://www.cineby.sc/", backup_url:"https://www.fmovies.gd/", tags:["在线"]},
     { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
   /*  { name: "BrocoFlix", main_url:"https://brocoflix.xyz/", backup_url:"https://rentry.co/KipsSites", tags:["在线"]}, */
     { name: "Cinemaos", main_url:"https://cinemaos.live/", backup_url:"https://cinemaos.tech/", tags:["在线"]},
-    { name: "Cinegram", main_url:"https://cinegram.net/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]},
+    /*  { name: "Cinegram", main_url:"https://cinegram.net/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]}, */
     { name: "BT之家", main_url: "https://1lou.one/", backup_url: "https://1lou.cc/", tags: ["BT", "网盘"] },
     { name: "磁力熊", main_url: "https://www.cilixiong.org", backup_url: "https://www.cilixiong.cc", tags: ["BT"] },
     { name: "磁力帝", main_url: "https://cldcld.cc", backup_url: "https://cldcld.top", tags: ["BT"] },
@@ -36,7 +36,7 @@ export const SITES: Site[] = [
     { name: "EXT", main_url: "https://ext.to/", backup_url: "https://search.extto.com/", tags: ["BT"] },
     { name: "BDigg", main_url: "https://btdig.com/", backup_url: "", tags: ["BT"] },
     { name: "Knaben", main_url: "https://knaben.org/", backup_url: "http://knabenxyzjl3bt5al7awroewfkg37x6duutapjytdib4w42mk2kiqpid.onion/", tags: ["BT"] },
-    { name: "iDope", main_url: "https://idope.hair", backup_url: "", tags: ["BT"] },
+    { name: "iDope", main_url: "https://idope.pics", backup_url: "", tags: ["BT"] },
     { name: "ACG.RIP", main_url: "https://acg.rip", backup_url: "", tags: ["BT"] },
     { name: "LimeTorrents", main_url: "https://www.limetorrents.asia", backup_url: "https://limetorrent.si/", tags: ["BT"] },
     { name: "ExtraTorrent", main_url: "https://extratorrent.st", backup_url: "", tags: ["BT"] },
