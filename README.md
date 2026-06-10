@@ -1,7 +1,7 @@
 ## 不想看片 ##
 
-### 网址备份：[Vercel](https://v.bxkp.org/) ###
-### 网站备份：[CryptPad](https://pcof.fi/bxkp) ###
+### 网址备份：https://bxkp.pages.dev、https://v.bxkp.org ###
+### 网站备份：[CryptPad](https://pcof.fi/bxkp) ### 
 
 欢迎提交优质网站、报告失效网址、或把网站做得更好
 
