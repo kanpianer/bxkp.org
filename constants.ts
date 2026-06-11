@@ -45,12 +45,12 @@ export const SITES: Site[] = [
     { name: "1337X", main_url: "https://1337x.to/", backup_url: "https://1337x-status.org/", tags: ["BT"] },
     { name: "YTS", main_url: "https://yts.bz/", backup_url: "https://gosites.org/yts", tags: ["BT"] },
     { name: "EXT", main_url: "https://ext.to/", backup_url: "https://search.extto.com/", tags: ["BT"] },
-    { name: "BDigg", main_url: "https://btdig.com/", backup_url: "", tags: ["BT"] },
+    { name: "Bitsearch", main_url: "https://bitsearch.eu", backup_url: "https://solidtorrents.to/", tags: ["BT"] },
     { name: "Knaben", main_url: "https://knaben.org/", backup_url: "http://knabenxyzjl3bt5al7awroewfkg37x6duutapjytdib4w42mk2kiqpid.onion/", tags: ["BT"] },
     { name: "iDope", main_url: "https://idope.pics", backup_url: "", tags: ["BT"] },
     { name: "ACG.RIP", main_url: "https://acg.rip", backup_url: "", tags: ["BT"] },
     { name: "LimeTorrents", main_url: "https://www.limetorrents.asia", backup_url: "https://limetorrent.si/", tags: ["BT"] },
     { name: "ExtraTorrent", main_url: "https://extratorrent.st", backup_url: "", tags: ["BT"] },
-
+  /*  { name: "BDigg", main_url: "https://btdig.com/", backup_url: "", tags: ["BT"] },*/
     
 ];
