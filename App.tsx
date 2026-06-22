@@ -179,7 +179,7 @@ export default function App() {
                         </a>
                     ) : (
                         <a
-                            href="https://app.affine.pro/workspace/43839213-da83-415f-98f9-204fcd910d54/8UjZEIrLtL-PHOqZwH7b4"
+                            href="https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ"
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
