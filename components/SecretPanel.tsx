@@ -56,9 +56,9 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
                </div>
             </div>
             <div className="flex gap-3 justify-between">
-              <SecretButton label="网盘" url="https://www.qmp4.com/mv/460912.html" />
-              <SecretButton label="在线" url="https://www.novipnoad.us/tv/western/152182.html" />
-              <SecretButton label="磁力" url="https://www.cilixiong.org/drama/4552.html" />
+              <SecretButton label="网盘" url="https://www.qmp4.com/mv/465508.html" />
+              <SecretButton label="在线" url="https://www.ppnix.com/cn/movie/8024.html" />
+              <SecretButton label="磁力" url="https://1337x.st/torrent/6658988/Sentimental-Value-2025-Criterion-1080p-BluRay-x265-10bit-EAC3-5-1-Norwegian-Silence/" />
             </div>
           </div>
 
@@ -66,7 +66,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
           <div className="absolute top-0 left-0 w-full h-full bg-black/80 backdrop-blur-xl rounded-3xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 backface-hidden rotate-y-180 flex flex-col justify-between">
             <div className="relative w-full aspect-video overflow-hidden rounded-2xl mb-4 border border-white/10 bg-gray-800 group cursor-pointer" onClick={() => setIsFlipped(false)}>
                <img 
-                 src="https://frontend-assets.clipsource.com/61f2b6d73d8bf/hbo-61f7aa83bfb15/2025/09/24/68d3940a93e04_thumbnail.jpg?q=80&w=600&auto=format&fit=crop" 
+                 src="https://www.themoviedb.org/t/p/w1280/pz9NCWxxOk3o0W3v1Zkhawrwb4i.jpg?q=80&w=600&auto=format&fit=crop" 
                  alt="Secret 2"
                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter sepia-[0.2] brightness-90 group-hover:brightness-100"
                  referrerPolicy="no-referrer"
@@ -76,9 +76,9 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
                </div>
             </div>
             <div className="flex gap-3 justify-between mt-auto">
-              <SecretButton label="网盘" url="https://www.qmp4.com/mv/459048.html" />
-              <SecretButton label="在线" url="https://www.novipnoad.us/tv/western/152181.html" />
-              <SecretButton label="磁力" url="https://www.cilixiong.org/drama/4567.html" />
+              <SecretButton label="网盘" url="https://www.qmp4.com/mv/460912.html" />
+              <SecretButton label="在线" url="https://www.novipnoad.us/tv/western/152182.html" />
+              <SecretButton label="磁力" url="https://www.cilixiong.uk/drama/4552.html" />
             </div>
           </div>
 
