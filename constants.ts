@@ -11,13 +11,14 @@ export const SITES: Site[] = [
     
     { name: "Cinegram", main_url:"https://cinegram.tv/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]},
     { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
+    { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
+    { name: "Z-Stream", main_url:"https://zstream.mov/", backup_url:"https://rentry.co/xpstream", tags:["在线"]},
     { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://discord.gg/the-one", tags:["在线"]},
     { name: "TouStream", main_url:"https://toustream.xyz/", backup_url:"https://toustream.glseries.net", tags:["在线"]},
-    { name: "Flixer/中文", main_url:"https://flixer.cx/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},
     { name: "Miruro/动漫", main_url:"https://www.miruro.to", backup_url:"https://www.miruro.com/", tags:["在线"]},
-    { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
- 
-    /*  { name: "XPrime", main_url: "https://xprime.su", backup_url: "https://xpdomains.net", tags: ["在线", ""] }, */  
+    
+   /* { name: "Flixer/中文", main_url:"https://flixer.cx/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},*/
+   /* { name: "XPrime", main_url: "https://xprime.su", backup_url: "https://xpdomains.net", tags: ["在线", ""] }, */  
   /*  { name: "Cineby", main_url:"https://www.cineby.sc/", backup_url:"https://www.fmovies.gd/", tags:["在线"]}, */
   /*  { name: "BrocoFlix", main_url:"https://brocoflix.xyz/", backup_url:"https://rentry.co/KipsSites", tags:["在线"]}, */
   /*  { name: "Cinemaos", main_url:"https://cinemaos.live/", backup_url:"https://cinemaos.tech/", tags:["在线"]}, */
