@@ -1,7 +1,7 @@
 ## 不想看片 ##
 
 ### 网址备份：[bxkp.pages.dev](https://bxkp.pages.dev)、[v.bxkp.org](https://v.bxkp.org)、[bxkp.cc.cd](https://bxkp.cc.cd) ###
-### 网站备份：[CryptPad](https://pcof.fi/bxkp) ### 
+### 网站备份：[HedgeDoc](https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ)、[Notion](https://waa.ai/bxkpn) ### 
 
 欢迎提交优质网站、报告失效网址、或把网站做得更好
 
