@@ -200,8 +200,8 @@ export default function App() {
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
                  EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
-                 备份网址：<a href="https://nolog.link/s/bxkphd" target="_blank" className={linkClass}>HedgeDoc</a>、
-                 <a href="https://v.bxkp.org" target="_blank" className={linkClass}>Vercel</a>
+                 备份：<a href="https://nolog.link/s/bxkphd" target="_blank" className={linkClass}>HedgeDoc</a>、
+                 <a href="https://bxkp.cc.cd/" target="_blank" className={linkClass}>bxkp.cc.cd</a>
                </p>
                <p>
                  推荐使用 <a href="https://search.fuckoffgoogle.net/searxng/search?q=Brave浏览器" target="_blank" className={linkClass}>Brave</a>、<a href="https://4get.canine.tools/web?s=Vivaldi浏览器" target="_blank" className={linkClass}>Vivaldi</a> 浏览器屏蔽广告
