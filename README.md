@@ -1,6 +1,6 @@
 ## 不想看片 ##
 
-### 网址备份：[bxkp.pages.dev](https://bxkp.pages.dev)、[bxkp.qzz.io](https://bxkp.qzz.io)、[v.bxkp.org](https://v.bxkp.org) ###
+### 网址备份：[bxkp.pages.dev](https://bxkp.pages.dev)、[bxkp.qzz.io](https://bxkp.qzz.io)、[bxkp.foo.ng](https://bxkp.foo.ng) ###
 ### 网站备份：[HedgeDoc](https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ)、[Notion](https://waa.ai/bxkpn) ### 
 
 欢迎提交优质网站、报告失效网址、或把网站做得更好
