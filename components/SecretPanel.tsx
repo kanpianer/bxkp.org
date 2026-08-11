@@ -121,9 +121,9 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
         <button
           onClick={onClose}
           aria-label="关闭窗口"
-          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 active:scale-90 transition-all duration-300 flex items-center justify-center text-white/70 hover:text-white border border-white/10 cursor-pointer"
+          className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center text-white/50 hover:text-white active:scale-90 transition-all duration-300 cursor-pointer"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
