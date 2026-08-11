@@ -62,12 +62,8 @@ export default function App() {
     <div className={`min-h-screen relative font-serif selection:bg-cinnabar/30 selection:text-ink-900 transition-colors duration-[1500ms] ease-in-out ${isSecretOpen ? 'bg-black' : ''}`}>
       <InkCanvas darkMode={isSecretOpen} />
       
-      <TasselSwitch onToggle={() => setIsSecretOpen(true)} />
-      <AnimatePresence>
-        {isSecretOpen && (
-          <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
-        )}
-      </AnimatePresence>
+      <TasselSwitch onToggle={() => setIsSecretOpen(prev => !prev)} />
+      <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
 
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-36 md:pb-6 flex flex-col items-center min-h-screen">
