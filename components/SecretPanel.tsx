@@ -117,6 +117,17 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
           isOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          aria-label="关闭窗口"
+          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 active:scale-90 transition-all duration-300 flex items-center justify-center text-white/70 hover:text-white border border-white/10 cursor-pointer"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
         {/* Iframe Container */}
         <div className="flex-1 w-full h-full relative bg-transparent overflow-hidden">
           <iframe 
