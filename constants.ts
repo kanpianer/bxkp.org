@@ -13,7 +13,7 @@ export const SITES: Site[] = [
     { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
     { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
     { name: "Z-Stream", main_url:"https://zstream.mov/", backup_url:"https://rentry.co/xpstream", tags:["在线"]},
-    { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://discord.gg/the-one", tags:["在线"]},
+    { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://www.1tube.org", tags:["在线"]},
     { name: "Movy", main_url:"https://www.movy.bz", backup_url:"https://www.vidy.st", tags:["在线"]},
     { name: "Miruro/动漫", main_url:"https://www.miruro.to", backup_url:"https://www.miruro.com/", tags:["在线"]},
     
