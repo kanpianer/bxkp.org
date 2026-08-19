@@ -31,118 +31,6 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
     
     // --- Classes ---
     
-    class Mist {
-      x: number;
-      y: number;
-      w: number;
-      h: number;
-      speed: number;
-      opacity: number;
-
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = baseHeight * (0.2 + Math.random() * 0.6); 
-        this.w = width * (0.4 + Math.random() * 0.4);
-        this.h = baseHeight * 0.2;
-        this.speed = Math.random() * 0.1 + 0.05; 
-        this.opacity = Math.random() * 0.15 + 0.05;
-      }
-
-      update() {
-        this.x += this.speed; 
-        if (this.x - this.w > width) {
-          this.x = -this.w;
-          this.y = baseHeight * (0.2 + Math.random() * 0.6);
-        }
-      }
-
-      draw(ctx: CanvasRenderingContext2D, isNight: boolean) {
-        const cx = this.x + this.w / 2;
-        const cy = this.y + this.h / 2;
-        const rx = this.w / 2;
-        
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx);
-        
-        const r = isNight ? 30 : 255;
-        const g = isNight ? 30 : 255;
-        const b = isNight ? 40 : 255;
-        
-        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.opacity})`);
-        grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, ${this.opacity * 0.5})`);
-        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-        
-        ctx.fillStyle = grad;
-        
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.scale(1, this.h / this.w);
-        ctx.beginPath();
-        ctx.arc(0, 0, rx, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    class Cloud {
-      x: number;
-      y: number;
-      speed: number;
-      scale: number;
-      puffs: { x: number, y: number, r: number }[];
-
-      constructor() {
-        this.init(true);
-      }
-
-      init(randomX = false) {
-        this.scale = 0.5 + Math.random() * 0.8;
-        this.x = randomX ? Math.random() * width : -300 * this.scale;
-        this.y = Math.random() * baseHeight * 0.25; 
-        this.speed = (0.1 + Math.random() * 0.1); 
-        
-        this.puffs = [];
-        const puffCount = 3 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < puffCount; i++) {
-          this.puffs.push({
-            x: Math.random() * 100 - 50,
-            y: Math.random() * 40 - 20,
-            r: 30 + Math.random() * 20
-          });
-        }
-      }
-
-      update() {
-        this.x += this.speed;
-        if (this.x > width + 200 * this.scale) {
-          this.init(false);
-        }
-      }
-
-      draw(ctx: CanvasRenderingContext2D, isNight: boolean) {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.scale(this.scale, this.scale);
-
-        const opacity = isNight ? 0.05 : 0.6; 
-        const r = isNight ? 150 : 255;
-        const g = isNight ? 150 : 255;
-        const b = isNight ? 160 : 255;
-
-        this.puffs.forEach(puff => {
-          const grad = ctx.createRadialGradient(puff.x, puff.y, 0, puff.x, puff.y, puff.r);
-          grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${opacity})`);
-          grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-          
-          ctx.fillStyle = grad;
-          ctx.beginPath();
-          ctx.arc(puff.x, puff.y, puff.r, 0, Math.PI * 2);
-          ctx.fill();
-        });
-
-        ctx.restore();
-      }
-    }
-
     class Goose {
       relX: number;
       relY: number;
@@ -298,24 +186,12 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
 
     // --- State ---
     const layers: InkMountain[] = [];
-    const mists: Mist[] = [];
-    const clouds: Cloud[] = [];
     const flocks: Flock[] = [];
 
     const init = () => {
        layers.length = 0;
        for(let i=0; i<LAYERS; i++) {
          layers.push(new InkMountain(i));
-       }
-       
-       mists.length = 0;
-       for(let i=0; i<5; i++) {
-         mists.push(new Mist());
-       }
-
-       clouds.length = 0;
-       for(let i=0; i<4; i++) {
-         clouds.push(new Cloud());
        }
        
        flocks.length = 0;
@@ -361,29 +237,8 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       ctx.clearRect(0, 0, width, height);
       time++;
 
-      clouds.forEach(c => {
-        c.update();
-        c.draw(ctx, currentDarkness > 0.5);
-      });
-
-      mists.forEach((m, i) => {
-          if (i % 2 === 0) {
-             m.update();
-             m.draw(ctx, currentDarkness > 0.5);
-          }
-      });
-
-      layers.forEach((l, i) => {
+      layers.forEach((l) => {
           l.draw(ctx, currentDarkness);
-          
-          if (i === 0) { 
-             mists.forEach((m, mi) => {
-                 if (mi % 2 !== 0) {
-                    m.update();
-                    m.draw(ctx, currentDarkness > 0.5);
-                 }
-             });
-          }
       });
       
       flocks.forEach(f => {
