@@ -1,21 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface TasselSwitchProps {
   onToggle: () => void;
+  isOpen?: boolean;
 }
 
-const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle }) => {
+const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle, isOpen = false }) => {
   const [isPulled, setIsPulled] = useState(false);
+  const pullTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 每 3.5 秒自动拉一次做提示，但不触发弹窗
+  useEffect(() => {
+    if (isOpen) return;
+
+    const interval = setInterval(() => {
+      setIsPulled(true);
+      if (pullTimerRef.current) clearTimeout(pullTimerRef.current);
+      pullTimerRef.current = setTimeout(() => {
+        setIsPulled(false);
+      }, 400);
+    }, 3500);
+
+    return () => {
+      clearInterval(interval);
+      if (pullTimerRef.current) clearTimeout(pullTimerRef.current);
+    };
+  }, [isOpen]);
 
   const handleClick = () => {
     setIsPulled(true);
     onToggle();
-    setTimeout(() => setIsPulled(false), 300);
+    if (pullTimerRef.current) clearTimeout(pullTimerRef.current);
+    pullTimerRef.current = setTimeout(() => {
+      setIsPulled(false);
+    }, 300);
   };
 
   return (
     <div 
-      className="fixed top-0 right-[5%] z-50 flex flex-col items-center cursor-pointer group"
+      className="fixed top-0 right-4 sm:right-[5%] z-50 flex flex-col items-center cursor-pointer group"
       onClick={handleClick}
       title="不想看牌"
     >
@@ -26,12 +49,12 @@ const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle }) => {
       <div className="flex flex-col items-center origin-top animate-breeze">
         {/* Red Cord (Animates Height) */}
         <div 
-          className="w-[2px] bg-cinnabar shadow-sm transition-all duration-300 ease-in-out"
-          style={{ height: isPulled ? '100px' : '80px' }}
+          className="w-[2px] bg-cinnabar shadow-sm transition-all duration-300 ease-out"
+          style={{ height: isPulled ? '100px' : '75px' }}
         ></div>
         
         {/* Moving Part: Knot & Tail (Moves with the cord) */}
-        <div className="flex flex-col items-center -mt-[2px]">
+        <div className={`flex flex-col items-center -mt-[2px] transition-transform duration-300 ${isPulled ? 'scale-105' : 'scale-100'}`}>
           {/* Chinese Knot Body (Simplified) */}
           <div className="relative w-6 h-6">
             <div className="absolute inset-0 bg-cinnabar rotate-45 rounded-sm shadow-md"></div>
@@ -50,12 +73,12 @@ const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle }) => {
 
       <style>{`
         @keyframes breeze {
-            0%, 100% { transform: rotate(-4deg); }
-            50% { transform: rotate(4deg); }
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
         }
         @keyframes flutter {
-            0%, 100% { transform: skewX(-5deg) rotate(2deg); }
-            50% { transform: skewX(5deg) rotate(-2deg); }
+            0%, 100% { transform: skewX(-4deg) rotate(2deg); }
+            50% { transform: skewX(4deg) rotate(-2deg); }
         }
         .animate-breeze {
             animation: breeze 5s ease-in-out infinite;
