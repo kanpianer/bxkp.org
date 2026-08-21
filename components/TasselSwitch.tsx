@@ -9,7 +9,7 @@ const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle, isOpen = false })
   const [isPulled, setIsPulled] = useState(false);
   const pullTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 每 3.5 秒自动拉一次做提示，但不触发弹窗
+  // 每 5 秒自动拉一次做提示，但不触发弹窗
   useEffect(() => {
     if (isOpen) return;
 
@@ -19,7 +19,7 @@ const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle, isOpen = false })
       pullTimerRef.current = setTimeout(() => {
         setIsPulled(false);
       }, 400);
-    }, 3500);
+    }, 5000);
 
     return () => {
       clearInterval(interval);
