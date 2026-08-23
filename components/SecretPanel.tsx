@@ -6,68 +6,12 @@ interface SecretPanelProps {
   onClose: () => void;
 }
 
-// Module-level cache and prefetch promise for instant loading
-let cachedSrcDoc = '';
-let fetchPromise: Promise<string> | null = null;
-
-const preloadSrcDoc = () => {
-  if (cachedSrcDoc) return Promise.resolve(cachedSrcDoc);
-  if (fetchPromise) return fetchPromise;
-
-  fetchPromise = fetch('https://raw.githubusercontent.com/kanpianer/tz.bxkp.org/main/index.html')
-    .then((res) => res.text())
-    .then((html) => {
-      const modifiedHtml = html.replace(
-        '<head>',
-        `<head><base href="https://tz.bxkp.org/"><style>
-          html, body {
-            background: transparent !important;
-            background-color: transparent !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            min-height: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            overflow-x: hidden !important;
-            scrollbar-width: none !important;
-            -ms-overflow-style: none !important;
-          }
-          html::-webkit-scrollbar, body::-webkit-scrollbar, ::-webkit-scrollbar {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
-          }
-          .container {
-            margin-top: auto !important;
-            margin-bottom: auto !important;
-            padding-top: 3.5rem !important;
-            padding-bottom: 2rem !important;
-            transform: translateY(16px) !important;
-          }
-        </style>`
-      );
-      cachedSrcDoc = modifiedHtml;
-      return modifiedHtml;
-    })
-    .catch((err) => {
-      console.error('Failed to fetch tz.bxkp.org html:', err);
-      return '';
-    });
-
-  return fetchPromise;
-};
-
-// Immediate background prefetch when module is loaded
-preloadSrcDoc();
-
 const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
-  const [srcDoc, setSrcDoc] = useState<string>(cachedSrcDoc);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
+      setHasLoaded(true);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -76,14 +20,6 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!srcDoc) {
-      preloadSrcDoc().then((html) => {
-        if (html) setSrcDoc(html);
-      });
-    }
-  }, [srcDoc]);
 
   return (
     <>
@@ -101,7 +37,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
         )}
       </AnimatePresence>
       
-      {/* Modal Window Container - Preloaded & Animated */}
+      {/* Modal Window Container - Loaded On-Demand */}
       <motion.div 
         initial={{ y: '-100vh', x: '-50%', opacity: 0 }}
         animate={{ 
@@ -130,21 +66,15 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
 
         {/* Iframe Container */}
         <div className="flex-1 w-full h-full relative bg-transparent overflow-hidden">
-          <iframe 
-            srcDoc={srcDoc || undefined}
-            src={!srcDoc ? "https://tz.bxkp.org/" : undefined}
-            title="不想看牌"
-            className="absolute top-0 left-0 border-0"
-            style={{ 
-              width: '125%', 
-              height: '125%', 
-              transform: 'scale(0.8)', 
-              transformOrigin: '0 0',
-              background: 'transparent'
-            }}
-            allowTransparency={true}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          />
+          {hasLoaded && (
+            <iframe 
+              src="https://jk.bxkp.org/"
+              title="家宽导航"
+              className="w-full h-full border-0 bg-transparent"
+              allowTransparency={true}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            />
+          )}
         </div>
       </motion.div>
     </>
