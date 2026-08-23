@@ -5,11 +5,14 @@ import { Category, InfoType } from './types';
 import InkCanvas from './components/InkCanvas';
 import TasselSwitch from './components/TasselSwitch';
 import SecretPanel from './components/SecretPanel';
+import AskMovieButton from './components/AskMovieButton';
+import AskMoviePanel from './components/AskMoviePanel';
 
 export default function App() {
   const [currentCategory, setCurrentCategory] = useState<Category>('online');
   const [infoType, setInfoType] = useState<InfoType>(null);
   const [isSecretOpen, setIsSecretOpen] = useState(false);
+  const [isAskOpen, setIsAskOpen] = useState(false);
   
   const filteredSites = useMemo(() => {
     let tag = "在线";
@@ -62,6 +65,13 @@ export default function App() {
     <div className={`min-h-screen relative font-serif selection:bg-cinnabar/30 selection:text-ink-900 transition-colors duration-[1500ms] ease-in-out ${isSecretOpen ? 'bg-black' : ''}`}>
       <InkCanvas darkMode={isSecretOpen} />
       
+      <AskMovieButton 
+        isOpen={isAskOpen} 
+        onToggle={() => setIsAskOpen(prev => !prev)} 
+        isDarkMode={isSecretOpen} 
+      />
+      <AskMoviePanel isOpen={isAskOpen} onClose={() => setIsAskOpen(false)} />
+
       <TasselSwitch onToggle={() => setIsSecretOpen(prev => !prev)} isOpen={isSecretOpen} />
       <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
 
