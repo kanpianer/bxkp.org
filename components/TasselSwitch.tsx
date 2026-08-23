@@ -38,7 +38,7 @@ const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle, isOpen = false })
 
   return (
     <div 
-      className="fixed top-0 right-4 sm:right-[5%] z-50 flex flex-col items-center cursor-pointer group"
+      className="fixed top-0 right-3 sm:right-[5%] z-50 flex flex-col items-center cursor-pointer group scale-75 sm:scale-100 origin-top select-none"
       onClick={handleClick}
       title="家宽导航"
     >
