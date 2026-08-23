@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>不想看片</title>
 
     <!-- Open Graph / Facebook / LinkedIn / Discord -->
@@ -72,10 +72,21 @@
       }
     </script>
     <style>
-      body {
+      *, *::before, *::after {
+        touch-action: manipulation;
+      }
+      html, body {
         background-color: #f2eee2;
         background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');
         color: #1f1f1f;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        touch-action: manipulation;
+      }
+      /* Prevent iOS auto-zoom on input/textarea focus */
+      input, textarea, select {
+        font-size: 16px !important;
+        touch-action: manipulation;
       }
       /* Hide Scrollbar */
       ::-webkit-scrollbar {
@@ -86,6 +97,18 @@
         scrollbar-width: none;  /* Firefox */
       }
     </style>
+    <script>
+      // Prevent pinch-to-zoom gestures on iOS Safari
+      document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+      });
+      document.addEventListener('gesturechange', function (e) {
+        e.preventDefault();
+      });
+      document.addEventListener('gestureend', function (e) {
+        e.preventDefault();
+      });
+    </script>
   <script type="importmap">
 {
   "imports": {

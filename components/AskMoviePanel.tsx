@@ -49,9 +49,10 @@ const AskMoviePanel: React.FC<AskMoviePanelProps> = ({ isOpen, onClose }) => {
           duration: 0.5,
           ease: [0.34, 1.56, 0.64, 1]
         }}
-        className={`fixed top-[8vh] left-1/2 z-[70] w-[92vw] max-w-[800px] h-[82vh] max-h-[720px] bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden ${
+        className={`fixed top-[8vh] left-1/2 z-[70] w-[92vw] max-w-[800px] h-[82vh] max-h-[720px] bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden select-none touch-manipulation overscroll-contain ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
+        style={{ touchAction: 'manipulation' }}
       >
         {/* Close Button */}
         <button
