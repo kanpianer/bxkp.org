@@ -49,6 +49,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
           duration: 0.5,
           ease: [0.34, 1.56, 0.64, 1]
         }}
+        onDoubleClick={(e) => e.preventDefault()}
         className={`fixed top-[8vh] left-1/2 z-[70] w-[92vw] max-w-[800px] h-[82vh] max-h-[720px] bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden select-none touch-manipulation overscroll-contain ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
@@ -66,7 +67,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
         </button>
 
         {/* Iframe Container */}
-        <div className="flex-1 w-full h-full relative bg-transparent overflow-hidden">
+        <div className="flex-1 w-full h-full relative bg-transparent overflow-hidden" style={{ touchAction: 'manipulation' }}>
           {hasLoaded && (
             <iframe 
               src="https://jk.bxkp.org/"
@@ -74,6 +75,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
               className="w-full h-full border-0 bg-transparent"
               allowTransparency={true}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              style={{ touchAction: 'manipulation' }}
             />
           )}
         </div>

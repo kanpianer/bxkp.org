@@ -108,6 +108,28 @@
       document.addEventListener('gestureend', function (e) {
         e.preventDefault();
       });
+
+      // Prevent multi-touch pinch zoom
+      document.addEventListener('touchstart', function (e) {
+        if (e.touches && e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // Prevent double-tap to zoom on mobile devices
+      var lastTouchEnd = 0;
+      document.addEventListener('touchend', function (e) {
+        var now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+
+      // Prevent double click zoom
+      document.addEventListener('dblclick', function (e) {
+        e.preventDefault();
+      }, { passive: false });
     </script>
   <script type="importmap">
 {
