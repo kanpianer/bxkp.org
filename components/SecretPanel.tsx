@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface SecretPanelProps {
@@ -7,11 +7,8 @@ interface SecretPanelProps {
 }
 
 const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
-  const [hasLoaded, setHasLoaded] = useState(false);
-
   useEffect(() => {
     if (isOpen) {
-      setHasLoaded(true);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -37,7 +34,7 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
         )}
       </AnimatePresence>
       
-      {/* Modal Window Container - Loaded On-Demand */}
+      {/* Modal Window Container - Preloaded */}
       <motion.div 
         initial={{ y: '-100vh', x: '-50%', opacity: 0 }}
         animate={{ 
@@ -68,16 +65,14 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
 
         {/* Iframe Container */}
         <div className="flex-1 w-full h-full relative bg-transparent overflow-hidden" style={{ touchAction: 'manipulation' }}>
-          {hasLoaded && (
-            <iframe 
-              src="https://jk.bxkp.org/"
-              title="家宽导航"
-              className="w-full h-full border-0 bg-transparent"
-              allowTransparency={true}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              style={{ touchAction: 'manipulation' }}
-            />
-          )}
+          <iframe 
+            src="https://jk.bxkp.org/"
+            title="家宽导航"
+            className="w-full h-full border-0 bg-transparent"
+            allowTransparency={true}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            style={{ touchAction: 'manipulation' }}
+          />
         </div>
       </motion.div>
     </>
