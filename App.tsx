@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { SITES } from './constants';
 import { Category, InfoType } from './types';
 import InkCanvas from './components/InkCanvas';
@@ -9,13 +9,37 @@ export default function App() {
   const [currentCategory, setCurrentCategory] = useState<Category>('online');
   const [infoType, setInfoType] = useState<InfoType>(null);
   const [isSecretOpen, setIsSecretOpen] = useState(false);
-  
+  const categoryAnchorRef = useRef<HTMLDivElement>(null);
+
   const filteredSites = useMemo(() => {
     let tag = "在线";
     if (currentCategory === "pan") tag = "网盘";
     if (currentCategory === "bt") tag = "BT";
     return SITES.filter(site => site.tags.includes(tag));
   }, [currentCategory]);
+
+  useEffect(() => {
+    if (infoType) {
+      const scrollToCategory = () => {
+        if (categoryAnchorRef.current) {
+          const rect = categoryAnchorRef.current.getBoundingClientRect();
+          const targetTop = Math.max(0, rect.top + window.scrollY);
+          window.scrollTo({
+            top: targetTop,
+            behavior: 'smooth'
+          });
+        }
+      };
+
+      const rafId = requestAnimationFrame(scrollToCategory);
+      const timer = setTimeout(scrollToCategory, 60);
+
+      return () => {
+        cancelAnimationFrame(rafId);
+        clearTimeout(timer);
+      };
+    }
+  }, [infoType]);
 
   const toggleInfo = (type: InfoType) => {
     if (infoType === type) {
@@ -76,6 +100,9 @@ export default function App() {
             精选全球影视资源
           </h2>
         </header>
+
+        {/* Scroll Anchor */}
+        <div ref={categoryAnchorRef} className="w-full h-0 pointer-events-none" />
 
         {/* Category Filters - Sticky Top */}
         <div className="sticky top-0 z-40 w-full flex justify-center py-3 pointer-events-none">
