@@ -20,22 +20,21 @@ export default function App() {
 
   useEffect(() => {
     if (infoType) {
-      const scrollToCategory = () => {
+      const positionToCategory = () => {
         if (categoryAnchorRef.current) {
           const rect = categoryAnchorRef.current.getBoundingClientRect();
           const targetTop = Math.max(0, rect.top + window.scrollY);
           window.scrollTo({
             top: targetTop,
-            behavior: 'smooth'
+            behavior: 'instant'
           });
         }
       };
 
-      const rafId = requestAnimationFrame(scrollToCategory);
-      const timer = setTimeout(scrollToCategory, 60);
+      positionToCategory();
+      const timer = setTimeout(positionToCategory, 20);
 
       return () => {
-        cancelAnimationFrame(rafId);
         clearTimeout(timer);
       };
     }
