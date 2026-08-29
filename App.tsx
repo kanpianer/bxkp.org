@@ -184,9 +184,15 @@ export default function App() {
                   className="group relative bg-paper-100/75 backdrop-blur-[2px] rounded-2xl border border-ink-500/10 p-5 flex flex-col items-center hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30 hover:-translate-y-1 transition-all duration-500 cursor-pointer"
                   onClick={() => window.open(site.main_url, "_blank")}
                 >
-                    <span className="text-lg font-bold text-ink-800 mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20">
+                    <a 
+                        href={site.main_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-lg font-bold text-ink-800 mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20"
+                    >
                         {site.name}
-                    </span>
+                    </a>
                     
                     {site.backup_url ? (
                         <a 
