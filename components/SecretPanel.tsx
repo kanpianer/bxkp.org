@@ -11,6 +11,7 @@ const TARGET_VIEWPORT_WIDTH = 1024;
 
 const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
   const [scale, setScale] = useState(1);
   const [virtualHeight, setVirtualHeight] = useState(720);
 
@@ -27,9 +28,12 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const updateDimensions = () => {
+      const isDesktopScreen = window.innerWidth >= 768;
+      setIsDesktop(isDesktopScreen);
+
       if (!containerRef.current) return;
       const { clientWidth, clientHeight } = containerRef.current;
-      if (clientWidth > 0 && clientHeight > 0) {
+      if (isDesktopScreen && clientWidth > 0 && clientHeight > 0) {
         const calculatedScale = clientWidth / TARGET_VIEWPORT_WIDTH;
         setScale(calculatedScale);
         setVirtualHeight(clientHeight / calculatedScale);
@@ -107,16 +111,24 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
           <iframe 
             src="https://jk.bxkp.org/"
             title="家宽导航"
-            className="border-0 bg-transparent absolute top-0 left-0 origin-top-left"
+            className={`border-0 bg-transparent ${isDesktop ? 'absolute top-0 left-0 origin-top-left' : 'w-full h-full'}`}
             allowTransparency={true}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            style={{ 
-              width: `${TARGET_VIEWPORT_WIDTH}px`,
-              height: `${virtualHeight}px`,
-              transform: `scale(${scale})`,
-              transformOrigin: '0 0',
-              touchAction: 'manipulation' 
-            }}
+            style={
+              isDesktop
+                ? { 
+                    width: `${TARGET_VIEWPORT_WIDTH}px`,
+                    height: `${virtualHeight}px`,
+                    transform: `scale(${scale})`,
+                    transformOrigin: '0 0',
+                    touchAction: 'manipulation' 
+                  }
+                : { 
+                    width: '100%',
+                    height: '100%',
+                    touchAction: 'manipulation' 
+                  }
+            }
           />
         </div>
       </motion.div>
