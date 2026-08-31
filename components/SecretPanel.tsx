@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface SecretPanelProps {
@@ -6,7 +6,14 @@ interface SecretPanelProps {
   onClose: () => void;
 }
 
+// 目标宽幅视口基准宽度 (px) - 设为 1024px 让内容在弹窗内以更大比例和字号呈现
+const TARGET_VIEWPORT_WIDTH = 1024;
+
 const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [virtualHeight, setVirtualHeight] = useState(720);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -17,6 +24,34 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (!containerRef.current) return;
+      const { clientWidth, clientHeight } = containerRef.current;
+      if (clientWidth > 0 && clientHeight > 0) {
+        const calculatedScale = clientWidth / TARGET_VIEWPORT_WIDTH;
+        setScale(calculatedScale);
+        setVirtualHeight(clientHeight / calculatedScale);
+      }
+    };
+
+    updateDimensions();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateDimensions();
+    });
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+    window.addEventListener('resize', updateDimensions);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, []);
 
   return (
     <>
@@ -64,14 +99,24 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
         </button>
 
         {/* Iframe Container */}
-        <div className="flex-1 w-full h-full relative bg-transparent overflow-hidden" style={{ touchAction: 'manipulation' }}>
+        <div 
+          ref={containerRef}
+          className="flex-1 w-full h-full relative bg-transparent overflow-hidden" 
+          style={{ touchAction: 'manipulation' }}
+        >
           <iframe 
             src="https://jk.bxkp.org/"
             title="家宽导航"
-            className="w-full h-full border-0 bg-transparent"
+            className="border-0 bg-transparent absolute top-0 left-0 origin-top-left"
             allowTransparency={true}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            style={{ touchAction: 'manipulation' }}
+            style={{ 
+              width: `${TARGET_VIEWPORT_WIDTH}px`,
+              height: `${virtualHeight}px`,
+              transform: `scale(${scale})`,
+              transformOrigin: '0 0',
+              touchAction: 'manipulation' 
+            }}
           />
         </div>
       </motion.div>
@@ -80,5 +125,6 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
 };
 
 export default SecretPanel;
+
 
 
