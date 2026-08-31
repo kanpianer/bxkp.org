@@ -62,33 +62,32 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
       {/* Backdrop */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/40 backdrop-blur-md z-[60]" 
+            className="fixed inset-0 bg-black/40 backdrop-blur-md z-[60]"
             onClick={onClose}
           />
         )}
       </AnimatePresence>
-      
+
       {/* Modal Window Container - Preloaded */}
-      <motion.div 
+      <motion.div
         initial={{ y: '-100vh', x: '-50%', opacity: 0 }}
-        animate={{ 
+        animate={{
           y: isOpen ? 0 : '-100vh',
           opacity: isOpen ? 1 : 0,
           x: '-50%'
         }}
-        transition={{ 
+        transition={{
           duration: 0.5,
           ease: [0.34, 1.56, 0.64, 1]
         }}
         onDoubleClick={(e) => e.preventDefault()}
-        className={`fixed top-[8vh] left-1/2 z-[70] w-[92vw] max-w-[800px] h-[82vh] max-h-[720px] bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden select-none touch-manipulation overscroll-contain ${
-          isOpen ? 'pointer-events-auto' : 'pointer-events-none'
-        }`}
+        className={`fixed top-[8vh] left-1/2 z-[70] w-[92vw] max-w-[860px] h-[82vh] max-h-[720px] bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden select-none touch-manipulation overscroll-contain ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
         style={{ touchAction: 'manipulation' }}
       >
         {/* Close Button */}
@@ -103,12 +102,12 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
         </button>
 
         {/* Iframe Container */}
-        <div 
+        <div
           ref={containerRef}
-          className="flex-1 w-full h-full relative bg-transparent overflow-hidden" 
+          className="flex-1 w-full h-full relative bg-transparent overflow-hidden"
           style={{ touchAction: 'manipulation' }}
         >
-          <iframe 
+          <iframe
             src="https://jk.bxkp.org/"
             title="家宽导航"
             className={`border-0 bg-transparent ${isDesktop ? 'absolute top-0 left-0 origin-top-left' : 'w-full h-full'}`}
@@ -116,18 +115,18 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             style={
               isDesktop
-                ? { 
-                    width: `${TARGET_VIEWPORT_WIDTH}px`,
-                    height: `${virtualHeight}px`,
-                    transform: `scale(${scale})`,
-                    transformOrigin: '0 0',
-                    touchAction: 'manipulation' 
-                  }
-                : { 
-                    width: '100%',
-                    height: '100%',
-                    touchAction: 'manipulation' 
-                  }
+                ? {
+                  width: `${TARGET_VIEWPORT_WIDTH}px`,
+                  height: `${virtualHeight}px`,
+                  transform: `scale(${scale})`,
+                  transformOrigin: '0 0',
+                  touchAction: 'manipulation'
+                }
+                : {
+                  width: '100%',
+                  height: '100%',
+                  touchAction: 'manipulation'
+                }
             }
           />
         </div>
