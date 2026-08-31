@@ -2,8 +2,8 @@ import { Site } from './types';
 
 export const SITES: Site[] = [
     { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },
-    { name: "PPnix/中文", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
     { name: "厂长资源", main_url: "https://www.4kcz.com/", backup_url: "https://www.cz01.vip/", tags: ["在线"] },
+    { name: "PPnix/中文", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
     { name: "雪落影视", main_url: "https://v.xl01.eu.cc/", backup_url: "https://v.xl01.cc.ua/", tags: ["在线", "BT"] },
     { name: "七味", main_url: "https://www.qmp4.com", backup_url: "https://www.qn63.com/", tags: ["网盘", "BT"] },
     { name: "GoPlay/中文", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
