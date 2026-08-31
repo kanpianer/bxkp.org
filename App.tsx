@@ -228,10 +228,10 @@ export default function App() {
                <p className="mb-2">
                  EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
                  备份：<a href="https://nolog.link/s/bxkphd" target="_blank" className={linkClass}>HedgeDoc</a>、
-                 <a href="https://bxkp.qzz.io" target="_blank" className={linkClass}>bxkp.qzz.io</a>
+                 <a href="https://bxkp.sld.tw" target="_blank" className={linkClass}>bxkp.sld.tw</a>
                </p>
                <p>
-                 推荐使用 <a href="https://search.fuckoffgoogle.net/searxng/search?q=Brave浏览器" target="_blank" className={linkClass}>Brave</a>、<a href="https://4get.canine.tools/web?s=Vivaldi浏览器" target="_blank" className={linkClass}>Vivaldi</a> 浏览器屏蔽广告
+                 推荐使用 <a href="https://search.fuckoffgoogle.net/searxng/search?q=Brave浏览器" target="_blank" className={linkClass}>Brave</a>浏览器 屏蔽广告 | @<a href="https://jiakuan.link" target="_blank" className={linkClass}>家宽导航</a>
                </p>
             </div>
 
