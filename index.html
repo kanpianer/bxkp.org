@@ -64,6 +64,14 @@
               },
               indigo: {
                 stone: '#5d6d7e',
+              },
+              midnight: {
+                900: '#070a0f',
+                800: '#0d131d',
+                700: '#141c2b',
+                600: '#1c2638',
+                card: 'rgba(18, 26, 38, 0.75)',
+                border: 'rgba(255, 255, 255, 0.08)',
               }
             },
             backgroundImage: {
@@ -84,6 +92,11 @@
         -webkit-text-size-adjust: 100%;
         text-size-adjust: 100%;
         touch-action: manipulation;
+        transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1), color 1s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      html.dark body, body.dark {
+        background-color: #080c14;
+        color: #e2e8f0;
       }
       /* Prevent iOS auto-zoom on input/textarea focus */
       input, textarea, select {

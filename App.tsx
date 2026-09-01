@@ -2,14 +2,39 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { SITES } from './constants';
 import { Category, InfoType } from './types';
 import InkCanvas from './components/InkCanvas';
+import NightCanvas from './components/NightCanvas';
 import TasselSwitch from './components/TasselSwitch';
 import SecretPanel from './components/SecretPanel';
+
+// Theme switch transition duration in milliseconds
+const THEME_TRANSITION_DURATION = 800;
 
 export default function App() {
   const [currentCategory, setCurrentCategory] = useState<Category>('online');
   const [infoType, setInfoType] = useState<InfoType>(null);
   const [isSecretOpen, setIsSecretOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const categoryAnchorRef = useRef<HTMLDivElement>(null);
+
+  // Hover transition control refs
+  const isDarkModeRef = useRef(isDarkMode);
+  useEffect(() => {
+    isDarkModeRef.current = isDarkMode;
+  }, [isDarkMode]);
+
+  const hoverCommitTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverOriginalThemeRef = useRef<boolean | null>(null);
+  const isHoverCompletedRef = useRef<boolean>(false);
+
+  // Sync html dark class
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
 
   const filteredSites = useMemo(() => {
     let tag = "在线";
@@ -48,19 +73,66 @@ export default function App() {
     }
   };
 
+  // Direct theme toggle (Click)
+  const handleTitleClick = () => {
+    // Clear any pending hover state so click immediately commits
+    if (hoverCommitTimerRef.current) {
+      clearTimeout(hoverCommitTimerRef.current);
+      hoverCommitTimerRef.current = null;
+    }
+    isHoverCompletedRef.current = true;
+    hoverOriginalThemeRef.current = null;
+
+    setIsDarkMode(prev => !prev);
+  };
+
+  // Hover enter on title: start fading to opposite theme
+  const handleTitleMouseEnter = () => {
+    const original = isDarkModeRef.current;
+    hoverOriginalThemeRef.current = original;
+    isHoverCompletedRef.current = false;
+
+    // Start direct fade transition to the opposite theme
+    setIsDarkMode(!original);
+
+    // If hover stays for full transition duration, commit the theme permanently
+    if (hoverCommitTimerRef.current) clearTimeout(hoverCommitTimerRef.current);
+    hoverCommitTimerRef.current = setTimeout(() => {
+      isHoverCompletedRef.current = true;
+      hoverOriginalThemeRef.current = null;
+    }, THEME_TRANSITION_DURATION);
+  };
+
+  // Hover leave on title: if left before transition completes, restore original theme
+  const handleTitleMouseLeave = () => {
+    if (!isHoverCompletedRef.current && hoverOriginalThemeRef.current !== null) {
+      if (hoverCommitTimerRef.current) {
+        clearTimeout(hoverCommitTimerRef.current);
+        hoverCommitTimerRef.current = null;
+      }
+      // Revert to original theme
+      setIsDarkMode(hoverOriginalThemeRef.current);
+      hoverOriginalThemeRef.current = null;
+    }
+  };
+
+  const isDarkActive = isDarkMode || isSecretOpen;
+
   const getButtonClass = (isActive: boolean, isRedText: boolean = false, isSmall: boolean = false) => 
     `${isSmall ? 'px-3 h-7 text-xs' : 'px-6 h-10 text-base'} flex items-center justify-center rounded-full font-serif font-bold transition-all duration-500 transform border cursor-pointer select-none whitespace-nowrap
     ${isActive 
-      ? 'bg-cinnabar/50 backdrop-blur-md text-paper-50 shadow-md shadow-cinnabar/30 scale-105 border-cinnabar/50' 
-      : `bg-paper-100/40 backdrop-blur-sm hover:bg-paper-200/60 hover:scale-105 hover:border-cinnabar/30 border-ink-500/10 ${isRedText ? (isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar') : 'text-ink-700 hover:text-ink-900'}`
+      ? 'bg-cinnabar/60 backdrop-blur-md text-paper-50 shadow-md shadow-cinnabar/30 scale-105 border-cinnabar/60' 
+      : isDarkActive
+        ? `bg-midnight-card backdrop-blur-sm hover:bg-white/10 hover:scale-105 hover:border-cinnabar/50 border-midnight-border ${isRedText ? 'text-cinnabar-light' : 'text-gray-300 hover:text-white'}`
+        : `bg-paper-100/40 backdrop-blur-sm hover:bg-paper-200/60 hover:scale-105 hover:border-cinnabar/30 border-ink-500/10 ${isRedText ? 'text-cinnabar' : 'text-ink-700 hover:text-ink-900'}`
     }`;
 
   // Dynamic link classes for better readability on different backgrounds
-  const linkClass = isSecretOpen 
+  const linkClass = isDarkActive 
     ? "text-paper-50 hover:text-cinnabar-light border-b border-transparent hover:border-cinnabar-light transition-all font-bold"
     : "text-indigo-stone hover:text-cinnabar border-b border-transparent hover:border-cinnabar transition-all font-bold";
 
-  const footerLinkClass = `transition-colors duration-300 ${isSecretOpen ? 'hover:text-cinnabar-light' : 'hover:text-cinnabar'}`;
+  const footerLinkClass = `transition-colors duration-300 ${isDarkActive ? 'text-cinnabar-light hover:text-white' : 'text-cinnabar hover:text-cinnabar-hover'}`;
 
   // Action Buttons Component to avoid duplication
   const ActionButtons = () => (
@@ -75,14 +147,18 @@ export default function App() {
             onClick={() => toggleInfo('ok')}
             className={getButtonClass(infoType === 'ok', true)}
         >
-                OK影视
+            OK影视
         </button>
     </>
   );
 
   return (
-    <div className={`min-h-screen relative font-serif selection:bg-cinnabar/30 selection:text-ink-900 transition-colors duration-[1500ms] ease-in-out ${isSecretOpen ? 'bg-black' : ''}`}>
-      <InkCanvas darkMode={isSecretOpen} />
+    <div className={`min-h-screen relative font-serif selection:bg-cinnabar/30 selection:text-ink-900 transition-colors duration-[800ms] ease-in-out ${isSecretOpen ? 'bg-black' : isDarkMode ? 'bg-[#080c14]' : ''}`}>
+      {/* Night Sky with Moon & Stars (Rendered in background layer) */}
+      <NightCanvas isDark={isDarkMode && !isSecretOpen} />
+
+      {/* Shanshui Ink Mountain Canvas (Rendered in front of sky, naturally occluding stars behind mountain ridgeline) */}
+      <InkCanvas darkMode={isDarkActive} />
       
       <TasselSwitch onToggle={() => setIsSecretOpen(prev => !prev)} isOpen={isSecretOpen} />
       <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
@@ -90,12 +166,29 @@ export default function App() {
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-36 md:pb-6 flex flex-col items-center min-h-screen">
         
-        {/* Header - Sizes reduced by ~1/3 */}
+        {/* Header with Dark Mode Hover / Click toggle */}
         <header className="mt-5 md:mt-7 mb-3 text-center select-none">
-          <h1 className={`text-4xl font-bold tracking-[0.2em] mb-3 drop-shadow-sm opacity-90 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-gray-300' : 'text-ink-900'}`} style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.05)' }}>
-            不想看片
-          </h1>
-          <h2 className={`text-base font-medium tracking-widest opacity-80 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
+          <div 
+            className="inline-block cursor-pointer group relative"
+            onMouseEnter={handleTitleMouseEnter}
+            onMouseLeave={handleTitleMouseLeave}
+            onClick={handleTitleClick}
+            title="鼠标悬停或点击切换昼夜暗黑模式"
+          >
+            <h1 
+              className={`text-4xl font-bold tracking-[0.2em] mb-3 drop-shadow-sm opacity-95 font-serif transition-all duration-[800ms] group-hover:scale-105 ${
+                isDarkActive 
+                  ? 'text-gray-200 group-hover:text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.15)]' 
+                  : 'text-ink-900 group-hover:text-ink-800'
+              }`} 
+              style={{ textShadow: isDarkActive ? '0 2px 10px rgba(0,0,0,0.5)' : '2px 2px 4px rgba(0,0,0,0.05)' }}
+            >
+              不想看片
+            </h1>
+          </div>
+          <h2 className={`text-base font-medium tracking-widest opacity-80 font-serif transition-colors duration-[800ms] ${
+            isDarkActive ? 'text-cinnabar-light' : 'text-cinnabar'
+          }`}>
             精选全球影视资源
           </h2>
         </header>
@@ -134,42 +227,46 @@ export default function App() {
           
           {infoType ? (
              /* Info Panel View */
-            <div className="w-full max-w-4xl mx-auto bg-paper-50/80 backdrop-blur-md rounded-3xl p-8 border border-ink-200/10 shadow-[0_8px_30px_rgba(0,0,0,0.05)] animate-fade-in-up">
+            <div className={`w-full max-w-4xl mx-auto rounded-3xl p-8 border backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.05)] animate-fade-in-up transition-colors duration-700 ${
+              isDarkActive 
+                ? 'bg-midnight-800/85 border-white/10 text-gray-200' 
+                : 'bg-paper-50/80 border-ink-200/10 text-ink-800'
+            }`}>
               {infoType === 'emby' ? (
-                <div className="space-y-4 text-ink-800">
-                  <h3 className="text-2xl font-bold text-cinnabar text-center mb-6 border-b border-paper-300 pb-2">Emby服</h3>
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">Emby服</h3>
                   <p>没有各种广告和高画质是Emby服/Jellyfin服的特点，大致分为以下两类：</p>
-                  <ul className="list-disc pl-6 space-y-2 text-ink-700">
-                     <li><span className="font-bold text-ink-900">公益服：</span>无需付费，但可能有一定入服门槛。
-                        <div className="mt-1 text-sm text-indigo-stone flex flex-wrap gap-2">
+                  <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
+                     <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>公益服：</span>无需付费，但可能有一定入服门槛。
+                        <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
                            <a href="https://intro.bgp.yt/" target="_blank" className="hover:text-cinnabar underline">二次元Emby</a>
                            <a href="https://discord.gg/WHxeZ3aTtb" target="_blank" className="hover:text-cinnabar underline">Gir Society</a>
                            <a href="https://t.me/embyxk" target="_blank" className="hover:text-cinnabar underline">公益服星空指南</a>
                         </div>
                      </li>
-                     <li><span className="font-bold text-ink-900">付费服：</span>需要付费，但服务会相对比较稳定。
-                        <div className="mt-1 text-sm text-indigo-stone flex flex-wrap gap-2">
+                     <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>付费服：</span>需要付费，但服务会相对比较稳定。
+                        <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
                             <a href="https://plan.emby.moe/" target="_blank" className="hover:text-cinnabar underline">1111Emby</a>
                             <a href="https://t.me/micu_user_bot" target="_blank" className="hover:text-cinnabar underline">MICU</a>
                             <a href="https://zdz.best" target="_blank" className="hover:text-cinnabar underline">终点站+</a>
                         </div>
                      </li>
                   </ul>
-                  <p className="text-sm mt-4 text-ink-500 italic border-t border-paper-300 pt-4">
+                  <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
                      * 购买前确保你可以访问相关Emby服线路。文中提到的Emby服仅作为示例展示，不是广告。
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4 text-ink-800">
-                    <h3 className="text-2xl font-bold text-cinnabar text-center mb-6 border-b border-paper-300 pb-2">OK影视</h3>
+                <div className="space-y-4">
+                    <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">OK影视</h3>
                     <p><a href="https://github.com/FongMi/Release/tree/fongmi/apk" target="_blank" className="hover:text-cinnabar underline">OK影视</a>和<a href="https://nuvioapp.space" target="_blank" className="hover:text-cinnabar underline">Nuvio</a>使用起来和Emby差不多，一般在客户端填写好资源仓库地址就可以了。</p>
-                    <ul className="list-disc pl-6 space-y-2 text-ink-700">
-                        <li><a href="https://nuvio-plugin-library.vercel.app" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">Nuvio 仓库地址</a></li>
-                        <li><a href="https://blog.ccino.org/p/tvbox-tv-version-installation-and-configuration-complete-guide/" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">TVBox电视版安装配置全指南</a></li>
-                        <li><a href="https://t.me/tvb_ys" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">TVB/影視(OK) 电报频道</a></li>
-                        <li><a href="https://github.com/qist/tvbox" target="_blank" className="hover:text-cinnabar underline text-indigo-stone">OK影视各种客户端和配置接口</a></li>
+                    <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
+                        <li><a href="https://nuvio-plugin-library.vercel.app" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>Nuvio 仓库地址</a></li>
+                        <li><a href="https://blog.ccino.org/p/tvbox-tv-version-installation-and-configuration-complete-guide/" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>TVBox电视版安装配置全指南</a></li>
+                        <li><a href="https://t.me/tvb_ys" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>TVB/影視(OK) 电报频道</a></li>
+                        <li><a href="https://github.com/qist/tvbox" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>OK影视各种客户端和配置接口</a></li>
                     </ul>
-                     <p className="text-sm mt-4 text-ink-500 italic border-t border-paper-300 pt-4">
+                     <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
                         * OK影视和Nuvio都是资源聚合的播放器，OK影视高清内容通常需要配合网盘VIP使用。
                     </p>
                 </div>
@@ -181,7 +278,11 @@ export default function App() {
               {filteredSites.map((site) => (
                 <div 
                   key={site.name} 
-                  className="group relative bg-paper-100/75 backdrop-blur-[2px] rounded-2xl border border-ink-500/10 p-5 flex flex-col items-center hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30 hover:-translate-y-1 transition-all duration-500 cursor-pointer"
+                  className={`group relative rounded-2xl border p-5 flex flex-col items-center hover:-translate-y-1 transition-all duration-500 cursor-pointer ${
+                    isDarkActive
+                      ? 'bg-midnight-card backdrop-blur-md border-midnight-border hover:bg-midnight-700/80 hover:border-cinnabar/50 hover:shadow-[0_8px_20px_rgba(0,0,0,0.5)]'
+                      : 'bg-paper-100/75 backdrop-blur-[2px] border-ink-500/10 hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30'
+                  }`}
                   onClick={() => window.open(site.main_url, "_blank")}
                 >
                     <a 
@@ -189,7 +290,9 @@ export default function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="text-lg font-bold text-ink-800 mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20"
+                        className={`text-lg font-bold mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20 ${
+                          isDarkActive ? 'text-gray-100' : 'text-ink-800'
+                        }`}
                     >
                         {site.name}
                     </a>
@@ -200,7 +303,11 @@ export default function App() {
                             target="_blank" 
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="mt-1 text-xs px-3 py-1 rounded-full border border-cinnabar/20 text-cinnabar/80 hover:bg-cinnabar hover:text-white transition-colors"
+                            className={`mt-1 text-xs px-3 py-1 rounded-full border transition-colors ${
+                              isDarkActive 
+                                ? 'border-cinnabar/40 text-cinnabar-light hover:bg-cinnabar hover:text-white' 
+                                : 'border-cinnabar/20 text-cinnabar/80 hover:bg-cinnabar hover:text-white'
+                            }`}
                         >
                             备份网址
                         </a>
@@ -210,7 +317,11 @@ export default function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="mt-1 text-xs px-3 py-1 rounded-full border border-ink-300/30 text-ink-400 hover:border-ink-500 hover:text-ink-500 transition-colors"
+                            className={`mt-1 text-xs px-3 py-1 rounded-full border transition-colors ${
+                              isDarkActive 
+                                ? 'border-white/10 text-gray-400 hover:border-gray-300 hover:text-gray-200' 
+                                : 'border-ink-300/30 text-ink-400 hover:border-ink-500 hover:text-ink-500'
+                            }`}
                         >
                             没有备份
                         </a>
@@ -224,9 +335,9 @@ export default function App() {
 
         {/* Page Bottom Notes & Footer */}
         <div className="mt-4 w-full flex flex-col items-center gap-4">
-            <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[1500ms] ${isSecretOpen ? 'text-paper-200' : 'text-black/90'}`}>
+            <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[800ms] ${isDarkActive ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
-                 EE3 邀请码：<span className={`${isSecretOpen ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
+                 EE3 邀请码：<span className={`${isDarkActive ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
                  备份：<a href="https://nolog.link/s/bxkphd" target="_blank" className={linkClass}>HedgeDoc</a>、
                  <a href="https://bxkp.sld.tw" target="_blank" className={linkClass}>bxkp.sld.tw</a>
                </p>
@@ -248,7 +359,7 @@ export default function App() {
                 </div>
 
                 {/* Center Links */}
-                <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[1500ms] ${isSecretOpen ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
+                <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[800ms] ${isDarkActive ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
                     <span className="flex items-center gap-1">
                         Made with <span className="text-cinnabar animate-pulse">❤</span>
                     </span>
