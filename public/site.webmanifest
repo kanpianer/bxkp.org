@@ -1,0 +1,18 @@
+{
+  "name": "不想看片 - 精选全球影视资源导航",
+  "short_name": "不想看片",
+  "description": "网盘、在线、磁力，你的一站式优质影视资源导航站。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2eee2",
+  "theme_color": "#f2eee2",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

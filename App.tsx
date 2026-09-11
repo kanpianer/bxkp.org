@@ -197,33 +197,43 @@ export default function App() {
         <div ref={categoryAnchorRef} className="w-full h-0 pointer-events-none" />
 
         {/* Category Filters - Sticky Top */}
-        <div className="sticky top-0 z-40 w-full flex justify-center py-3 pointer-events-none">
+        <nav aria-label="资源分类导航" className="sticky top-0 z-40 w-full flex justify-center py-3 pointer-events-none">
           <div 
+            role="tablist"
             className="flex gap-4 flex-wrap justify-center pointer-events-auto p-2 rounded-full transition-all duration-500"
           >
             <button 
+              role="tab"
+              aria-selected={currentCategory === 'pan' && !infoType}
+              aria-label="网盘资源分类"
               className={getButtonClass(currentCategory === 'pan')} 
               onClick={() => { setCurrentCategory('pan'); setInfoType(null); }}
             >
               网盘
             </button>
             <button 
+              role="tab"
+              aria-selected={currentCategory === 'online' && !infoType}
+              aria-label="在线影视分类"
               className={getButtonClass(currentCategory === 'online')} 
               onClick={() => { setCurrentCategory('online'); setInfoType(null); }}
             >
               在线
             </button>
             <button 
+              role="tab"
+              aria-selected={currentCategory === 'bt' && !infoType}
+              aria-label="磁力BT分类"
               className={getButtonClass(currentCategory === 'bt')} 
               onClick={() => { setCurrentCategory('bt'); setInfoType(null); }}
             >
               磁力
             </button>
           </div>
-        </div>
+        </nav>
 
         {/* Content Area */}
-        <div className="w-[95%] min-h-[150px] relative transition-all duration-[800ms] ease-in-out mt-3">
+        <main className="w-[95%] min-h-[150px] relative transition-all duration-[800ms] ease-in-out mt-3">
           
           {infoType ? (
              /* Info Panel View */
@@ -290,6 +300,8 @@ export default function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
+                        title={`访问 ${site.name} 官网`}
+                        aria-label={`访问 ${site.name} 官网`}
                         className={`text-lg font-bold mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20 ${
                           isDarkActive ? 'text-gray-100' : 'text-ink-800'
                         }`}
@@ -303,6 +315,8 @@ export default function App() {
                             target="_blank" 
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
+                            title={`${site.name} 备用地址`}
+                            aria-label={`${site.name} 备用地址`}
                             className={`mt-1 text-xs px-3 py-1 rounded-full border transition-colors ${
                               isDarkActive 
                                 ? 'border-cinnabar/40 text-cinnabar-light hover:bg-cinnabar hover:text-white' 
@@ -317,6 +331,8 @@ export default function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
+                            title="查看站点备份与提交记录"
+                            aria-label="查看站点备份与提交记录"
                             className={`mt-1 text-xs px-3 py-1 rounded-full border transition-colors ${
                               isDarkActive 
                                 ? 'border-white/10 text-gray-400 hover:border-gray-300 hover:text-gray-200' 
@@ -331,10 +347,10 @@ export default function App() {
             </div>
           )}
 
-        </div>
+        </main>
 
         {/* Page Bottom Notes & Footer */}
-        <div className="mt-4 w-full flex flex-col items-center gap-4">
+        <footer className="mt-4 w-full flex flex-col items-center gap-4">
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[800ms] ${isDarkActive ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
                  EE3 邀请码：<span className={`${isDarkActive ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
@@ -376,7 +392,7 @@ export default function App() {
                     </button>
                 </div>
             </div>
-        </div>
+        </footer>
 
       </div>
 
