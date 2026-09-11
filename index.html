@@ -252,9 +252,13 @@
 </script>
 </head>
   <body class="bg-paper-100 bg-paper-texture min-h-screen overflow-x-hidden">
-    <div id="root">
-      <!-- SEO Pre-render Semantic Content for Search Engines & Fallback -->
+    <div id="root"></div>
+    <noscript>
+      <!-- SEO Pre-render Semantic Content for Search Engines & Non-JS Fallback -->
       <div style="max-width: 1000px; margin: 0 auto; padding: 2.5rem 1rem; font-family: 'LXGW WenKai TC', serif, system-ui; color: #1f1f1f;">
+        <div style="text-align: center; margin-bottom: 1.5rem; color: #9e2a2b; font-size: 0.9rem;">
+          提示：您的浏览器未启用 JavaScript，正在以静态 SEO 索引模式呈现「不想看片」影视资源导航。
+        </div>
         <header style="text-align: center; margin-bottom: 2rem;">
           <h1 style="font-size: 2.25rem; font-weight: bold; letter-spacing: 0.2em; margin-bottom: 0.5rem; color: #0a0a0a;">不想看片</h1>
           <p style="font-size: 1.1rem; color: #9e2a2b; font-weight: 500; letter-spacing: 0.15em; margin-bottom: 0.75rem;">精选全球影视资源导航</p>
@@ -292,11 +296,6 @@
             </p>
           </section>
         </main>
-      </div>
-    </div>
-    <noscript>
-      <div style="max-width: 800px; margin: 1rem auto; padding: 1rem; text-align: center; color: #9e2a2b; font-size: 0.9rem;">
-        提示：您的浏览器未启用 JavaScript，正在以静态 SEO 索引模式呈现「不想看片」影视资源导航。
       </div>
     </noscript>
     <script type="module" src="/index.tsx"></script>
