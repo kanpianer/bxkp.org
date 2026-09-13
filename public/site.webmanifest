@@ -9,8 +9,8 @@
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "/og-image.png",
-      "sizes": "1200x630",
+      "src": "/og-cover.png",
+      "sizes": "1024x588",
       "type": "image/png",
       "purpose": "any"
     }
