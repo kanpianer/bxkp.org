@@ -10,7 +10,7 @@
   "icons": [
     {
       "src": "/og-cover.png",
-      "sizes": "1024x588",
+      "sizes": "1200x630",
       "type": "image/png",
       "purpose": "any"
     }
