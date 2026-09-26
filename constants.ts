@@ -33,7 +33,7 @@ export const SITES: Site[] = [
     { name: "Pomo/中文", main_url: "https://pomo.mom/", backup_url: "", tags: ["BT"] },
     { name: "爱盼", main_url: "https://www.aipan.me", backup_url: "", tags: ["网盘"] },
     { name: "玩偶哥哥", main_url: "https://www.wogg.net/", backup_url: "", tags: ["网盘"] },
-    { name: "小酷盘", main_url: "https://xiaokupan.com", backup_url: "", tags: ["网盘"] }, */
+    { name: "小酷盘", main_url: "https://xiaokupan.com", backup_url: "", tags: ["网盘"] },
     { name: "盘搜PanSou", main_url: "https://so.252035.xyz", backup_url: "", tags: ["网盘"] },
     { name: "老K", main_url: "https://docs.qq.com/doc/DTk5EaVdWY2R6ZnBk", backup_url: "", tags: ["网盘"] },
     { name: "4k指南[原盘]", main_url: "https://4kzn.com", backup_url: "", tags: ["网盘"] },
