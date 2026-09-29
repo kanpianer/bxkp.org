@@ -1,5 +1,5 @@
 ## 不想看片 ##
-![image](./public/screenshot.png)
+![image](./app/public/screenshot.png)
 ### 网址备份：[bxkp.pages.dev](https://bxkp.pages.dev)、[bxkp.qzz.io](https://bxkp.qzz.io)、[bxkp.foo.ng](https://bxkp.foo.ng) ###
 ### 网站备份：[HedgeDoc](https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ)、[Notion](https://waa.ai/bxkpn) ### 
 
