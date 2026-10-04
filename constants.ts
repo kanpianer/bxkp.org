@@ -11,7 +11,7 @@ export const SITES: Site[] = [
     { name: "PPnix/中文", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
     { name: "雪落影视", main_url: "https://v.xl01.eu.cc/", backup_url: "https://v.xl01.cc.ua/", tags: ["在线", "BT"] },
     { name: "七味", main_url: "https://www.qmp4.com", backup_url: "https://www.qn63.com/", tags: ["网盘", "BT"] },
-    { name: "低调影视", main_url: "https://ddys.app/", backup_url: "https://ddys.ai/", tags: ["在线"] },
+    { name: "低调影视", main_url: "https://ddys.app", backup_url: "https://ddys.ai/", tags: ["在线"] },
     { name: "注视影视", main_url: "https://gaze.red", backup_url: "https://gazes.top/", tags: ["在线"] },
     { name: "片库", main_url: "https://4k01.pianku.online", backup_url: "https://fb.pianku.online", tags: ["在线"] },
     { name: "GoPlay/中文", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
