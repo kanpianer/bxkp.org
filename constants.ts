@@ -1,4 +1,9 @@
-import { Site } from './types';
+export interface Site {
+  name: string;
+  main_url: string;
+  backup_url: string;
+  tags: string[];
+}
 
 export const SITES: Site[] = [
     { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },

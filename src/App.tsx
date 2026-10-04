@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { SITES } from './constants';
+import { SITES } from '../constants';
 import { Category, InfoType } from './types';
 import InkCanvas from './components/InkCanvas';
 import NightCanvas from './components/NightCanvas';
