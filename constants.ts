@@ -11,14 +11,16 @@ export const SITES: Site[] = [
     { name: "PPnix/中文", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
     { name: "雪落影视", main_url: "https://v.xl01.eu.cc/", backup_url: "https://v.xl01.cc.ua/", tags: ["在线", "BT"] },
     { name: "七味", main_url: "https://www.qmp4.com", backup_url: "https://www.qn63.com/", tags: ["网盘", "BT"] },
-    { name: "GoPlay/中文", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
     { name: "低调影视", main_url: "https://ddys.app/", backup_url: "https://ddys.ai/", tags: ["在线"] },
-    
+    { name: "注视影视", main_url: "https://gaze.red", backup_url: "https://gazes.top/", tags: ["在线"] },
+    { name: "片库", main_url: "https://4k01.pianku.online", backup_url: "https://fb.pianku.online", tags: ["在线"] },
+    { name: "GoPlay/中文", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
+
     { name: "Cinegram", main_url:"https://cinegram.tv/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]},
     { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
-    { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
-    { name: "Z-Stream", main_url:"https://zstream.mov/", backup_url:"https://rentry.co/xpstream", tags:["在线"]},
-    { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://www.1tube.org", tags:["在线"]},
+    { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]}, */
+    /* { name: "Cinecat", main_url:"https://beta.cinecat.eu", backup_url:"https://cinecat.eu", tags:["在线"]},*/
+    /* { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://www.1tube.org", tags:["在线"]},*/
     { name: "Movy", main_url:"https://www.movy.bz", backup_url:"https://www.vidy.st", tags:["在线"]},
     { name: "Miruro/动漫", main_url:"https://www.miruro.to", backup_url:"https://www.miruro.com/", tags:["在线"]},
     
