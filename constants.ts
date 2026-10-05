@@ -18,7 +18,7 @@ export const SITES: Site[] = [
 
     { name: "Cinegram", main_url:"https://cinegram.tv/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]},
     { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
-    { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://discord.gg/wsPmVB7ZJZ", tags:["在线"]},
+    { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://shuttletv.pk/", tags:["在线"]},
     /* { name: "Cinecat", main_url:"https://beta.cinecat.eu", backup_url:"https://cinecat.eu", tags:["在线"]},*/
     /* { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://www.1tube.org", tags:["在线"]},*/
     { name: "Movy", main_url:"https://www.movy.bz", backup_url:"https://www.vidy.st", tags:["在线"]},
