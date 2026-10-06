@@ -4,7 +4,7 @@ export interface Site {
   backup_url: string;
   tags: string[];
 }
-
+https://ee3.me/"
 export const SITES: Site[] = [
     { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },
     { name: "厂长资源", main_url: "https://www.4kcz.com/", backup_url: "https://www.cz01.vip/", tags: ["在线"] },
@@ -14,10 +14,12 @@ export const SITES: Site[] = [
     { name: "低调影视", main_url: "https://ddys.app", backup_url: "https://ddys.ai/", tags: ["在线"] },
     { name: "注视影视", main_url: "https://gaze.red", backup_url: "https://gazes.top/", tags: ["在线"] },
     { name: "片库", main_url: "https://4k01.pianku.online", backup_url: "https://fb.pianku.online", tags: ["在线"] },
-    { name: "GoPlay/中文", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
+    { name: "GoPlay/韩剧", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
 
+    { name: "Atlantic", main_url:"https://atlantic.st", backup_url:"https://discord.gg/ekUMJ7WVnW", tags:["在线"]},
+    { name: "Stream", main_url: "https://dexter.pw", backup_url: "", tags: ["在线"] },
     { name: "Cinegram", main_url:"https://cinegram.tv/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]},
-    { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] },
+    /* { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] }, */
     { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://shuttletv.pk/", tags:["在线"]},
     /* { name: "Cinecat", main_url:"https://beta.cinecat.eu", backup_url:"https://cinecat.eu", tags:["在线"]},*/
     /* { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://www.1tube.org", tags:["在线"]},*/
@@ -34,7 +36,7 @@ export const SITES: Site[] = [
     /* { name: "两个BT", main_url: "https://www.bttwo.me", backup_url: "https://bttwo.vip/", tags: ["在线", ""] }, */
     /* { name: "混合盘", main_url: "https://hunhepan.com/search", backup_url: "https://hhp.panso.me", tags: ["网盘"] }, */
      
-    { name: "趣盘 Alist", main_url: "https://pan.mediy.cn", backup_url: "", tags: ["在线", "网盘"] },
+    /* { name: "趣盘 Alist", main_url: "https://pan.mediy.cn", backup_url: "", tags: ["在线", "网盘"] }, */
     { name: "七米蓝 Openlist", main_url: "https://al.chirmyram.com/", backup_url: "", tags: ["在线", "网盘"] },
     { name: "海搜", main_url: "https://haisou.cc/", backup_url: "", tags: ["网盘"] },
     { name: "Pomo/中文", main_url: "https://pomo.mom/", backup_url: "", tags: ["BT"] },
