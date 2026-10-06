@@ -349,16 +349,15 @@ export default function App() {
 
         </main>
 
-        {/* Page Bottom Notes & Footer */}
+        {/* Page Bottom Notes & Footer EE3 邀请码：<span className={`${isDarkActive ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; */}
         <footer className="mt-4 w-full flex flex-col items-center gap-4">
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[800ms] ${isDarkActive ? 'text-paper-200' : 'text-black/90'}`}>
                <p className="mb-2">
-                 EE3 邀请码：<span className={`${isDarkActive ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; 
-                 备份：<a href="https://nolog.link/s/bxkphd" target="_blank" className={linkClass}>HedgeDoc</a>、
+                 备份网站：<a href="https://nolog.link/s/bxkphd" target="_blank" className={linkClass}>HedgeDoc</a>、
                  <a href="https://bxkp.sld.tw" target="_blank" className={linkClass}>bxkp.sld.tw</a>
                </p>
                <p>
-                 推荐使用 <a href="https://search.fuckoffgoogle.net/searxng/search?q=Brave浏览器" target="_blank" className={linkClass}>Brave</a>浏览器 屏蔽广告 | @<a href="https://jiakuan.link" target="_blank" className={linkClass}>家宽导航</a>
+                 <a href="https://jiakuan.link" target="_blank" className={linkClass}>家宽导航</a>：一些包含家宽节点的机场和VPS。
                </p>
             </div>
 
