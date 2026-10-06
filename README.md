@@ -1,7 +1,7 @@
 ## 不想看片 ##
 ![image](./public/screenshot.png)
-### 网址备份：[bxkp.pages.dev](https://bxkp.pages.dev)、[bxkp.qzz.io](https://bxkp.qzz.io)、[bxkp.foo.ng](https://bxkp.foo.ng) ###
-### 网站备份：[HedgeDoc](https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ)、[Notion](https://waa.ai/bxkpn) ### 
+### 网址备份：[bxkp.pages.dev](https://bxkp.pages.dev)、[bxkp.foo.ng](https://bxkp.foo.ng)、[Nekoweb](https://bxkp.nekoweb.org) ###
+### 网站备份：[HedgeDoc](https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ)、[Notion](https://waa.ai/bxkpn) ###
 
 欢迎提交优质网站、报告失效网址、或把网站做得更好
 
