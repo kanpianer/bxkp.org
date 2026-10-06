@@ -4,7 +4,7 @@ export interface Site {
   backup_url: string;
   tags: string[];
 }
-https://ee3.me/"
+
 export const SITES: Site[] = [
     { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },
     { name: "厂长资源", main_url: "https://www.4kcz.com/", backup_url: "https://www.cz01.vip/", tags: ["在线"] },

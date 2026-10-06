@@ -357,7 +357,7 @@ export default function App() {
                  <a href="https://bxkp.sld.tw" target="_blank" className={linkClass}>bxkp.sld.tw</a>
                </p>
                <p>
-                 <a href="https://jiakuan.link" target="_blank" className={linkClass}>家宽导航</a>：一些包含家宽节点的机场和VPS。
+                 <a href="https://jiakuan.link" target="_blank" className={footerLinkClass}>家宽导航</a>：一些包含家宽节点的机场和VPS。
                </p>
             </div>
 
