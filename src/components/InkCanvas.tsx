@@ -5,7 +5,8 @@ interface InkCanvasProps {
 }
 
 const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mountainCanvasRef = useRef<HTMLCanvasElement>(null);
+  const birdCanvasRef = useRef<HTMLCanvasElement>(null);
   const darkModeRef = useRef(darkMode);
   
   useEffect(() => {
@@ -13,11 +14,13 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
   }, [darkMode]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const mountainCanvas = mountainCanvasRef.current;
+    const birdCanvas = birdCanvasRef.current;
+    if (!mountainCanvas || !birdCanvas) return;
 
-    const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
-    if (!ctx) return;
+    const mountainCtx = mountainCanvas.getContext('2d', { alpha: true, desynchronized: true });
+    const birdCtx = birdCanvas.getContext('2d', { alpha: true, desynchronized: true });
+    if (!mountainCtx || !birdCtx) return;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -81,14 +84,19 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
         }
       }
 
-      draw(ctx: CanvasRenderingContext2D, time: number, isNight: boolean) {
+      draw(ctx: CanvasRenderingContext2D, time: number, darkness: number) {
          ctx.save();
          ctx.translate(this.x, this.y);
          const scale = 0.4;
          ctx.scale(scale, scale);
          
-         const color = isNight ? 'rgba(80,80,90,0.5)' : 'rgba(30,30,35,0.8)';
-         ctx.strokeStyle = color;
+         // Day: deep ink stroke rgba(30,30,35,0.8)
+         // Night: natural dark nocturnal silhouette rgba(80,80,90,0.85) - visible across night sky & moon, never white
+         const r = 30 + (80 - 30) * darkness;
+         const g = 30 + (80 - 30) * darkness;
+         const b = 35 + (90 - 35) * darkness;
+         const a = 0.8 + (0.85 - 0.8) * darkness;
+         ctx.strokeStyle = `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${a})`;
          ctx.lineWidth = 2;
          ctx.lineCap = 'round';
          ctx.lineJoin = 'round';
@@ -214,14 +222,22 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       }
 
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.scale(dpr, dpr);
       
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
+      mountainCanvas.width = width * dpr;
+      mountainCanvas.height = height * dpr;
+      mountainCtx.scale(dpr, dpr);
+      mountainCtx.lineCap = 'round';
+      mountainCtx.lineJoin = 'round';
+      mountainCtx.imageSmoothingEnabled = true;
+      mountainCtx.imageSmoothingQuality = 'high';
+
+      birdCanvas.width = width * dpr;
+      birdCanvas.height = height * dpr;
+      birdCtx.scale(dpr, dpr);
+      birdCtx.lineCap = 'round';
+      birdCtx.lineJoin = 'round';
+      birdCtx.imageSmoothingEnabled = true;
+      birdCtx.imageSmoothingQuality = 'high';
       
       if (widthChanged || layers.length === 0) {
         init();
@@ -234,16 +250,17 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
       const targetDarkness = darkModeRef.current ? 1 : 0;
       currentDarkness += (targetDarkness - currentDarkness) * 0.05;
 
-      ctx.clearRect(0, 0, width, height);
+      mountainCtx.clearRect(0, 0, width, height);
+      birdCtx.clearRect(0, 0, width, height);
       time++;
 
       layers.forEach((l) => {
-          l.draw(ctx, currentDarkness);
+          l.draw(mountainCtx, currentDarkness);
       });
       
       flocks.forEach(f => {
           f.update();
-          f.draw(ctx, time, currentDarkness > 0.5);
+          f.draw(birdCtx, time, currentDarkness);
       });
 
       animationFrameId = requestAnimationFrame(animate);
@@ -260,11 +277,18 @@ const InkCanvas: React.FC<InkCanvasProps> = ({ darkMode = false }) => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ imageRendering: 'auto' }}
-      className={`fixed inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-1000 ${darkMode ? 'opacity-50 mix-blend-multiply' : 'opacity-100 mix-blend-multiply'}`}
-    />
+    <>
+      <canvas
+        ref={mountainCanvasRef}
+        style={{ imageRendering: 'auto' }}
+        className={`fixed inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-1000 ${darkMode ? 'opacity-50 mix-blend-multiply' : 'opacity-100 mix-blend-multiply'}`}
+      />
+      <canvas
+        ref={birdCanvasRef}
+        style={{ imageRendering: 'auto' }}
+        className={`fixed inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-1000 ${darkMode ? 'opacity-100' : 'opacity-100 mix-blend-multiply'}`}
+      />
+    </>
   );
 };
 
