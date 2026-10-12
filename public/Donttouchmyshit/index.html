@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>掌柜后台 | bxkp.org</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏮%3C/text%3E%3C/svg%3E">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+  <style>
+    :root {
+      --font-serif: "LXGW WenKai TC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
+      
+      /* Light Theme (宣纸纸韵) */
+      --bg-base: #f2eee2;
+      --bg-paper-texture: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjA1Ii8+PC9zdmc+');
+      --bg-surface: rgba(255, 255, 255, 0.72);
+      --bg-surface-hover: rgba(255, 255, 255, 0.9);
+      --bg-card: rgba(242, 238, 226, 0.85);
+      --bg-input: rgba(255, 255, 255, 0.85);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-focus: #9e2a2b;
+      
+      --text-main: #1f1f1f;
+      --text-muted: #666666;
+      --text-light: #888888;
+      
+      --cinnabar: #9e2a2b;
+      --cinnabar-hover: #b93a3a;
+      --cinnabar-light: #e6b0aa;
+      --cinnabar-glow: rgba(158, 42, 43, 0.25);
+      
+      --indigo: #5d6d7e;
+      --indigo-light: #85929e;
+      
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark {
+      /* Dark Theme (极夜水墨) */
+      --bg-base: #080c14;
+      --bg-surface: rgba(18, 26, 38, 0.85);
+      --bg-surface-hover: rgba(26, 37, 54, 0.95);
+      --bg-card: rgba(18, 26, 38, 0.75);
+      --bg-input: #0d131d;
+      --border-color: rgba(255, 255, 255, 0.09);
+      --border-focus: #e6b0aa;
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-light: #64748b;
+      
+      --cinnabar: #e6b0aa;
+      --cinnabar-hover: #fca5a5;
+      --cinnabar-light: #fecaca;
+      --cinnabar-glow: rgba(230, 176, 170, 0.25);
+      
+      --indigo: #818cf8;
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      touch-action: manipulation;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      background-color: var(--bg-base);
+      background-image: var(--bg-paper-texture);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 顶部导航条 */
+    .cms-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.4s ease;
+    }
+
+    .cms-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      user-select: none;
+    }
+
+    .cms-brand-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px var(--cinnabar-glow));
+    }
+
+    .cms-brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cms-badge {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-local {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-online {
+      background: rgba(56, 189, 248, 0.12);
+      color: #0284c7;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    body.dark .badge-online {
+      color: #38bdf8;
+    }
+
+    .cms-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* 按钮规范 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--cinnabar);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: #9e2a2b;
+      color: #ffffff !important;
+      border-color: #9e2a2b;
+      box-shadow: 0 2px 12px rgba(158, 42, 43, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #b93a3a;
+      border-color: #b93a3a;
+      box-shadow: 0 4px 16px rgba(158, 42, 43, 0.4);
+    }
+
+    body.dark .btn-primary {
+      background: #9e2a2b;
+      color: #ffffff !important;
+      border-color: #b93a3a;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.08);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .btn-danger:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 0.8rem;
+    }
+
+    .btn-icon {
+      padding: 8px;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+    }
+
+    /* 选项卡栏 */
+    .cms-tabs-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 24px 0;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .cms-tabs-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cms-tab-item {
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .cms-tab-item:hover {
+      color: var(--cinnabar);
+    }
+
+    .cms-tab-item.active {
+      color: var(--cinnabar);
+      border-bottom-color: var(--cinnabar);
+    }
+
+    /* 主内容区容器 */
+    .cms-container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      flex: 1;
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 工具条 (搜索/筛选/新增) */
+    .toolbar-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .toolbar-left, .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pills-group {
+      display: flex;
+      background: rgba(0, 0, 0, 0.04);
+      padding: 3px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+    }
+
+    body.dark .filter-pills-group {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .filter-pill {
+      padding: 5px 14px;
+      font-size: 0.85rem;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
+      user-select: none;
+    }
+
+    .filter-pill.active {
+      background: var(--cinnabar);
+      color: #fff !important;
+      box-shadow: 0 2px 8px var(--cinnabar-glow);
+    }
+
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input-wrap input {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 7px 16px 7px 34px;
+      font-size: 0.88rem;
+      color: var(--text-main);
+      font-family: var(--font-serif);
+      width: 220px;
+      transition: all 0.3s ease;
+    }
+
+    .search-input-wrap input:focus {
+      outline: none;
+      border-color: var(--cinnabar);
+      width: 280px;
+      box-shadow: 0 0 0 3px var(--cinnabar-glow);
+    }
+
+    .search-input-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--text-light);
+      pointer-events: none;
+      font-size: 0.85rem;
+    }
+
+    /* 卡片列表区 */
+    .card-list-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-row {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-row:hover {
+      background: var(--bg-surface-hover);
+      border-color: rgba(158, 42, 43, 0.35);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-row.is-hidden {
+      opacity: 0.55;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.02) 10px, rgba(0,0,0,0.02) 20px);
+    }
+
+    .card-row-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .drag-handle {
+      cursor: grab;
+      color: var(--text-light);
+      font-size: 1.2rem;
+      user-select: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .card-meta-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .card-title-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-site-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: 0.05em;
+    }
+
+    .tag-badge {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.03);
+      color: var(--text-muted);
+    }
+
+    body.dark .tag-badge {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .tag-badge.cat-online {
+      background: rgba(56, 189, 248, 0.12);
+      color: #0284c7;
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+    body.dark .tag-badge.cat-online { color: #38bdf8; }
+
+    .tag-badge.cat-pan {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+    body.dark .tag-badge.cat-pan { color: #34d399; }
+
+    .tag-badge.cat-bt {
+      background: rgba(245, 158, 11, 0.12);
+      color: #d97706;
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    body.dark .tag-badge.cat-bt { color: #fbbf24; }
+
+    .card-url-line {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .card-url-link {
+      color: var(--indigo);
+      text-decoration: none;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .card-url-link:hover {
+      color: var(--cinnabar);
+      text-decoration: underline;
+    }
+
+    .card-desc-snippet {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-top: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 500px;
+    }
+
+    .card-row-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .pill-switch {
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      background: var(--bg-surface);
+      color: var(--text-muted);
+    }
+
+    .pill-switch:hover {
+      border-color: var(--cinnabar);
+    }
+
+    .pill-switch.active-hidden {
+      background: #475569;
+      color: #fff;
+      border-color: #475569;
+    }
+
+    /* 模态弹窗 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-container {
+      background: var(--bg-base);
+      background-image: var(--bg-paper-texture);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.96) translateY(12px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .modal-overlay.open .modal-container {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .modal-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      font-family: var(--font-serif);
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--cinnabar);
+      box-shadow: 0 0 0 3px var(--cinnabar-glow);
+    }
+
+    /* 预设标签池 */
+    .tags-preset-pool {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag-chip {
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      border-radius: var(--radius-full);
+      border: 1px dashed var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+
+    .tag-chip:hover {
+      border-color: var(--cinnabar);
+      color: var(--cinnabar);
+    }
+
+    .tag-chip.selected {
+      background: var(--cinnabar);
+      color: #fff;
+      border-style: solid;
+      border-color: var(--cinnabar);
+    }
+
+    /* 1:1 像素级实时预览卡片 */
+    .preview-box-wrapper {
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .preview-header-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .preview-card-replica {
+      width: 200px;
+      padding: 20px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: rgba(242, 238, 226, 0.75);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 4px 12px rgba(158, 42, 43, 0.12);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .preview-card-replica:hover {
+      transform: translateY(-4px);
+    }
+
+    .preview-card-replica.preview-dark {
+      background: rgba(18, 26, 38, 0.85);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #f1f5f9;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .preview-card-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .preview-card-replica.preview-dark .preview-card-name {
+      color: #f1f5f9;
+    }
+
+    .preview-card-badge {
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      border: 1px solid rgba(158, 42, 43, 0.3);
+      color: #9e2a2b;
+      font-weight: 600;
+    }
+
+    .preview-card-replica.preview-dark .preview-card-badge {
+      border-color: rgba(230, 176, 170, 0.4);
+      color: #e6b0aa;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      background: var(--bg-surface);
+    }
+
+    /* 体检中心样式 */
+    .health-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+
+    .health-row {
+      background: var(--bg-surface);
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+
+    .health-cell {
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .health-cell:first-child {
+      border-left: 1px solid var(--border-color);
+      border-top-left-radius: var(--radius-sm);
+      border-bottom-left-radius: var(--radius-sm);
+    }
+
+    .health-cell:last-child {
+      border-right: 1px solid var(--border-color);
+      border-top-right-radius: var(--radius-sm);
+      border-bottom-right-radius: var(--radius-sm);
+    }
+
+    .status-pill {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-ok { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .status-warn { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .status-err { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+    /* Toast 浮层提示 */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast-item {
+      pointer-events: auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-family: var(--font-serif);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: toastSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: opacity 0.3s ease;
+    }
+
+    @keyframes toastSlide {
+      from { transform: translateY(20px) scale(0.9); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    /* 拖拽指示 */
+    .sortable-ghost {
+      opacity: 0.35;
+      background: var(--cinnabar-glow) !important;
+      border: 2px dashed var(--cinnabar) !important;
+    }
+
+    .sortable-chosen {
+      box-shadow: var(--shadow-lg);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航栏 -->
+  <header class="cms-navbar">
+    <div class="cms-brand">
+      <span class="cms-brand-icon">🏮</span>
+      <div>
+        <div class="cms-brand-title">
+          掌柜后台
+          <span id="cms-mode-badge" class="cms-badge badge-local">🍀 本地模式</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cms-nav-actions">
+      <!-- 昼夜模式切换按钮 -->
+      <button id="btn-theme-toggle" class="btn btn-sm" title="切换极夜与宣纸主题" style="display: flex; align-items: center; justify-content: center; min-width: 40px; padding: 6px 10px; font-size: 1.15rem; line-height: 1;">
+        <span id="theme-icon">🌙</span>
+      </button>
+
+      <!-- 返回主站 -->
+      <a href="/" target="_blank" class="btn btn-sm" title="新窗口打开不想看片主站">
+        ↗ 浏览主站
+      </a>
+
+      <!-- 部署/保存 -->
+      <button id="btn-save-all" class="btn btn-primary" title="落盘并同步至站点">
+        <span>💾</span> <span>应用</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 选项卡导航栏 -->
+  <nav class="cms-tabs-bar">
+    <div class="cms-tab-item active" data-tab="tab-sites">🗂️ 影视站点库 (<span id="count-total">0</span>)</div>
+    <div class="cms-tab-item" data-tab="tab-emby-ok">📺 Emby与OK影视</div>
+    <div class="cms-tab-item" data-tab="tab-footer">🏮 页脚与友情扩展</div>
+    <div class="cms-tab-item" data-tab="tab-faqs">💡 FAQ问答与SEO</div>
+    <div class="cms-tab-item" data-tab="tab-health">🩺 链接健康体检</div>
+    <div class="cms-tab-item" data-tab="tab-backups">🕒 快照与版本回滚</div>
+    <div class="cms-tab-item" data-tab="tab-settings">⚙️ 系统与GitHub配置</div>
+  </nav>
+
+  <!-- 页面主体容器 -->
+  <main class="cms-container">
+
+    <!-- TAB 1: 影视站点库 -->
+    <section id="tab-sites" class="tab-panel active">
+      <div class="toolbar-wrapper">
+        <div class="toolbar-left">
+          <!-- 分类筛选器 -->
+          <div class="filter-pills-group">
+            <button class="filter-pill active" data-cat="all">全部 (<span id="count-all">0</span>)</button>
+            <button class="filter-pill" data-cat="在线">在线 (<span id="count-online">0</span>)</button>
+            <button class="filter-pill" data-cat="网盘">网盘 (<span id="count-pan">0</span>)</button>
+            <button class="filter-pill" data-cat="BT">磁力BT (<span id="count-bt">0</span>)</button>
+          </div>
+
+          <!-- 搜索输入框 -->
+          <div class="search-input-wrap">
+            <span class="search-input-icon">🔍</span>
+            <input type="text" id="site-search-input" placeholder="按站点名、网址或标签搜索...">
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <button id="btn-add-site" class="btn btn-primary btn-sm">
+            <span>+</span> 增录新站点
+          </button>
+          <button id="btn-export-json" class="btn btn-sm" title="导出全站数据为 JSON 文件">
+            📥 导出备份
+          </button>
+          <button id="btn-import-json-trigger" class="btn btn-sm" title="导入 JSON 数据恢复">
+            📤 导入恢复
+          </button>
+          <input type="file" id="import-file-input" accept=".json" style="display: none;">
+        </div>
+      </div>
+
+      <!-- 卡片列表容器 -->
+      <div id="site-list-container" class="card-list-wrapper">
+        <!-- 动态渲染卡片行 -->
+      </div>
+    </section>
+
+    <!-- TAB 2: Emby与OK影视 -->
+    <section id="tab-emby-ok" class="tab-panel">
+      <div class="modal-grid-2">
+        <!-- Emby服配置卡片 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--cinnabar); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <span>🎬 Emby公益服与稳定服配置</span>
+          </h3>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">专区标题：</label>
+            <input type="text" id="emby-title-input" class="form-control">
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label">简介说明：</label>
+            <textarea id="emby-desc-input" class="form-control" rows="2"></textarea>
+          </div>
+          
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label">⭐ 公益服线路列表：</label>
+              <button id="btn-add-emby-public" class="btn btn-sm">+ 添加</button>
+            </div>
+            <div id="emby-public-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label">💳 付费服线路列表：</label>
+              <button id="btn-add-emby-paid" class="btn btn-sm">+ 添加</button>
+            </div>
+            <div id="emby-paid-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">购买须知与声明：</label>
+            <input type="text" id="emby-notice-input" class="form-control">
+          </div>
+        </div>
+
+        <!-- OK影视配置卡片 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--indigo); margin-bottom: 12px;">
+            📺 OK影视与TVBox多仓配置
+          </h3>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">专区标题：</label>
+            <input type="text" id="ok-title-input" class="form-control">
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label">播放器描述说明：</label>
+            <textarea id="ok-desc-input" class="form-control" rows="2"></textarea>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label">📱 推荐播放器客户端：</label>
+              <button id="btn-add-ok-app" class="btn btn-sm">+ 添加客户端</button>
+            </div>
+            <div id="ok-apps-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label">📦 接口仓库与配置指南教程：</label>
+              <button id="btn-add-ok-resource" class="btn btn-sm">+ 添加接口/指南</button>
+            </div>
+            <div id="ok-resources-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">播放器免责与提示：</label>
+            <input type="text" id="ok-notice-input" class="form-control">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: 页脚与友情扩展 -->
+    <section id="tab-footer" class="tab-panel">
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- 备份网站列表卡片 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--cinnabar); display: flex; align-items: center; gap: 8px;">
+                <span>📑 备份网站列表</span>
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                显示在主站底部「备份网站：...」区域，方便访客访问备选镜像地址与发布页。
+              </p>
+            </div>
+            <button id="btn-add-backup-site" class="btn btn-sm btn-primary">+ 添加备份网站</button>
+          </div>
+          <div id="footer-backups-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+
+        <!-- 友情推荐导航卡片 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--indigo); display: flex; align-items: center; gap: 8px;">
+                <span>🔗 友情推荐与扩展导航</span>
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                显示在主站底部的友链或推荐项目（如：家宽导航：一些包含家宽节点的机场和VPS）。
+              </p>
+            </div>
+            <button id="btn-add-promo-link" class="btn btn-sm btn-primary">+ 添加推荐链接</button>
+          </div>
+          <div id="footer-promos-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+
+        <!-- 版权文案与 GitHub 链接卡片 -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">
+            🏷️ 底部说明文案与 GitHub 链接
+          </h3>
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label class="form-label">底部中心文案：</label>
+              <input type="text" id="footer-bottom-text" class="form-control" placeholder="例如：Made with ❤">
+            </div>
+            <div class="form-group">
+              <label class="form-label">GitHub 仓库链接：</label>
+              <input type="url" id="footer-github-url" class="form-control" placeholder="https://github.com/...">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: FAQ问答与SEO -->
+    <section id="tab-faqs" class="tab-panel">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">💡 找剧指南与 FAQ 问答库</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">保存时将自动同步生成 Schema.org 结构化数据并注入 index.html，大幅强化百度/谷歌 SEO 收录权重。</p>
+          </div>
+          <button id="btn-add-faq" class="btn btn-primary btn-sm">+ 增添常见问答</button>
+        </div>
+
+        <div id="faqs-list-container" style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- 动态渲染 FAQ 条目 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: 链接健康体检 -->
+    <section id="tab-health" class="tab-panel">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">🩺 站点连通性与健康体检中心</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">批量并发探测全站主域名与镜像备份地址的 HTTP 响应状态，精准锁定失效死链。</p>
+          </div>
+          <button id="btn-run-health-check" class="btn btn-primary">
+            <span>⚡</span> 开始全量并发体检
+          </button>
+        </div>
+
+        <div id="health-progress-bar" style="display: none; margin-bottom: 16px;">
+          <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">体检探测进行中，请稍候...</div>
+          <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.06); border-radius: 99px; overflow: hidden;">
+            <div style="width: 100%; height: 100%; background: var(--cinnabar); animation: indeterminate 1.5s infinite linear;"></div>
+          </div>
+        </div>
+
+        <div id="health-results-container">
+          <div style="padding: 40px; text-align: center; color: var(--text-light); font-size: 0.95rem;">
+            点击右上角【开始全量并发体检】即可探测所有影视站点的存活状态
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: 快照与版本回滚 -->
+    <section id="tab-backups" class="tab-panel">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">🕒 快照历史与一键灾备回滚</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">每次点击应用部署都会自动保留快照；亦可手动创建命名快照，随时秒级回滚站点。</p>
+          </div>
+          <button id="btn-create-snapshot" class="btn btn-primary btn-sm">+ 记录手动快照</button>
+        </div>
+
+        <div id="backups-list-container" style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- 动态渲染备份文件列表 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: 系统与GitHub配置 -->
+    <section id="tab-settings" class="tab-panel">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; max-width: 800px; margin: 0 auto;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 16px;">
+          ⚙️ 生产发布与 GitHub 原子提交引擎设置
+        </h3>
+
+        <div style="background: rgba(158, 42, 43, 0.05); border: 1px solid rgba(158, 42, 43, 0.2); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+          <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--cinnabar); margin-bottom: 6px;">🌐 无服务器原子提交原理说明</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+            在公网部署（如 Cloudflare Pages / Vercel / GitHub Pages）下，本管理系统直接调用 GitHub Git Trees REST API 进行多文件原子提交。
+            您的 Personal Access Token (PAT) <strong>仅储存于当前浏览器的 localStorage 中</strong>，不经由任何第三方后端转发，安全零风险。
+          </p>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label">GitHub Personal Access Token (PAT)：</label>
+          <input type="password" id="github-pat-input" class="form-control" placeholder="ghp_... 或 github_pat_...">
+          <div style="display: flex; gap: 10px; margin-top: 6px;">
+            <button id="btn-save-pat" class="btn btn-sm">💾 记住 Token</button>
+            <button id="btn-test-pat" class="btn btn-sm">🔍 验证权限</button>
+            <button id="btn-clear-pat" class="btn btn-sm btn-danger">🗑️ 清除缓存</button>
+          </div>
+        </div>
+
+        <div class="modal-grid-2" style="margin-bottom: 16px;">
+          <div class="form-group">
+            <label class="form-label">GitHub 用户 / 组织 (Owner)：</label>
+            <input type="text" id="github-owner-input" class="form-control" value="kanpianer">
+          </div>
+          <div class="form-group">
+            <label class="form-label">仓库名称 (Repo)：</label>
+            <input type="text" id="github-repo-input" class="form-control" value="bxkp.org">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-label">部署目标分支 (Branch)：</label>
+          <input type="text" id="github-branch-input" class="form-control" value="main">
+        </div>
+
+        <div style="border-top: 1px solid var(--border-color); padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.82rem; color: var(--text-light);">不想看片 CMS 系统版本：v1.2.0 (Shanshui Edition)</span>
+          <a href="https://github.com/kanpianer/bxkp.org" target="_blank" class="btn btn-sm">访问 GitHub 仓库 ↗</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 站点编辑/增录模态弹窗 (内置 1:1 像素级实时预览) -->
+  <div id="site-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modal-site-heading" class="modal-title">增录新站点</h3>
+        <button class="btn btn-sm" id="btn-close-modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-grid-2">
+          <!-- 左侧：编辑表单 -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label">站点名称 *</label>
+              <input type="text" id="form-name" class="form-control" placeholder="例如：NO视频">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">主站网址 (Main URL) *</label>
+              <input type="url" id="form-main-url" class="form-control" placeholder="https://...">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">备用网址 / 发布页 (Backup URL)</label>
+              <input type="text" id="form-backup-url" class="form-control" placeholder="https://... 或发布页邮箱/电报">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">特色简短描述 (Description)</label>
+              <input type="text" id="form-desc" class="form-control" placeholder="例如：主打高码率无广告在线美剧与欧美院线大片">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">所属分类与特色标签</label>
+              <div class="tags-preset-pool" id="modal-tags-pool">
+                <!-- 预设标签池 -->
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 16px; margin-top: 4px;">
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.88rem; font-weight: 600; color: #ef4444;">
+                <input type="checkbox" id="form-is-hidden"> 🔒 暂时隐藏
+              </label>
+            </div>
+          </div>
+
+          <!-- 右侧：1:1 像素级主站同款卡片实时预览 -->
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="preview-box-wrapper">
+              <div class="preview-header-bar">
+                <span>1:1 实时渲染效果预览</span>
+                <button type="button" id="btn-toggle-preview-theme" class="btn btn-sm" style="font-size: 0.72rem; padding: 2px 8px;">
+                  切换暗亮预览
+                </button>
+              </div>
+
+              <div id="preview-card-replica" class="preview-card-replica">
+                <span id="preview-card-name" class="preview-card-name">站点名称</span>
+                <span id="preview-card-badge" class="preview-card-badge">备份网址</span>
+              </div>
+
+              <div style="font-size: 0.78rem; color: var(--text-light); text-align: center;">
+                主站卡片采用水墨微光与宣纸毛玻璃效果，所见即所得
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" id="btn-cancel-modal">取消</button>
+        <button class="btn btn-primary" id="btn-save-site-item">保存站点</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 容器 -->
+  <div id="toast-container"></div>
+
+  <!-- 核心逻辑脚本 -->
+  <script>
+    (function() {
+      'use strict';
+
+      // 全局状态管理
+      let cmsData = {
+        updatedAt: '',
+        sites: [],
+        emby: {
+          title: 'Emby服',
+          description: '',
+          publicServers: [],
+          paidServers: [],
+          notice: ''
+        },
+        ok: {
+          title: 'OK影视',
+          description: '',
+          apps: [],
+          resources: [],
+          notice: ''
+        },
+        faqs: [],
+        footer: {
+          backupSites: [],
+          promoLinks: [],
+          bottomText: 'Made with ❤',
+          githubUrl: 'https://github.com/kanpianer/bxkp.org'
+        }
+      };
+
+      let currentEditingIndex = -1;
+      let currentCategoryFilter = 'all';
+      let currentSearchQuery = '';
+      let isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+      let previewIsDark = false;
+
+      // 预设高频标签
+      const PRESET_TAGS = ['在线', '网盘', 'BT', '4K原盘', '热播', '双语字幕', '极简无广告', '海外直连', '日漫新番', '夸克', '阿里', 'Alist挂载'];
+
+      // 初始化模式指示
+      const modeBadge = document.getElementById('cms-mode-badge');
+      if (isLocal) {
+        modeBadge.textContent = '🍀 本地模式';
+        modeBadge.className = 'cms-badge badge-local';
+      } else {
+        modeBadge.textContent = '🌐 GitHub 模式';
+        modeBadge.className = 'cms-badge badge-online';
+      }
+
+      // Toast 消息提示
+      function showToast(msg, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast-item';
+        const icon = type === 'error' ? '❌' : (type === 'success' ? '✅' : '🏮');
+        toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
+      // 昼夜模式切换 (仅显示太阳/月亮图标)
+      const themeToggleBtn = document.getElementById('btn-theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      
+      const savedTheme = localStorage.getItem('bxkp_cms_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        themeIcon.textContent = '☀️';
+      } else {
+        themeIcon.textContent = '🌙';
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        localStorage.setItem('bxkp_cms_theme', isDark ? 'dark' : 'light');
+        themeIcon.textContent = isDark ? '☀️' : '🌙';
+        showToast(isDark ? '已切换至极夜水墨视觉' : '已切换至宣纸纸韵视觉');
+      });
+
+      // 选项卡切换
+      document.querySelectorAll('.cms-tab-item').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.cms-tab-item').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+          tab.classList.add('active');
+          const targetId = tab.dataset.tab;
+          const panel = document.getElementById(targetId);
+          if (panel) panel.classList.add('active');
+
+          if (targetId === 'tab-backups') loadBackupsList();
+        });
+      });
+
+      // 1. 数据装载 (本地开发接口优先，降级到静态文件)
+      async function loadInitialData() {
+        if (isLocal) {
+          try {
+            const resp = await fetch('/api/cms/data');
+            const res = await resp.json();
+            if (res.success && res.data) {
+              cmsData = res.data;
+              onDataLoaded();
+              showToast(`本地数据装载成功！共加载 ${cmsData.sites.length} 处影视站点`);
+              return;
+            }
+          } catch (e) {
+            console.warn('[CMS] 本地 /api/cms/data 连接失败，尝试静态载入');
+          }
+        }
+
+        // 线上或静态模式
+        try {
+          const resp = await fetch('/data/sites.json?_t=' + Date.now());
+          if (resp.ok) {
+            cmsData = await resp.json();
+            onDataLoaded();
+            showToast(`线上静态数据装载成功！共加载 ${cmsData.sites.length} 处影视站点`);
+          } else {
+            throw new Error(`HTTP ${resp.status}`);
+          }
+        } catch (err) {
+          showToast('无法读取站点数据: ' + err.message, 'error');
+        }
+      }
+
+      function onDataLoaded() {
+        renderSiteList();
+        renderEmbyAndOkForms();
+        renderFooterForms();
+        renderFaqsList();
+        updateCountBadges();
+      }
+
+      function updateCountBadges() {
+        const sites = cmsData.sites || [];
+        document.getElementById('count-total').textContent = sites.length;
+        document.getElementById('count-all').textContent = sites.length;
+        document.getElementById('count-online').textContent = sites.filter(s => s.tags?.includes('在线')).length;
+        document.getElementById('count-pan').textContent = sites.filter(s => s.tags?.includes('网盘')).length;
+        document.getElementById('count-bt').textContent = sites.filter(s => s.tags?.includes('BT')).length;
+      }
+
+      // 2. 渲染站点列表
+      function renderSiteList() {
+        const container = document.getElementById('site-list-container');
+        container.innerHTML = '';
+
+        let list = cmsData.sites || [];
+
+        // 分类过滤
+        if (currentCategoryFilter !== 'all') {
+          list = list.filter(s => s.tags?.includes(currentCategoryFilter));
+        }
+
+        // 搜索关键词过滤
+        if (currentSearchQuery) {
+          const q = currentSearchQuery.toLowerCase();
+          list = list.filter(s =>
+            (s.name || '').toLowerCase().includes(q) ||
+            (s.main_url || '').toLowerCase().includes(q) ||
+            (s.backup_url || '').toLowerCase().includes(q) ||
+            (s.desc || '').toLowerCase().includes(q) ||
+            (s.tags || []).some(t => t.toLowerCase().includes(q))
+          );
+        }
+
+        if (list.length === 0) {
+          container.innerHTML = `<div style="padding: 40px; text-align: center; color: var(--text-light);">未检索到符合条件的影视站点</div>`;
+          return;
+        }
+
+        list.forEach((site) => {
+          const globalIdx = cmsData.sites.indexOf(site);
+          const row = document.createElement('div');
+          row.className = `card-row ${site.isHidden ? 'is-hidden' : ''}`;
+          row.dataset.index = globalIdx;
+
+          // 标签 Pills
+          const tagsHtml = (site.tags || []).map(t => {
+            let catClass = '';
+            if (t === '在线') catClass = 'cat-online';
+            if (t === '网盘') catClass = 'cat-pan';
+            if (t === 'BT') catClass = 'cat-bt';
+            return `<span class="tag-badge ${catClass}">${t}</span>`;
+          }).join(' ');
+
+          row.innerHTML = `
+            <div class="card-row-left">
+              <span class="drag-handle" title="拖拽排序">⋮⋮</span>
+              <div class="card-meta-main">
+                <div class="card-title-line">
+                  <span class="card-site-name">
+                    ${site.name}
+                    ${site.isHidden ? '<span style="font-size: 0.72rem; color: #ef4444; margin-left: 4px;">[已隐藏]</span>' : ''}
+                  </span>
+                  <div>${tagsHtml}</div>
+                </div>
+                <div class="card-url-line">
+                  <span>主站：<a href="${site.main_url}" target="_blank" class="card-url-link">${site.main_url}</a></span>
+                  ${site.backup_url ? `<span>备用：<a href="${site.backup_url}" target="_blank" class="card-url-link" style="color: var(--cinnabar);">${site.backup_url}</a></span>` : '<span style="color: var(--text-light);">无备用</span>'}
+                </div>
+                ${site.desc ? `<div class="card-desc-snippet">${site.desc}</div>` : ''}
+              </div>
+            </div>
+
+            <div class="card-row-right">
+              <span class="pill-switch ${site.isHidden ? 'active-hidden' : ''}" data-action="toggle-hidden" title="切换折叠隐藏">!隐藏</span>
+              <button class="btn btn-sm" data-action="edit-site">✏️ 编辑</button>
+              <button class="btn btn-sm btn-danger" data-action="delete-site">🗑️</button>
+            </div>
+          `;
+
+          container.appendChild(row);
+        });
+
+        initSortable();
+      }
+
+      // 拖拽排序 (Sortable.js)
+      let sortableInstance = null;
+      function initSortable() {
+        const container = document.getElementById('site-list-container');
+        if (!window.Sortable || !container) return;
+
+        if (sortableInstance) {
+          try { sortableInstance.destroy(); } catch (e) {}
+        }
+
+        sortableInstance = new Sortable(container, {
+          handle: '.drag-handle',
+          animation: 200,
+          ghostClass: 'sortable-ghost',
+          chosenClass: 'sortable-chosen',
+          onEnd: function(evt) {
+            if (evt.oldIndex === evt.newIndex) return;
+
+            // 获取新顺序的所有下标
+            const rows = Array.from(container.children);
+            const newSitesOrder = rows.map(r => cmsData.sites[parseInt(r.dataset.index, 10)]).filter(Boolean);
+            
+            if (currentCategoryFilter === 'all' && !currentSearchQuery) {
+              cmsData.sites = newSitesOrder;
+            } else {
+              // 局部拖拽更新
+              const movedSite = cmsData.sites[parseInt(evt.item.dataset.index, 10)];
+              const oldGlobalIndex = cmsData.sites.indexOf(movedSite);
+              cmsData.sites.splice(oldGlobalIndex, 1);
+              
+              const targetRow = rows[evt.newIndex];
+              const targetGlobalIndex = targetRow ? parseInt(targetRow.dataset.index, 10) : cmsData.sites.length;
+              cmsData.sites.splice(targetGlobalIndex, 0, movedSite);
+            }
+
+            renderSiteList();
+            showToast('站点排序已调整，点击右上角【应用】生效');
+          }
+        });
+      }
+
+      // 分类筛选点击
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategoryFilter = btn.dataset.cat;
+          renderSiteList();
+        });
+      });
+
+      // 搜索过滤
+      document.getElementById('site-search-input').addEventListener('input', (e) => {
+        currentSearchQuery = e.target.value.trim();
+        renderSiteList();
+      });
+
+      // 卡片行内部事件委托 (隐藏/编辑/删除)
+      document.getElementById('site-list-container').addEventListener('click', (e) => {
+        const target = e.target.closest('[data-action]');
+        if (!target) return;
+
+        const row = target.closest('.card-row');
+        if (!row) return;
+
+        const idx = parseInt(row.dataset.index, 10);
+        const site = cmsData.sites[idx];
+        if (!site) return;
+
+        const action = target.dataset.action;
+
+        if (action === 'toggle-hidden') {
+          site.isHidden = !site.isHidden;
+          renderSiteList();
+          showToast(`【${site.name}】已${site.isHidden ? '标记为折叠隐藏' : '恢复正常显示'}`);
+        } else if (action === 'edit-site') {
+          openSiteModal(site);
+        } else if (action === 'delete-site') {
+          if (confirm(`确定要彻底删除站点【${site.name}】吗？`)) {
+            cmsData.sites.splice(idx, 1);
+            renderSiteList();
+            updateCountBadges();
+            showToast(`已删除站点 ${site.name}`);
+          }
+        }
+      });
+
+      // 3. 模态弹窗与实时预览
+      let selectedTags = [];
+
+      function openSiteModal(site = null) {
+        currentEditingIndex = site ? cmsData.sites.indexOf(site) : -1;
+        const isNew = !site;
+
+        document.getElementById('modal-site-heading').textContent = isNew ? '增录新影视站点' : `编辑站点：${site.name}`;
+        document.getElementById('form-name').value = site ? site.name : '';
+        document.getElementById('form-main-url').value = site ? site.main_url : '';
+        document.getElementById('form-backup-url').value = site ? (site.backup_url || '') : '';
+        document.getElementById('form-desc').value = site ? (site.desc || '') : '';
+        document.getElementById('form-is-hidden').checked = site ? (site.isHidden || false) : false;
+
+        selectedTags = site && Array.isArray(site.tags) ? [...site.tags] : ['在线'];
+        renderModalTagsPool();
+        updateModalPreview();
+
+        document.getElementById('site-modal').classList.add('open');
+      }
+
+      function renderModalTagsPool() {
+        const pool = document.getElementById('modal-tags-pool');
+        pool.innerHTML = '';
+        PRESET_TAGS.forEach(tag => {
+          const chip = document.createElement('span');
+          chip.className = `tag-chip ${selectedTags.includes(tag) ? 'selected' : ''}`;
+          chip.textContent = tag;
+          chip.onclick = () => {
+            if (selectedTags.includes(tag)) {
+              selectedTags = selectedTags.filter(t => t !== tag);
+            } else {
+              selectedTags.push(tag);
+            }
+            renderModalTagsPool();
+          };
+          pool.appendChild(chip);
+        });
+      }
+
+      function updateModalPreview() {
+        const name = document.getElementById('form-name').value.trim() || '示例站点';
+        const backupUrl = document.getElementById('form-backup-url').value.trim();
+        const previewCard = document.getElementById('preview-card-replica');
+        const previewName = document.getElementById('preview-card-name');
+        const previewBadge = document.getElementById('preview-card-badge');
+
+        previewName.textContent = name;
+        previewBadge.textContent = backupUrl ? '备份网址' : '没有备份';
+
+        if (previewIsDark) {
+          previewCard.classList.add('preview-dark');
+        } else {
+          previewCard.classList.remove('preview-dark');
+        }
+      }
+
+      ['form-name', 'form-backup-url'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateModalPreview);
+      });
+
+      document.getElementById('btn-toggle-preview-theme').addEventListener('click', () => {
+        previewIsDark = !previewIsDark;
+        updateModalPreview();
+      });
+
+      document.getElementById('btn-close-modal').addEventListener('click', () => {
+        document.getElementById('site-modal').classList.remove('open');
+      });
+
+      document.getElementById('btn-cancel-modal').addEventListener('click', () => {
+        document.getElementById('site-modal').classList.remove('open');
+      });
+
+      document.getElementById('btn-add-site').addEventListener('click', () => {
+        openSiteModal(null);
+      });
+
+      // 保存站点表单
+      document.getElementById('btn-save-site-item').addEventListener('click', () => {
+        const name = document.getElementById('form-name').value.trim();
+        const main_url = document.getElementById('form-main-url').value.trim();
+        const backup_url = document.getElementById('form-backup-url').value.trim();
+        const desc = document.getElementById('form-desc').value.trim();
+        const isHidden = document.getElementById('form-is-hidden').checked;
+
+        if (!name) return alert('请输入站点名称');
+        if (!main_url) return alert('请输入主站网址');
+
+        const siteData = {
+          name,
+          main_url,
+          backup_url,
+          tags: selectedTags.length > 0 ? selectedTags : ['在线'],
+          isHidden,
+          desc
+        };
+
+        if (currentEditingIndex >= 0) {
+          cmsData.sites[currentEditingIndex] = siteData;
+          showToast(`站点【${name}】更新成功`);
+        } else {
+          cmsData.sites.push(siteData);
+          showToast(`站点【${name}】增录成功`);
+        }
+
+        document.getElementById('site-modal').classList.remove('open');
+        renderSiteList();
+        updateCountBadges();
+      });
+
+      // 4. Emby & OK 影视表单渲染与更新
+      function renderEmbyAndOkForms() {
+        const emby = cmsData.emby || {};
+        document.getElementById('emby-title-input').value = emby.title || 'Emby服';
+        document.getElementById('emby-desc-input').value = emby.description || '';
+        document.getElementById('emby-notice-input').value = emby.notice || '';
+
+        const renderServerList = (containerId, list, type) => {
+          const c = document.getElementById(containerId);
+          c.innerHTML = '';
+          (list || []).forEach((s, i) => {
+            const item = document.createElement('div');
+            item.style.display = 'flex';
+            item.style.gap = '8px';
+            item.innerHTML = `
+              <input type="text" class="form-control" style="width: 130px;" value="${s.name}" onchange="updateEmbyServer('${type}', ${i}, 'name', this.value)">
+              <input type="url" class="form-control" style="flex: 1;" value="${s.url}" onchange="updateEmbyServer('${type}', ${i}, 'url', this.value)">
+              <button class="btn btn-sm btn-danger" onclick="deleteEmbyServer('${type}', ${i})">✕</button>
+            `;
+            c.appendChild(item);
+          });
+        };
+
+        renderServerList('emby-public-list', emby.publicServers, 'public');
+        renderServerList('emby-paid-list', emby.paidServers, 'paid');
+
+        // OK 影视
+        const ok = cmsData.ok || {};
+        document.getElementById('ok-title-input').value = ok.title || 'OK影视';
+        document.getElementById('ok-desc-input').value = ok.description || '';
+        document.getElementById('ok-notice-input').value = ok.notice || '';
+
+        const renderOkList = (containerId, list, type) => {
+          const c = document.getElementById(containerId);
+          c.innerHTML = '';
+          (list || []).forEach((itemData, i) => {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.gap = '8px';
+            row.innerHTML = `
+              <input type="text" class="form-control" style="width: 160px;" value="${itemData.name}" onchange="updateOkItem('${type}', ${i}, 'name', this.value)">
+              <input type="url" class="form-control" style="flex: 1;" value="${itemData.url}" onchange="updateOkItem('${type}', ${i}, 'url', this.value)">
+              <button class="btn btn-sm btn-danger" onclick="deleteOkItem('${type}', ${i})">✕</button>
+            `;
+            c.appendChild(row);
+          });
+        };
+
+        renderOkList('ok-apps-list', ok.apps, 'apps');
+        renderOkList('ok-resources-list', ok.resources, 'resources');
+      }
+
+      window.updateEmbyServer = function(type, idx, key, val) {
+        const list = type === 'public' ? cmsData.emby.publicServers : cmsData.emby.paidServers;
+        if (list[idx]) list[idx][key] = val.trim();
+      };
+
+      window.deleteEmbyServer = function(type, idx) {
+        const list = type === 'public' ? cmsData.emby.publicServers : cmsData.emby.paidServers;
+        list.splice(idx, 1);
+        renderEmbyAndOkForms();
+      };
+
+      document.getElementById('btn-add-emby-public').addEventListener('click', () => {
+        if (!cmsData.emby.publicServers) cmsData.emby.publicServers = [];
+        cmsData.emby.publicServers.push({ name: '新公益服', url: 'https://...' });
+        renderEmbyAndOkForms();
+      });
+
+      document.getElementById('btn-add-emby-paid').addEventListener('click', () => {
+        if (!cmsData.emby.paidServers) cmsData.emby.paidServers = [];
+        cmsData.emby.paidServers.push({ name: '新稳定服', url: 'https://...' });
+        renderEmbyAndOkForms();
+      });
+
+      window.updateOkItem = function(type, idx, key, val) {
+        const list = type === 'apps' ? cmsData.ok.apps : cmsData.ok.resources;
+        if (list[idx]) list[idx][key] = val.trim();
+      };
+
+      window.deleteOkItem = function(type, idx) {
+        const list = type === 'apps' ? cmsData.ok.apps : cmsData.ok.resources;
+        list.splice(idx, 1);
+        renderEmbyAndOkForms();
+      };
+
+      document.getElementById('btn-add-ok-app').addEventListener('click', () => {
+        if (!cmsData.ok.apps) cmsData.ok.apps = [];
+        cmsData.ok.apps.push({ name: '新客户端', url: 'https://...' });
+        renderEmbyAndOkForms();
+      });
+
+      document.getElementById('btn-add-ok-resource').addEventListener('click', () => {
+        if (!cmsData.ok.resources) cmsData.ok.resources = [];
+        cmsData.ok.resources.push({ name: '新接口配置', url: 'https://...' });
+        renderEmbyAndOkForms();
+      });
+
+      // 4.5 页脚与友情扩展表单渲染与交互
+      function renderFooterForms() {
+        if (!cmsData.footer) {
+          cmsData.footer = {
+            backupSites: [],
+            promoLinks: [],
+            bottomText: 'Made with ❤',
+            githubUrl: 'https://github.com/kanpianer/bxkp.org'
+          };
+        }
+        const footer = cmsData.footer;
+
+        // 1. 备份网站列表渲染
+        const backupContainer = document.getElementById('footer-backups-list');
+        if (backupContainer) {
+          backupContainer.innerHTML = '';
+          (footer.backupSites || []).forEach((item, idx) => {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.gap = '8px';
+            row.style.alignItems = 'center';
+            row.innerHTML = `
+              <input type="text" class="form-control" style="width: 160px;" placeholder="网站名称 (如: HedgeDoc)" value="${item.name || ''}" onchange="updateFooterBackup(${idx}, 'name', this.value)">
+              <input type="url" class="form-control" style="flex: 1;" placeholder="网站网址 (如: https://...)" value="${item.url || ''}" onchange="updateFooterBackup(${idx}, 'url', this.value)">
+              <button class="btn btn-sm btn-danger" onclick="deleteFooterBackup(${idx})">✕</button>
+            `;
+            backupContainer.appendChild(row);
+          });
+        }
+
+        // 2. 友情推荐与扩展导航渲染
+        const promoContainer = document.getElementById('footer-promos-list');
+        if (promoContainer) {
+          promoContainer.innerHTML = '';
+          (footer.promoLinks || []).forEach((p, idx) => {
+            const card = document.createElement('div');
+            card.style.background = 'var(--bg-card)';
+            card.style.border = '1px solid var(--border-color)';
+            card.style.borderRadius = 'var(--radius-sm)';
+            card.style.padding = '12px';
+            card.innerHTML = `
+              <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
+                <input type="text" class="form-control" style="width: 160px;" placeholder="导航标题 (如: 家宽导航)" value="${p.title || ''}" onchange="updateFooterPromo(${idx}, 'title', this.value)">
+                <input type="url" class="form-control" style="flex: 1;" placeholder="跳转链接 (如: https://...)" value="${p.url || ''}" onchange="updateFooterPromo(${idx}, 'url', this.value)">
+                <button class="btn btn-sm btn-danger" onclick="deleteFooterPromo(${idx})">🗑️ 删除</button>
+              </div>
+              <input type="text" class="form-control" placeholder="描述说明 (如: 一些包含家宽节点的机场和VPS。)" value="${p.description || ''}" onchange="updateFooterPromo(${idx}, 'description', this.value)">
+            `;
+            promoContainer.appendChild(card);
+          });
+        }
+
+        // 3. 版权文案与 Github 链接
+        const bottomTextInput = document.getElementById('footer-bottom-text');
+        if (bottomTextInput) bottomTextInput.value = footer.bottomText || 'Made with ❤';
+
+        const githubUrlInput = document.getElementById('footer-github-url');
+        if (githubUrlInput) githubUrlInput.value = footer.githubUrl || 'https://github.com/kanpianer/bxkp.org';
+      }
+
+      window.updateFooterBackup = function(idx, key, val) {
+        if (cmsData.footer && cmsData.footer.backupSites && cmsData.footer.backupSites[idx]) {
+          cmsData.footer.backupSites[idx][key] = val.trim();
+        }
+      };
+
+      window.deleteFooterBackup = function(idx) {
+        if (cmsData.footer && cmsData.footer.backupSites) {
+          cmsData.footer.backupSites.splice(idx, 1);
+          renderFooterForms();
+        }
+      };
+
+      window.updateFooterPromo = function(idx, key, val) {
+        if (cmsData.footer && cmsData.footer.promoLinks && cmsData.footer.promoLinks[idx]) {
+          cmsData.footer.promoLinks[idx][key] = val.trim();
+        }
+      };
+
+      window.deleteFooterPromo = function(idx) {
+        if (cmsData.footer && cmsData.footer.promoLinks) {
+          cmsData.footer.promoLinks.splice(idx, 1);
+          renderFooterForms();
+        }
+      };
+
+      document.getElementById('btn-add-backup-site').addEventListener('click', () => {
+        if (!cmsData.footer) cmsData.footer = {};
+        if (!cmsData.footer.backupSites) cmsData.footer.backupSites = [];
+        cmsData.footer.backupSites.push({ name: '新备份网站', url: 'https://...' });
+        renderFooterForms();
+      });
+
+      document.getElementById('btn-add-promo-link').addEventListener('click', () => {
+        if (!cmsData.footer) cmsData.footer = {};
+        if (!cmsData.footer.promoLinks) cmsData.footer.promoLinks = [];
+        cmsData.footer.promoLinks.push({ title: '新推荐标题', url: 'https://...', description: '说明文案' });
+        renderFooterForms();
+      });
+
+      // 5. FAQ 问答库
+      function renderFaqsList() {
+        const container = document.getElementById('faqs-list-container');
+        container.innerHTML = '';
+        (cmsData.faqs || []).forEach((faq, idx) => {
+          const box = document.createElement('div');
+          box.style.background = 'var(--bg-card)';
+          box.style.border = '1px solid var(--border-color)';
+          box.style.borderRadius = 'var(--radius-sm)';
+          box.style.padding = '14px';
+          box.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-weight: 700; color: var(--cinnabar);">问答条目 #${idx + 1}</span>
+              <button class="btn btn-sm btn-danger" onclick="deleteFaq(${idx})">🗑️ 删除</button>
+            </div>
+            <div class="form-group" style="margin-bottom: 8px;">
+              <label class="form-label">问题 (Q)：</label>
+              <input type="text" class="form-control" value="${faq.question || ''}" onchange="updateFaq(${idx}, 'question', this.value)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">解答说明 (A)：</label>
+              <textarea class="form-control" rows="2" onchange="updateFaq(${idx}, 'answer', this.value)">${faq.answer || ''}</textarea>
+            </div>
+          `;
+          container.appendChild(box);
+        });
+      }
+
+      window.updateFaq = function(idx, key, val) {
+        if (cmsData.faqs[idx]) cmsData.faqs[idx][key] = val.trim();
+      };
+
+      window.deleteFaq = function(idx) {
+        cmsData.faqs.splice(idx, 1);
+        renderFaqsList();
+      };
+
+      document.getElementById('btn-add-faq').addEventListener('click', () => {
+        if (!cmsData.faqs) cmsData.faqs = [];
+        cmsData.faqs.push({
+          question: '常见问题与指南标题',
+          answer: '详细解答内容与推荐指引。'
+        });
+        renderFaqsList();
+      });
+
+      // 6. 链接健康体检
+      document.getElementById('btn-run-health-check').addEventListener('click', async () => {
+        const progressBar = document.getElementById('health-progress-bar');
+        const container = document.getElementById('health-results-container');
+        progressBar.style.display = 'block';
+        container.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--text-muted);">正在并发探测全站网址健康状态，每个目标上限 6.5 秒...</div>';
+
+        const sites = cmsData.sites || [];
+        const allUrls = [];
+        sites.forEach(s => {
+          if (s.main_url) allUrls.push(s.main_url);
+          if (s.backup_url && s.backup_url.startsWith('http')) allUrls.push(s.backup_url);
+        });
+
+        if (isLocal) {
+          // 本地无 CORS 限制接口探测
+          try {
+            const resp = await fetch('/api/cms/check-links', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ urls: allUrls })
+            });
+            const res = await resp.json();
+            progressBar.style.display = 'none';
+
+            if (res.success && res.results) {
+              renderHealthCheckResults(res.results);
+            } else {
+              container.innerHTML = `<div style="color: #ef4444; padding: 20px;">探测失败: ${res.error}</div>`;
+            }
+          } catch (err) {
+            progressBar.style.display = 'none';
+            container.innerHTML = `<div style="color: #ef4444; padding: 20px;">网络异常: ${err.message}</div>`;
+          }
+        } else {
+          // 线上环境并发探测 (带超时与错误捕捉)
+          const results = [];
+          for (const url of allUrls) {
+            const start = Date.now();
+            try {
+              const controller = new AbortController();
+              const timeout = setTimeout(() => controller.abort(), 6000);
+              const r = await fetch(url, { mode: 'no-cors', signal: controller.signal });
+              clearTimeout(timeout);
+              results.push({ url, ok: true, status: 200, timeMs: Date.now() - start });
+            } catch (e) {
+              results.push({ url, ok: false, status: e.name === 'AbortError' ? 408 : 0, timeMs: Date.now() - start, error: e.message });
+            }
+          }
+          progressBar.style.display = 'none';
+          renderHealthCheckResults(results);
+        }
+      });
+
+      function renderHealthCheckResults(results) {
+        const container = document.getElementById('health-results-container');
+        container.innerHTML = '';
+
+        const table = document.createElement('table');
+        table.className = 'health-table';
+
+        results.forEach(res => {
+          const matchSite = (cmsData.sites || []).find(s => s.main_url === res.url || s.backup_url === res.url);
+          const isMain = matchSite && matchSite.main_url === res.url;
+          const tr = document.createElement('tr');
+          tr.className = 'health-row';
+
+          let statusClass = 'status-ok';
+          let statusText = `HTTP ${res.status}`;
+          if (!res.ok) {
+            statusClass = res.status === 408 ? 'status-warn' : 'status-err';
+            statusText = res.error || `HTTP ${res.status}`;
+          }
+
+          tr.innerHTML = `
+            <td class="health-cell" style="width: 140px; font-weight: 700;">
+              ${matchSite ? matchSite.name : '未知站点'}
+              <span style="font-size: 0.72rem; color: var(--text-light); margin-left: 4px;">(${isMain ? '主' : '备'})</span>
+            </td>
+            <td class="health-cell" style="font-family: monospace; font-size: 0.82rem; color: var(--indigo);">
+              <a href="${res.url}" target="_blank" style="color: inherit; text-decoration: none;">${res.url}</a>
+            </td>
+            <td class="health-cell" style="width: 90px; color: var(--text-light); font-size: 0.78rem;">
+              ${res.timeMs}ms
+            </td>
+            <td class="health-cell" style="width: 120px; text-align: right;">
+              <span class="status-pill ${statusClass}">${statusText}</span>
+            </td>
+          `;
+          table.appendChild(tr);
+        });
+
+        container.appendChild(table);
+        showToast('链接体检完毕！');
+      }
+
+      // 7. 快照历史
+      async function loadBackupsList() {
+        if (!isLocal) {
+          document.getElementById('backups-list-container').innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--text-light);">
+              当前处于线上 GitHub 模式，所有提交历史均可在 GitHub Commits 中追溯与回滚。
+            </div>
+          `;
+          return;
+        }
+
+        try {
+          const resp = await fetch('/api/cms/backups');
+          const res = await resp.json();
+          if (res.success && res.backups) {
+            const container = document.getElementById('backups-list-container');
+            container.innerHTML = '';
+            res.backups.forEach(b => {
+              const item = document.createElement('div');
+              item.style.background = 'var(--bg-surface)';
+              item.style.border = '1px solid var(--border-color)';
+              item.style.borderRadius = 'var(--radius-sm)';
+              item.style.padding = '12px 18px';
+              item.style.display = 'flex';
+              item.style.justifyContent = 'space-between';
+              item.style.alignItems = 'center';
+              item.innerHTML = `
+                <div>
+                  <strong style="color: var(--text-main);">${b.id}</strong>
+                  <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 10px;">[${b.note}] ${b.createdAt}</span>
+                </div>
+                <button class="btn btn-sm btn-danger" onclick="restoreSnapshot('${b.id}')">⏮️ 还原此版本</button>
+              `;
+              container.appendChild(item);
+            });
+          }
+        } catch (e) {}
+      }
+
+      window.restoreSnapshot = async function(backupId) {
+        if (!confirm(`确定要将整个站点配置回滚至快照【${backupId}】吗？`)) return;
+        try {
+          const resp = await fetch('/api/cms/restore-backup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ backupId })
+          });
+          const res = await resp.json();
+          if (res.success) {
+            alert('已成功还原！页面即将重新载入。');
+            loadInitialData();
+          } else {
+            alert('还原失败: ' + res.error);
+          }
+        } catch (err) {
+          alert('异常: ' + err.message);
+        }
+      };
+
+      document.getElementById('btn-create-snapshot').addEventListener('click', async () => {
+        const note = prompt('请输入快照备注说明：', '手动快照');
+        if (!note) return;
+
+        if (isLocal) {
+          try {
+            const resp = await fetch('/api/cms/create-backup', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ note })
+            });
+            const res = await resp.json();
+            if (res.success) {
+              showToast('手动快照创建成功！');
+              loadBackupsList();
+            }
+          } catch (e) {}
+        } else {
+          showToast('线上模式请点击右上角【应用】直接提交至 GitHub', 'info');
+        }
+      });
+
+      // 8. 导入与导出 JSON
+      document.getElementById('btn-export-json').addEventListener('click', () => {
+        const jsonStr = JSON.stringify(cmsData, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `bxkp-sites-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('站点数据备份已成功导出！');
+      });
+
+      document.getElementById('btn-import-json-trigger').addEventListener('click', () => {
+        document.getElementById('import-file-input').click();
+      });
+
+      document.getElementById('import-file-input').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(reader.result);
+            if (parsed.sites && Array.isArray(parsed.sites)) {
+              cmsData = parsed;
+              onDataLoaded();
+              showToast(`成功导入 ${cmsData.sites.length} 处站点数据！`);
+            } else {
+              alert('导入格式错误：未检测到 sites 数组');
+            }
+          } catch (err) {
+            alert('解析 JSON 失败: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      // 9. GitHub REST API 原子提交引擎 (用于公网线上模式)
+      async function commitToGitHubAtomic({ token, owner, repo, branch, message, files }) {
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        };
+
+        // 1. 获取最新分支引用
+        const refResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, { headers });
+        if (!refResp.ok) throw new Error(`读取分支 ${branch} 失败 (HTTP ${refResp.status})`);
+        const refData = await refResp.json();
+        const latestCommitSha = refData.object.sha;
+
+        // 2. 读取最新 commit tree
+        const commitResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits/${latestCommitSha}`, { headers });
+        if (!commitResp.ok) throw new Error(`读取 Commit 树失败 (HTTP ${commitResp.status})`);
+        const commitData = await commitResp.json();
+        const baseTreeSha = commitData.tree.sha;
+
+        // 3. 构建 Tree 树条目
+        const treeItems = files.map(f => ({
+          path: f.path,
+          mode: '100644',
+          type: 'blob',
+          content: f.content
+        }));
+
+        const treeResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            base_tree: baseTreeSha,
+            tree: treeItems
+          })
+        });
+        if (!treeResp.ok) throw new Error(`创建 Git Tree 失败 (HTTP ${treeResp.status})`);
+        const treeData = await treeResp.json();
+
+        // 4. 创建 Commit
+        const newCommitResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            message: message || 'chore(cms): update sites navigation and data via Online CMS',
+            tree: treeData.sha,
+            parents: [latestCommitSha]
+          })
+        });
+        if (!newCommitResp.ok) throw new Error(`创建 Commit 失败 (HTTP ${newCommitResp.status})`);
+        const newCommitData = await newCommitResp.json();
+
+        // 5. 更新分支 Ref 指针
+        const updateRefResp = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, {
+          method: 'PATCH',
+          headers,
+          body: JSON.stringify({
+            sha: newCommitData.sha,
+            force: false
+          })
+        });
+        if (!updateRefResp.ok) throw new Error(`更新分支引用失败 (HTTP ${updateRefResp.status})`);
+
+        return { commitSha: newCommitData.sha, htmlUrl: `https://github.com/${owner}/${repo}/commit/${newCommitData.sha}` };
+      }
+
+      // 10. 全站保存与部署按钮 (双模式分流)
+      document.getElementById('btn-save-all').addEventListener('click', async () => {
+        const btn = document.getElementById('btn-save-all');
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span> <span>正在应用...</span>';
+
+        // 收集表单修改
+        if (cmsData.emby) {
+          cmsData.emby.title = document.getElementById('emby-title-input').value.trim();
+          cmsData.emby.description = document.getElementById('emby-desc-input').value.trim();
+          cmsData.emby.notice = document.getElementById('emby-notice-input').value.trim();
+        }
+        if (cmsData.ok) {
+          cmsData.ok.title = document.getElementById('ok-title-input').value.trim();
+          cmsData.ok.description = document.getElementById('ok-desc-input').value.trim();
+          cmsData.ok.notice = document.getElementById('ok-notice-input').value.trim();
+        }
+        if (cmsData.footer) {
+          cmsData.footer.bottomText = document.getElementById('footer-bottom-text').value.trim();
+          cmsData.footer.githubUrl = document.getElementById('footer-github-url').value.trim();
+        }
+
+        // 本地模式优先尝试本地落盘接口
+        if (isLocal) {
+          try {
+            const resp = await fetch('/api/cms/save', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                data: cmsData,
+                note: '本地掌柜后台保存'
+              })
+            });
+            const res = await resp.json();
+            btn.disabled = false;
+            btn.innerHTML = '<span>💾</span> <span>应用</span>';
+
+            if (res.success) {
+              showToast(`全站数据保存成功！快照：${res.backupId}`);
+              return;
+            } else {
+              alert('本地保存失败: ' + res.error);
+              return;
+            }
+          } catch (e) {
+            console.warn('[CMS] 本地 /api/cms/save 异常，准备转入 GitHub 模式');
+          }
+        }
+
+        // 线上 GitHub 模式
+        try {
+          let token = localStorage.getItem('bxkp_github_pat') || '';
+          if (!token) {
+            token = prompt('【线上管理】请输入您的 GitHub Personal Access Token (PAT，仅保留在本地浏览器)：');
+            if (!token || !token.trim()) {
+              btn.disabled = false;
+              btn.innerHTML = '<span>💾</span> <span>应用</span>';
+              return alert('已取消保存：未提供授权 Token。');
+            }
+            token = token.trim();
+            localStorage.setItem('bxkp_github_pat', token);
+            document.getElementById('github-pat-input').value = token;
+          }
+
+          showToast('正在向 GitHub 仓库提交原子更新...');
+
+          const owner = document.getElementById('github-owner-input').value.trim() || 'kanpianer';
+          const repo = document.getElementById('github-repo-input').value.trim() || 'bxkp.org';
+          const branch = document.getElementById('github-branch-input').value.trim() || 'main';
+
+          cmsData.updatedAt = new Date().toISOString().split('T')[0];
+          const newJsonContent = JSON.stringify(cmsData, null, 2) + '\n';
+
+          // 准备多文件原子提交清单
+          const filesToCommit = [
+            { path: 'src/data/sites.json', content: newJsonContent },
+            { path: 'public/data/sites.json', content: newJsonContent }
+          ];
+
+          const result = await commitToGitHubAtomic({
+            token,
+            owner,
+            repo,
+            branch,
+            message: `chore: update sites and navigation via CMS [${cmsData.updatedAt}]`,
+            files: filesToCommit
+          });
+
+          btn.disabled = false;
+          btn.innerHTML = '<span>💾</span> <span>应用</span>';
+          showToast(`已成功提交至 GitHub！SHA: ${result.commitSha.slice(0, 7)}`);
+          if (confirm(`发布成功！已提交到分支 ${branch}，触发自动部署。\n\n是否打开 GitHub 查看此次提交记录？`)) {
+            window.open(result.htmlUrl, '_blank');
+          }
+        } catch (err) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>💾</span> <span>应用</span>';
+          alert('GitHub 提交失败: ' + err.message);
+        }
+      });
+
+      // GitHub Token 本地存储管理
+      const savedPat = localStorage.getItem('bxkp_github_pat') || '';
+      if (savedPat) document.getElementById('github-pat-input').value = savedPat;
+
+      document.getElementById('btn-save-pat').addEventListener('click', () => {
+        const val = document.getElementById('github-pat-input').value.trim();
+        if (val) {
+          localStorage.setItem('bxkp_github_pat', val);
+          showToast('GitHub Token 已在本地记住！');
+        }
+      });
+
+      document.getElementById('btn-clear-pat').addEventListener('click', () => {
+        localStorage.removeItem('bxkp_github_pat');
+        document.getElementById('github-pat-input').value = '';
+        showToast('已清除本地 Token');
+      });
+
+      document.getElementById('btn-test-pat').addEventListener('click', async () => {
+        const val = document.getElementById('github-pat-input').value.trim();
+        if (!val) return alert('请先输入 Token');
+
+        try {
+          const resp = await fetch('https://api.github.com/user', {
+            headers: { 'Authorization': `Bearer ${val}` }
+          });
+          if (resp.ok) {
+            const user = await resp.json();
+            alert(`Token 验证成功！登录身份：${user.login} (${user.name || ''})`);
+          } else {
+            alert(`Token 无效或权限不足 (HTTP ${resp.status})`);
+          }
+        } catch (e) {
+          alert('验证网络错误: ' + e.message);
+        }
+      });
+
+      // 键盘快捷键 Ctrl/Cmd + S
+      window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+          e.preventDefault();
+          document.getElementById('btn-save-all').click();
+        }
+      });
+
+      // 启动加载
+      loadInitialData();
+
+    })();
+  </script>
+</body>
+</html>

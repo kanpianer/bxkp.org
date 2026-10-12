@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { SITES } from '../constants';
+import { SITES, EMBY_SECTION, OK_SECTION, FOOTER_SECTION } from '../constants';
 import { Category, InfoType } from './types';
 import InkCanvas from './components/InkCanvas';
 import NightCanvas from './components/NightCanvas';
@@ -40,7 +40,7 @@ export default function App() {
     let tag = "在线";
     if (currentCategory === "pan") tag = "网盘";
     if (currentCategory === "bt") tag = "BT";
-    return SITES.filter(site => site.tags.includes(tag));
+    return SITES.filter(site => !site.isHidden && site.tags.includes(tag));
   }, [currentCategory]);
 
   useEffect(() => {
@@ -244,40 +244,49 @@ export default function App() {
             }`}>
               {infoType === 'emby' ? (
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">Emby服</h3>
-                  <p>没有各种广告和高画质是Emby服/Jellyfin服的特点，大致分为以下两类：</p>
+                  <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{EMBY_SECTION.title}</h3>
+                  <p>{EMBY_SECTION.description}</p>
                   <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
                      <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>公益服：</span>无需付费，但可能有一定入服门槛。
                         <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
-                           <a href="https://intro.bgp.yt/" target="_blank" className="hover:text-cinnabar underline">二次元Emby</a>
-                           <a href="https://discord.gg/WHxeZ3aTtb" target="_blank" className="hover:text-cinnabar underline">Gir Society</a>
-                           <a href="https://t.me/embyxk" target="_blank" className="hover:text-cinnabar underline">公益服星空指南</a>
+                           {EMBY_SECTION.publicServers.map(server => (
+                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{server.name}</a>
+                           ))}
                         </div>
                      </li>
                      <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>付费服：</span>需要付费，但服务会相对比较稳定。
                         <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
-                            <a href="https://plan.emby.moe/" target="_blank" className="hover:text-cinnabar underline">1111Emby</a>
-                            <a href="https://t.me/micu_user_bot" target="_blank" className="hover:text-cinnabar underline">MICU</a>
-                            <a href="https://zdz.best" target="_blank" className="hover:text-cinnabar underline">终点站+</a>
+                           {EMBY_SECTION.paidServers.map(server => (
+                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{server.name}</a>
+                           ))}
                         </div>
                      </li>
                   </ul>
                   <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
-                     * 购买前确保你可以访问相关Emby服线路。文中提到的Emby服仅作为示例展示，不是广告。
+                     {EMBY_SECTION.notice}
                   </p>
                 </div>
               ) : (
                 <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">OK影视</h3>
-                    <p><a href="https://github.com/FongMi/Release/tree/fongmi/apk" target="_blank" className="hover:text-cinnabar underline">OK影视</a>和<a href="https://nuvioapp.space" target="_blank" className="hover:text-cinnabar underline">Nuvio</a>使用起来和Emby差不多，一般在客户端填写好资源仓库地址就可以了。</p>
+                    <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{OK_SECTION.title}</h3>
+                    <p>
+                      {OK_SECTION.apps.map((app, idx) => (
+                        <React.Fragment key={app.name}>
+                          {idx > 0 && ' 和 '}
+                          <a href={app.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{app.name}</a>
+                        </React.Fragment>
+                      ))}
+                      {OK_SECTION.description}
+                    </p>
                     <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
-                        <li><a href="https://nuvio-plugin-library.vercel.app" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>Nuvio 仓库地址</a></li>
-                        <li><a href="https://blog.ccino.org/p/tvbox-tv-version-installation-and-configuration-complete-guide/" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>TVBox电视版安装配置全指南</a></li>
-                        <li><a href="https://t.me/tvb_ys" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>TVB/影視(OK) 电报频道</a></li>
-                        <li><a href="https://github.com/qist/tvbox" target="_blank" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>OK影视各种客户端和配置接口</a></li>
+                        {OK_SECTION.resources.map(res => (
+                          <li key={res.name}>
+                            <a href={res.url} target="_blank" rel="noopener noreferrer" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>{res.name}</a>
+                          </li>
+                        ))}
                     </ul>
                      <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
-                        * OK影视和Nuvio都是资源聚合的播放器，OK影视高清内容通常需要配合网盘VIP使用。
+                        {OK_SECTION.notice}
                     </p>
                 </div>
               )}
@@ -349,16 +358,25 @@ export default function App() {
 
         </main>
 
-        {/* Page Bottom Notes & Footer EE3 邀请码：<span className={`${isDarkActive ? 'text-paper-50' : 'text-indigo-stone'} select-all font-bold cursor-text transition-colors`}>mpgh</span> &nbsp;|&nbsp; */}
+        {/* Page Bottom Notes & Footer */}
         <footer className="mt-4 w-full flex flex-col items-center gap-4">
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[800ms] ${isDarkActive ? 'text-paper-200' : 'text-black/90'}`}>
-               <p className="mb-2">
-                 备份网站：<a href="https://nolog.link/s/bxkphd" target="_blank" className={linkClass}>HedgeDoc</a>、
-                 <a href="https://bxkp.sld.tw" target="_blank" className={linkClass}>bxkp.sld.tw</a>
-               </p>
-               <p>
-                 <a href="https://jiakuan.link" target="_blank" className={footerLinkClass}>家宽导航</a>：一些包含家宽节点的机场和VPS。
-               </p>
+               {FOOTER_SECTION.backupSites && FOOTER_SECTION.backupSites.length > 0 && (
+                 <p className="mb-2">
+                   备份网站：
+                   {FOOTER_SECTION.backupSites.map((bSite, idx) => (
+                     <React.Fragment key={bSite.name}>
+                       {idx > 0 && '、'}
+                       <a href={bSite.url} target="_blank" rel="noopener noreferrer" className={linkClass}>{bSite.name}</a>
+                     </React.Fragment>
+                   ))}
+                 </p>
+               )}
+               {FOOTER_SECTION.promoLinks && FOOTER_SECTION.promoLinks.map(p => (
+                 <p key={p.title}>
+                   <a href={p.url} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>{p.title}</a>：{p.description}
+                 </p>
+               ))}
             </div>
 
             {/* Bottom Row: Buttons & Links aligned tightly */}
@@ -376,9 +394,11 @@ export default function App() {
                 {/* Center Links */}
                 <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[800ms] ${isDarkActive ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
                     <span className="flex items-center gap-1">
-                        Made with <span className="text-cinnabar animate-pulse">❤</span>
+                        {FOOTER_SECTION.bottomText || 'Made with ❤'}
                     </span>
-                    <a href="https://github.com/kanpianer/bxkp.org" target="_blank" className={footerLinkClass}>Github</a>
+                    {FOOTER_SECTION.githubUrl && (
+                      <a href={FOOTER_SECTION.githubUrl} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>Github</a>
+                    )}
                 </div>
 
                 {/* Right Button (Desktop/Tablet) */}

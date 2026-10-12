@@ -1,0 +1,7 @@
+# Direct CMS Route mapping for Cloudflare Pages / Static hosts
+/Donttouchmyshit          /Donttouchmyshit/ 200
+/donttouchmyshit          /Donttouchmyshit/ 200
+/public/Donttouchmyshit   /Donttouchmyshit/ 200
+/public/Donttouchmyshit/  /Donttouchmyshit/ 200
+/public/donttouchmyshit   /Donttouchmyshit/ 200
+/public/donttouchmyshit/  /Donttouchmyshit/ 200

@@ -1,0 +1,563 @@
+{
+  "updatedAt": "2026-10-12",
+  "sites": [
+    {
+      "name": "NO视频",
+      "main_url": "https://www.novipnoad.cc/",
+      "backup_url": "https://findno.tv/",
+      "tags": [
+        "在线",
+        "4K",
+        "双语字幕"
+      ],
+      "isHidden": false,
+      "desc": "主打高码率无广告在线美剧与欧美院线大片，播放极速流畅"
+    },
+    {
+      "name": "厂长资源",
+      "main_url": "https://www.4kcz.com/",
+      "backup_url": "https://www.cz01.vip/",
+      "tags": [
+        "在线",
+        "热播",
+        "多线路"
+      ],
+      "isHidden": false,
+      "desc": "热门韩剧、国产剧与院线大片首发更新，多线路秒播，画质极佳"
+    },
+    {
+      "name": "PPnix/中文",
+      "main_url": "https://www.ppnix.com/cn/",
+      "backup_url": "",
+      "tags": [
+        "在线",
+        "海外流媒体"
+      ],
+      "isHidden": false,
+      "desc": "全球流媒体精选，聚合海量海外美剧与中英双语字幕资源"
+    },
+    {
+      "name": "七味",
+      "main_url": "https://www.qmp4.com",
+      "backup_url": "https://www.qn63.com/",
+      "tags": [
+        "网盘",
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "优质影视资源综合站，兼具网盘与BT下载"
+    },
+    {
+      "name": "低调影视",
+      "main_url": "https://ddys.app",
+      "backup_url": "https://ddys.ai/",
+      "tags": [
+        "在线",
+        "极简",
+        "高画质"
+      ],
+      "isHidden": false,
+      "desc": "老牌高质量英美剧与小众文艺电影在线站点，界面极简画质顶尖"
+    },
+    {
+      "name": "注视影视",
+      "main_url": "https://gaze.red",
+      "backup_url": "https://gazes.top/",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "清爽无弹窗在线看剧平台"
+    },
+    {
+      "name": "片库",
+      "main_url": "https://4k01.pianku.online",
+      "backup_url": "https://fb.pianku.online",
+      "tags": [
+        "在线",
+        "4K"
+      ],
+      "isHidden": false,
+      "desc": "经典片库，资源更新全面丰富"
+    },
+    {
+      "name": "GoPlay/韩剧",
+      "main_url": "https://goplay.su/",
+      "backup_url": "https://discord.com/invite/yY2P3DQR8S",
+      "tags": [
+        "在线",
+        "韩剧专区"
+      ],
+      "isHidden": false,
+      "desc": "更新迅速的韩剧与亚洲影视聚合平台，字幕精准度高"
+    },
+    {
+      "name": "七米蓝 Openlist",
+      "main_url": "https://al.chirmyram.com/",
+      "backup_url": "",
+      "tags": [
+        "在线",
+        "Alist挂载"
+      ],
+      "isHidden": false,
+      "desc": "精选公开 Alist 影视云盘直链挂载"
+    },
+    {
+      "name": "Atlantic",
+      "main_url": "https://atlantic.st",
+      "backup_url": "https://discord.gg/ekUMJ7WVnW",
+      "tags": [
+        "在线",
+        "海外直连"
+      ],
+      "isHidden": false,
+      "desc": "海外优质直连多媒体流播放平台"
+    },
+    {
+      "name": "Stream",
+      "main_url": "https://dexter.pw",
+      "backup_url": "",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "简洁流媒体在线观看"
+    },
+    {
+      "name": "Basement",
+      "main_url": "https://basementx.lol",
+      "backup_url": "https://basementx.pro/",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "海外极简电影剧集聚合"
+    },
+    {
+      "name": "Cinegram",
+      "main_url": "https://cinegram.tv/home",
+      "backup_url": "cinegramofficial@proton.me",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "欧美高清电影在线点播"
+    },
+    {
+      "name": "ShuttleTV",
+      "main_url": "https://shuttletv.su",
+      "backup_url": "https://shuttletv.pk/",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "稳定快速的穿梭海外流媒体平台"
+    },
+    {
+      "name": "Movy",
+      "main_url": "https://www.movy.bz",
+      "backup_url": "https://www.vidy.st",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "精品欧美流行电视剧电影秒播"
+    },
+    {
+      "name": "Miruro/动漫",
+      "main_url": "https://www.miruro.to",
+      "backup_url": "https://www.miruro.com/",
+      "tags": [
+        "在线",
+        "日漫新番"
+      ],
+      "isHidden": false,
+      "desc": "高品质日本动漫新番、剧场版及经典动漫流媒体播放平台"
+    },
+    {
+      "name": "海搜",
+      "main_url": "https://haisou.cc/",
+      "backup_url": "",
+      "tags": [
+        "网盘",
+        "夸克",
+        "阿里"
+      ],
+      "isHidden": false,
+      "desc": "主流夸克与阿里网盘美剧韩剧电影搜剧利器"
+    },
+    {
+      "name": "爱盼",
+      "main_url": "https://www.aipan.me",
+      "backup_url": "",
+      "tags": [
+        "网盘"
+      ],
+      "isHidden": false,
+      "desc": "海量网盘影视资源聚合搜索"
+    },
+    {
+      "name": "原牛",
+      "main_url": "https://mihoyonb.com/pan-search",
+      "backup_url": "https://x.com/yuxing39",
+      "tags": [
+        "网盘",
+        "夸克"
+      ],
+      "isHidden": false,
+      "desc": "原牛网盘搜索，秒存4K影视资源"
+    },
+    {
+      "name": "小云搜索",
+      "main_url": "https://dash.yunso.net",
+      "backup_url": "cs@yunso.net",
+      "tags": [
+        "网盘"
+      ],
+      "isHidden": false,
+      "desc": "云盘资源搜索神器"
+    },
+    {
+      "name": "XDMovies",
+      "main_url": "https://top.xdmovies.wtf",
+      "backup_url": "https://xdmovies.com",
+      "tags": [
+        "网盘"
+      ],
+      "isHidden": false,
+      "desc": "丰富高清网盘资源精选"
+    },
+    {
+      "name": "小酷盘",
+      "main_url": "https://xiaokupan.com",
+      "backup_url": "",
+      "tags": [
+        "网盘"
+      ],
+      "isHidden": false,
+      "desc": "网盘资源快速搜索转存"
+    },
+    {
+      "name": "盘搜PanSou",
+      "main_url": "https://so.252035.xyz",
+      "backup_url": "",
+      "tags": [
+        "网盘"
+      ],
+      "isHidden": false,
+      "desc": "多网盘综合影视检索"
+    },
+    {
+      "name": "老K",
+      "main_url": "https://docs.qq.com/doc/DTk5EaVdWY2R6ZnBk",
+      "backup_url": "",
+      "tags": [
+        "网盘",
+        "文档汇总"
+      ],
+      "isHidden": false,
+      "desc": "知名老K影视文档整理精选"
+    },
+    {
+      "name": "4k指南[原盘]",
+      "main_url": "https://4kzn.com",
+      "backup_url": "",
+      "tags": [
+        "网盘",
+        "4K原盘",
+        "杜比视界"
+      ],
+      "isHidden": false,
+      "desc": "专注 4K REMUX 原盘、蓝光原盘、HDR/杜比视界发烧级网盘整理"
+    },
+    {
+      "name": "网盘资源避难所",
+      "main_url": "https://www.daiguaji.com/index.php",
+      "backup_url": "",
+      "tags": [
+        "网盘"
+      ],
+      "isHidden": false,
+      "desc": "备用网盘影视合集"
+    },
+    {
+      "name": "阿里云资源",
+      "main_url": "https://slowread.net/",
+      "backup_url": "",
+      "tags": [
+        "网盘",
+        "阿里"
+      ],
+      "isHidden": false,
+      "desc": "专注阿里云盘不限速高清资源"
+    },
+    {
+      "name": "南方公园全集",
+      "main_url": "https://sp.tearemix.com/#s27",
+      "backup_url": "",
+      "tags": [
+        "网盘",
+        "专题剧集"
+      ],
+      "isHidden": false,
+      "desc": "南方公园全季高码率完整整理"
+    },
+    {
+      "name": "ShowBox",
+      "main_url": "https://www.showbox.media/",
+      "backup_url": "",
+      "tags": [
+        "网盘"
+      ],
+      "isHidden": false,
+      "desc": "海外综合流媒体及云盘"
+    },
+    {
+      "name": "BT之家",
+      "main_url": "https://1lou.one/",
+      "backup_url": "https://1lou.cc/",
+      "tags": [
+        "BT",
+        "网盘",
+        "中文社区"
+      ],
+      "isHidden": false,
+      "desc": "中文老牌影视BT与磁力下载论坛，画质压制上乘"
+    },
+    {
+      "name": "磁力熊",
+      "main_url": "https://www.cilixiong.org",
+      "backup_url": "https://www.cilixiong.cc",
+      "tags": [
+        "BT",
+        "纯净无广告"
+      ],
+      "isHidden": false,
+      "desc": "界面纯净极简的磁力链接与BT种子搜索引擎"
+    },
+    {
+      "name": "磁力帝",
+      "main_url": "https://cldcld.cc",
+      "backup_url": "https://cldcld.top",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "磁力搜索引擎，更新速度快"
+    },
+    {
+      "name": "FileMood",
+      "main_url": "https://filemood.com",
+      "backup_url": "",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "海外种子与BT资源索引"
+    },
+    {
+      "name": "UIndex",
+      "main_url": "https://uindex.org",
+      "backup_url": "",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "纯净BT索引站"
+    },
+    {
+      "name": "1337X",
+      "main_url": "https://1337x.to/",
+      "backup_url": "https://1337x-status.org/",
+      "tags": [
+        "BT",
+        "全球顶尖"
+      ],
+      "isHidden": false,
+      "desc": "全球知名BT种子站，欧美全季美剧与蓝光电影最全"
+    },
+    {
+      "name": "YTS",
+      "main_url": "https://yts.gg",
+      "backup_url": "https://gosites.org/yts",
+      "tags": [
+        "BT",
+        "小体积高清"
+      ],
+      "isHidden": false,
+      "desc": "专注极高压缩比的 720p/1080p/4K 蓝光电影种子"
+    },
+    {
+      "name": "EXT",
+      "main_url": "https://ext.to/",
+      "backup_url": "https://search.extto.com/",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "大型磁力元搜索引擎"
+    },
+    {
+      "name": "Bitsearch",
+      "main_url": "https://bitsearch.eu",
+      "backup_url": "https://solidtorrents.to/",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "快速无广告的全球BT种子搜索"
+    },
+    {
+      "name": "Knaben",
+      "main_url": "https://knaben.org/",
+      "backup_url": "http://knabenxyzjl3bt5al7awroewfkg37x6duutapjytdib4w42mk2kiqpid.onion/",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "老牌抗封锁BT聚合搜索引擎"
+    },
+    {
+      "name": "BTSOW",
+      "main_url": "https://btsow.live/",
+      "backup_url": "https://tellme.pw/bts",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "DHT磁力搜索引擎"
+    },
+    {
+      "name": "ACG.RIP",
+      "main_url": "https://acg.rip",
+      "backup_url": "",
+      "tags": [
+        "BT",
+        "动漫新番"
+      ],
+      "isHidden": false,
+      "desc": "专注日本动漫番剧与日剧高质量压制组发布页"
+    },
+    {
+      "name": "LimeTorrents",
+      "main_url": "https://www.limetorrents.asia",
+      "backup_url": "https://limetorrent.si/",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "稳定老牌BT种子站点"
+    },
+    {
+      "name": "ExtraTorrent",
+      "main_url": "https://extratorrent.st",
+      "backup_url": "",
+      "tags": [
+        "BT"
+      ],
+      "isHidden": false,
+      "desc": "热门种子索引"
+    }
+  ],
+  "emby": {
+    "title": "Emby服",
+    "description": "没有各种广告和高画质是Emby服/Jellyfin服的特点，大致分为以下两类：",
+    "publicServers": [
+      {
+        "name": "二次元Emby",
+        "url": "https://intro.bgp.yt/"
+      },
+      {
+        "name": "Gir Society",
+        "url": "https://discord.gg/WHxeZ3aTtb"
+      },
+      {
+        "name": "公益服星空指南",
+        "url": "https://t.me/embyxk"
+      }
+    ],
+    "paidServers": [
+      {
+        "name": "1111Emby",
+        "url": "https://plan.emby.moe/"
+      },
+      {
+        "name": "MICU",
+        "url": "https://t.me/micu_user_bot"
+      },
+      {
+        "name": "终点站+",
+        "url": "https://zdz.best"
+      }
+    ],
+    "notice": "* 购买前确保你可以访问相关Emby服线路。文中提到的Emby服仅作为示例展示，不是广告。"
+  },
+  "ok": {
+    "title": "OK影视",
+    "description": "OK影视和Nuvio使用起来和Emby差不多，一般在客户端填写好资源仓库地址就可以了。",
+    "apps": [
+      {
+        "name": "OK影视 (GitHub)",
+        "url": "https://github.com/FongMi/Release/tree/fongmi/apk"
+      },
+      {
+        "name": "Nuvio",
+        "url": "https://nuvioapp.space"
+      }
+    ],
+    "resources": [
+      {
+        "name": "Nuvio 仓库地址",
+        "url": "https://nuvio-plugin-library.vercel.app"
+      },
+      {
+        "name": "TVBox电视版安装配置全指南",
+        "url": "https://blog.ccino.org/p/tvbox-tv-version-installation-and-configuration-complete-guide/"
+      },
+      {
+        "name": "TVB/影視(OK) 电报频道",
+        "url": "https://t.me/tvb_ys"
+      },
+      {
+        "name": "OK影视各种客户端和配置接口",
+        "url": "https://github.com/qist/tvbox"
+      }
+    ],
+    "notice": "* OK影视和Nuvio都是资源聚合的播放器，OK影视高清内容通常需要配合网盘VIP使用。"
+  },
+  "faqs": [
+    {
+      "question": "想找画质高清、更新及时、无不良广告的美剧和韩剧网站，不想看片推荐哪些？",
+      "answer": "不想看片（bxkp.org）精选收录了NO视频、厂长资源、低调影视、PPnix、GoPlay等高质量在线站点，这些站点专注欧美剧集、中字韩剧和院线电影，更新快、支持多线路。同时，结合原牛、海搜等网盘搜剧入口，可以一键转存4K原画夸克或阿里网盘资源，秒播不卡顿。"
+    },
+    {
+      "question": "看日剧、英剧和4K电影，选择在线播放、网盘还是磁力BT更好？",
+      "answer": "追求轻便即开即看，推荐使用在线影视站点；如果追求杜比视界（Dolby Vision）、HDR10及4K原盘的高码率收藏级画质，推荐使用阿里网盘或夸克网盘（如4K指南、海搜），或者通过BT之家、磁力熊、1337X等磁力站点使用比特彗星/迅雷离线下载完整原盘。"
+    },
+    {
+      "question": "如何在电视盒子或大屏设备上畅享全网电影和电视剧？",
+      "answer": "推荐使用开源播放器OK影视、Nuvio或TVBox电视版，搭配不想看片提供的接口仓库与配置教程，挂载网盘实现免会员超清点播；亦可通过Emby公益服（如二次元Emby等）在电视端体验精美的海报墙与跨设备进度同步播放。"
+    }
+  ],
+  "footer": {
+    "backupSites": [
+      {
+        "name": "HedgeDoc",
+        "url": "https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ"
+      },
+      {
+        "name": "bxkp.sld.tw",
+        "url": "https://bxkp.sld.tw"
+      }
+    ],
+    "promoLinks": [
+      {
+        "title": "家宽导航",
+        "url": "https://jiakuan.link",
+        "description": "一些包含家宽节点的机场和VPS。"
+      }
+    ],
+    "bottomText": "Made with ❤",
+    "githubUrl": "https://github.com/kanpianer/bxkp.org"
+  }
+}

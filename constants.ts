@@ -1,71 +1,65 @@
+import sitesData from './src/data/sites.json';
+
 export interface Site {
   name: string;
   main_url: string;
   backup_url: string;
   tags: string[];
+  isHidden?: boolean;
+  desc?: string;
 }
 
-export const SITES: Site[] = [
-    { name: "NO视频", main_url: "https://www.novipnoad.cc/", backup_url: "https://findno.tv/", tags: ["在线"] },
-    { name: "厂长资源", main_url: "https://www.4kcz.com/", backup_url: "https://www.cz01.vip/", tags: ["在线"] },
-    { name: "PPnix/中文", main_url: "https://www.ppnix.com/cn/", backup_url: "", tags: ["在线"] },
-    { name: "七味", main_url: "https://www.qmp4.com", backup_url: "https://www.qn63.com/", tags: ["网盘", "BT"] },
-    { name: "低调影视", main_url: "https://ddys.app", backup_url: "https://ddys.ai/", tags: ["在线"] },
-    { name: "注视影视", main_url: "https://gaze.red", backup_url: "https://gazes.top/", tags: ["在线"] },
-    { name: "片库", main_url: "https://4k01.pianku.online", backup_url: "https://fb.pianku.online", tags: ["在线"] },
-    { name: "GoPlay/韩剧", main_url: "https://goplay.su/", backup_url: "https://discord.com/invite/yY2P3DQR8S", tags: ["在线"] },
-    { name: "七米蓝 Openlist", main_url: "https://al.chirmyram.com/", backup_url: "", tags: ["在线"] },
+export interface EmbyServer {
+  name: string;
+  url: string;
+}
 
-    { name: "Atlantic", main_url:"https://atlantic.st", backup_url:"https://discord.gg/ekUMJ7WVnW", tags:["在线"]},
-    { name: "Stream", main_url: "https://dexter.pw", backup_url: "", tags: ["在线"] },
-    { name: "Basement", main_url: "https://basementx.lol", backup_url: "https://basementx.pro/", tags: ["在线"] },
-    { name: "Cinegram", main_url:"https://cinegram.tv/home", backup_url:"cinegramofficial@proton.me", tags:["在线"]},
-    /* { name: "EE3", main_url: "https://ee3.me/", backup_url: "https://rips.cc/", tags: ["在线"] }, */
-    { name: "ShuttleTV", main_url:"https://shuttletv.su", backup_url:"https://shuttletv.pk/", tags:["在线"]},
-    /* { name: "Cinecat", main_url:"https://beta.cinecat.eu", backup_url:"https://cinecat.eu", tags:["在线"]},*/
-    /* { name: "1Shows", main_url:"https://www.1shows.org", backup_url:"https://www.1tube.org", tags:["在线"]},*/
-    { name: "Movy", main_url:"https://www.movy.bz", backup_url:"https://www.vidy.st", tags:["在线"]},
-    { name: "Miruro/动漫", main_url:"https://www.miruro.to", backup_url:"https://www.miruro.com/", tags:["在线"]},
-    
-    /* { name: "TouStream", main_url:"https://toustream.xyz/", backup_url:"https://toustream.glseries.net", tags:["在线"]}, */
-    /* { name: "Flixer/中文", main_url:"https://flixer.cx/", backup_url:"https://discord.com/invite/Z9Hjeqe4Fr", tags:["在线"]},*/
-    /* { name: "XPrime", main_url: "https://xprime.su", backup_url: "https://xpdomains.net", tags: ["在线", ""] }, */  
-    /* { name: "Cineby", main_url:"https://www.cineby.sc/", backup_url:"https://www.fmovies.gd/", tags:["在线"]}, */
-    /* { name: "BrocoFlix", main_url:"https://brocoflix.xyz/", backup_url:"https://rentry.co/KipsSites", tags:["在线"]}, */
-    /* { name: "Cinemaos", main_url:"https://cinemaos.live/", backup_url:"https://cinemaos.tech/", tags:["在线"]}, */
-    /* { name: "Aether", main_url: "https://aether.mom", backup_url: "https://aether.bar/", tags: ["在线", ""] }, */
-    /* { name: "两个BT", main_url: "https://www.bttwo.me", backup_url: "https://bttwo.vip/", tags: ["在线", ""] }, */
-    /* { name: "混合盘", main_url: "https://hunhepan.com/search", backup_url: "https://hhp.panso.me", tags: ["网盘"] }, */
-     
-    /* { name: "趣盘 Alist", main_url: "https://pan.mediy.cn", backup_url: "", tags: ["在线", "网盘"] }, */
-    { name: "海搜", main_url: "https://haisou.cc/", backup_url: "", tags: ["网盘"] },
-    { name: "爱盼", main_url: "https://www.aipan.me", backup_url: "", tags: ["网盘"] },
-    { name: "原牛", main_url: "https://mihoyonb.com/pan-search", backup_url: "https://x.com/yuxing39", tags: ["网盘"] },
-    { name: "小云搜索", main_url: "https://dash.yunso.net", backup_url: "cs@yunso.net", tags: ["网盘"] },
-    { name: "XDMovies", main_url: "https://top.xdmovies.wtf", backup_url: "https://xdmovies.com", tags: ["网盘"] },
-    { name: "小酷盘", main_url: "https://xiaokupan.com", backup_url: "", tags: ["网盘"] },
-    { name: "盘搜PanSou", main_url: "https://so.252035.xyz", backup_url: "", tags: ["网盘"] },
-    { name: "老K", main_url: "https://docs.qq.com/doc/DTk5EaVdWY2R6ZnBk", backup_url: "", tags: ["网盘"] },
-    { name: "4k指南[原盘]", main_url: "https://4kzn.com", backup_url: "", tags: ["网盘"] },
-    { name: "网盘资源避难所", main_url: "https://www.daiguaji.com/index.php", backup_url: "", tags: ["网盘"] },
-    { name: "阿里云资源", main_url: "https://slowread.net/", backup_url: "", tags: ["网盘"] },
-    { name: "南方公园全集", main_url: "https://sp.tearemix.com/#s27", backup_url: "", tags: ["网盘"] },
-    { name: "ShowBox", main_url: "https://www.showbox.media/", backup_url: "", tags: ["网盘"] },
-    
-    { name: "BT之家", main_url: "https://1lou.one/", backup_url: "https://1lou.cc/", tags: ["BT", "网盘"] },
-    { name: "磁力熊", main_url: "https://www.cilixiong.org", backup_url: "https://www.cilixiong.cc", tags: ["BT"] },
-    { name: "磁力帝", main_url: "https://cldcld.cc", backup_url: "https://cldcld.top", tags: ["BT"] },
-    { name: "FileMood", main_url: "https://filemood.com", backup_url: "", tags: ["BT"] },
-    { name: "UIndex", main_url: "https://uindex.org", backup_url: "", tags: ["BT"] },
-    { name: "1337X", main_url: "https://1337x.to/", backup_url: "https://1337x-status.org/", tags: ["BT"] },
-    { name: "YTS", main_url: "https://yts.gg", backup_url: "https://gosites.org/yts", tags: ["BT"] },
-    { name: "EXT", main_url: "https://ext.to/", backup_url: "https://search.extto.com/", tags: ["BT"] },
-    { name: "Bitsearch", main_url: "https://bitsearch.eu", backup_url: "https://solidtorrents.to/", tags: ["BT"] },
-    { name: "Knaben", main_url: "https://knaben.org/", backup_url: "http://knabenxyzjl3bt5al7awroewfkg37x6duutapjytdib4w42mk2kiqpid.onion/", tags: ["BT"] },
-    { name: "BTSOW", main_url: "https://btsow.live/", backup_url: "https://tellme.pw/bts", tags: ["BT"] },
-    { name: "ACG.RIP", main_url: "https://acg.rip", backup_url: "", tags: ["BT"] },
-    { name: "LimeTorrents", main_url: "https://www.limetorrents.asia", backup_url: "https://limetorrent.si/", tags: ["BT"] },
-    { name: "ExtraTorrent", main_url: "https://extratorrent.st", backup_url: "", tags: ["BT"] },
-  /*  { name: "BDigg", main_url: "https://btdig.com/", backup_url: "", tags: ["BT"] },*/
-    
-];
+export interface EmbySection {
+  title: string;
+  description: string;
+  publicServers: EmbyServer[];
+  paidServers: EmbyServer[];
+  notice: string;
+}
+
+export interface OkItem {
+  name: string;
+  url: string;
+}
+
+export interface OkSection {
+  title: string;
+  description: string;
+  apps: OkItem[];
+  resources: OkItem[];
+  notice: string;
+}
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface BackupSite {
+  name: string;
+  url: string;
+}
+
+export interface PromoLink {
+  title: string;
+  url: string;
+  description: string;
+}
+
+export interface FooterSection {
+  backupSites: BackupSite[];
+  promoLinks: PromoLink[];
+  bottomText: string;
+  githubUrl: string;
+}
+
+export const SITES: Site[] = sitesData.sites as Site[];
+export const EMBY_SECTION: EmbySection = sitesData.emby as EmbySection;
+export const OK_SECTION: OkSection = sitesData.ok as OkSection;
+export const FAQS_LIST: FaqItem[] = sitesData.faqs as FaqItem[];
+export const FOOTER_SECTION: FooterSection = sitesData.footer as FooterSection;
