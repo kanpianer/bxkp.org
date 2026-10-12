@@ -40,7 +40,7 @@ const TasselSwitch: React.FC<TasselSwitchProps> = ({ onToggle, isOpen = false })
     <div 
       className="fixed top-0 right-3 sm:right-[5%] z-50 flex flex-col items-center cursor-pointer group scale-75 sm:scale-100 origin-top select-none"
       onClick={handleClick}
-      title="家宽导航"
+      title="视频播放器"
     >
       {/* Mounting Plate (Static) */}
       <div className="w-5 h-2 bg-ink-800 rounded-b-lg shadow-md z-10"></div>
