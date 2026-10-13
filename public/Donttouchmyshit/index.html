@@ -9,8 +9,12 @@
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <script src="/js/sortable.min.js"></script>
+  <script>
+    if (!window.Sortable) {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"><\/script>');
+    }
+  </script>
 
   <style>
     :root {
@@ -434,14 +438,33 @@
     .drag-handle {
       cursor: grab;
       color: var(--text-light);
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       user-select: none;
-      padding: 2px 6px;
-      border-radius: 4px;
+      -webkit-user-select: none;
+      touch-action: none;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: color 0.15s, transform 0.15s, background-color 0.15s;
+    }
+
+    .drag-handle:hover {
+      color: var(--cinnabar);
+      background: var(--cinnabar-glow);
+      transform: scale(1.15);
     }
 
     .drag-handle:active {
       cursor: grabbing;
+    }
+
+    .card-row a,
+    .card-row img {
+      -webkit-user-drag: none;
+      user-drag: none;
     }
 
     .card-meta-main {
@@ -870,13 +893,19 @@
 
     /* 拖拽指示 */
     .sortable-ghost {
-      opacity: 0.35;
+      opacity: 0.35 !important;
       background: var(--cinnabar-glow) !important;
       border: 2px dashed var(--cinnabar) !important;
     }
 
     .sortable-chosen {
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-lg) !important;
+      background: var(--bg-surface-hover) !important;
+    }
+
+    .sortable-drag {
+      opacity: 0.95 !important;
+      cursor: grabbing !important;
     }
   </style>
 </head>
@@ -1471,6 +1500,7 @@
           const row = document.createElement('div');
           row.className = `card-row ${site.isHidden ? 'is-hidden' : ''}`;
           row.dataset.index = globalIdx;
+          row.dataset.name = site.name;
 
           // 标签 Pills
           const tagsHtml = (site.tags || []).map(t => {
@@ -1483,7 +1513,7 @@
 
           row.innerHTML = `
             <div class="card-row-left">
-              <span class="drag-handle" title="拖拽排序">⋮⋮</span>
+              <span class="drag-handle" title="按住拖拽排序">⋮⋮</span>
               <div class="card-meta-main">
                 <div class="card-title-line">
                   <span class="card-site-name">
@@ -1521,6 +1551,7 @@
 
         if (sortableInstance) {
           try { sortableInstance.destroy(); } catch (e) {}
+          sortableInstance = null;
         }
 
         sortableInstance = new Sortable(container, {
@@ -1528,28 +1559,61 @@
           animation: 200,
           ghostClass: 'sortable-ghost',
           chosenClass: 'sortable-chosen',
+          dragClass: 'sortable-drag',
+          touchStartThreshold: 3,
+          swapThreshold: 0.65,
+          fallbackOnBody: true,
           onEnd: function(evt) {
             if (evt.oldIndex === evt.newIndex) return;
 
-            // 获取新顺序的所有下标
-            const rows = Array.from(container.children);
-            const newSitesOrder = rows.map(r => cmsData.sites[parseInt(r.dataset.index, 10)]).filter(Boolean);
-            
+            const draggedRow = evt.item;
+            const draggedName = draggedRow ? draggedRow.dataset.name : null;
+            if (!draggedName) return;
+
             if (currentCategoryFilter === 'all' && !currentSearchQuery) {
-              cmsData.sites = newSitesOrder;
+              // 全量模式：根据当前容器内实际拖拽就位的所有 DOM 行重构全局 sites 顺序
+              const newNames = Array.from(container.children).map(r => r.dataset.name).filter(Boolean);
+              const siteMap = new Map(cmsData.sites.map(s => [s.name, s]));
+              cmsData.sites = newNames.map(name => siteMap.get(name)).filter(Boolean);
             } else {
-              // 局部拖拽更新
-              const movedSite = cmsData.sites[parseInt(evt.item.dataset.index, 10)];
-              const oldGlobalIndex = cmsData.sites.indexOf(movedSite);
-              cmsData.sites.splice(oldGlobalIndex, 1);
-              
-              const targetRow = rows[evt.newIndex];
-              const targetGlobalIndex = targetRow ? parseInt(targetRow.dataset.index, 10) : cmsData.sites.length;
-              cmsData.sites.splice(targetGlobalIndex, 0, movedSite);
+              // 局部模式 (当前处于分类筛选或搜索状态中)
+              const oldGlobalIndex = cmsData.sites.findIndex(s => s.name === draggedName);
+              if (oldGlobalIndex !== -1) {
+                const [movedSite] = cmsData.sites.splice(oldGlobalIndex, 1);
+                const nextRow = draggedRow.nextElementSibling;
+                const prevRow = draggedRow.previousElementSibling;
+
+                if (nextRow && nextRow.dataset.name) {
+                  const nextIndex = cmsData.sites.findIndex(s => s.name === nextRow.dataset.name);
+                  if (nextIndex !== -1) {
+                    cmsData.sites.splice(nextIndex, 0, movedSite);
+                  } else {
+                    cmsData.sites.push(movedSite);
+                  }
+                } else if (prevRow && prevRow.dataset.name) {
+                  const prevIndex = cmsData.sites.findIndex(s => s.name === prevRow.dataset.name);
+                  if (prevIndex !== -1) {
+                    cmsData.sites.splice(prevIndex + 1, 0, movedSite);
+                  } else {
+                    cmsData.sites.push(movedSite);
+                  }
+                } else {
+                  cmsData.sites.push(movedSite);
+                }
+              }
             }
 
-            renderSiteList();
-            showToast('站点排序已调整，点击右上角【应用】生效');
+            // 同步更新 DOM 节点上的 dataset.index，使编辑/删除精准定位
+            Array.from(container.children).forEach(r => {
+              const name = r.dataset.name;
+              if (name) {
+                r.dataset.index = cmsData.sites.findIndex(s => s.name === name);
+              }
+            });
+
+            // 注意：绝不能在此处调用 renderSiteList()！因为 Sortable 已将 DOM 节点放置就位，
+            // 重新清空渲染会造成松手时节点被销毁并弹回原始位置的 bug。
+            showToast(`已调整【${draggedName}】站点排序，点击右上角【应用】生效`);
           }
         });
       }
@@ -1578,7 +1642,8 @@
         const row = target.closest('.card-row');
         if (!row) return;
 
-        const idx = parseInt(row.dataset.index, 10);
+        const siteName = row.dataset.name;
+        const idx = siteName ? cmsData.sites.findIndex(s => s.name === siteName) : parseInt(row.dataset.index, 10);
         const site = cmsData.sites[idx];
         if (!site) return;
 
