@@ -2,6 +2,17 @@
   "updatedAt": "2026-10-13",
   "sites": [
     {
+      "name": "PPnix/中文",
+      "main_url": "https://www.ppnix.com/cn/",
+      "backup_url": "",
+      "tags": [
+        "在线",
+        "海外流媒体"
+      ],
+      "isHidden": false,
+      "desc": "全球流媒体精选，聚合海量海外美剧与中英双语字幕资源"
+    },
+    {
       "name": "NO视频",
       "main_url": "https://www.novipnoad.cc/",
       "backup_url": "https://findno.tv/",
@@ -24,17 +35,6 @@
       ],
       "isHidden": false,
       "desc": "热门韩剧、国产剧与院线大片首发更新，多线路秒播，画质极佳"
-    },
-    {
-      "name": "PPnix/中文",
-      "main_url": "https://www.ppnix.com/cn/",
-      "backup_url": "",
-      "tags": [
-        "在线",
-        "海外流媒体"
-      ],
-      "isHidden": false,
-      "desc": "全球流媒体精选，聚合海量海外美剧与中英双语字幕资源"
     },
     {
       "name": "七味",
@@ -103,6 +103,16 @@
       "desc": "精选公开 Alist 影视云盘直链挂载"
     },
     {
+      "name": "NEPU",
+      "main_url": "https://4k.beer",
+      "backup_url": "https://rar.to",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "老牌海外极简电影剧集聚合"
+    },
+    {
       "name": "Atlantic",
       "main_url": "https://atlantic.st",
       "backup_url": "https://discord.gg/ekUMJ7WVnW",
@@ -122,16 +132,6 @@
       ],
       "isHidden": false,
       "desc": "简洁流媒体在线观看"
-    },
-    {
-      "name": "NEPU",
-      "main_url": "https://4k.beer",
-      "backup_url": "https://rar.to",
-      "tags": [
-        "在线"
-      ],
-      "isHidden": false,
-      "desc": "老牌海外极简电影剧集聚合"
     },
     {
       "name": "Cinegram",
