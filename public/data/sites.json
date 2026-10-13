@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-12",
+  "updatedAt": "2026-10-13",
   "sites": [
     {
       "name": "NO视频",
@@ -124,14 +124,14 @@
       "desc": "简洁流媒体在线观看"
     },
     {
-      "name": "Basement",
-      "main_url": "https://basementx.lol",
-      "backup_url": "https://basementx.pro/",
+      "name": "NEPU",
+      "main_url": "https://4k.beer",
+      "backup_url": "https://rar.to",
       "tags": [
         "在线"
       ],
       "isHidden": false,
-      "desc": "海外极简电影剧集聚合"
+      "desc": "老牌海外极简电影剧集聚合"
     },
     {
       "name": "Cinegram",
