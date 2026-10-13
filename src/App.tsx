@@ -36,6 +36,89 @@ export default function App() {
     }
   }, [isDarkMode]);
 
+  // 跟踪 SecretPanel 是否打开，避免在弹窗打开时误触发
+  const isSecretOpenRef = useRef(isSecretOpen);
+  useEffect(() => {
+    isSecretOpenRef.current = isSecretOpen;
+  }, [isSecretOpen]);
+
+  // 在网页空白处连续点击5次，在新标签页打开 CMS 内容管理界面 (域名/Donttouchmyshit/)
+  useEffect(() => {
+    let clickCount = 0;
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const handleGlobalClick = (e: MouseEvent) => {
+      // 弹窗打开时不处理
+      if (isSecretOpenRef.current) {
+        clickCount = 0;
+        if (resetTimer) {
+          clearTimeout(resetTimer);
+          resetTimer = null;
+        }
+        return;
+      }
+
+      const rawTarget = e.target as Node | null;
+      const target = (rawTarget instanceof Element ? rawTarget : rawTarget?.parentElement) as Element | null;
+      if (!target || !target.closest) return;
+
+      // 检查是否点击在可交互元素（如链接、按钮、输入框、标签、选项卡、或带 cursor-pointer 的元素等）
+      const interactiveEl = target.closest(
+        'a, button, input, textarea, select, label, iframe, [role="button"], [role="tab"], .cursor-pointer'
+      );
+
+      let isPointer = false;
+      try {
+        isPointer = window.getComputedStyle(target).cursor === 'pointer';
+      } catch (_) {
+        // ignore
+      }
+
+      if (interactiveEl || isPointer) {
+        // 点中可交互元素时重置计数
+        clickCount = 0;
+        if (resetTimer) {
+          clearTimeout(resetTimer);
+          resetTimer = null;
+        }
+        return;
+      }
+
+      // 点在网页空白处，计数自增
+      clickCount += 1;
+      if (resetTimer) {
+        clearTimeout(resetTimer);
+      }
+
+      if (clickCount >= 5) {
+        clickCount = 0;
+        resetTimer = null;
+        window.getSelection()?.removeAllRanges();
+
+        // 动态根据当前所在域名（兼容多域名/备份域名/本地开发环境）在新标签页打开后台
+        const origin = window.location.origin && window.location.origin !== 'null'
+          ? window.location.origin
+          : `${window.location.protocol}//${window.location.host}`;
+        const targetUrl = `${origin}/Donttouchmyshit/`;
+        window.open(targetUrl, '_blank');
+      } else {
+        // 1.5秒内没有下一次点击则重置计数
+        resetTimer = setTimeout(() => {
+          clickCount = 0;
+          resetTimer = null;
+        }, 1500);
+      }
+    };
+
+    window.addEventListener('click', handleGlobalClick, true);
+    return () => {
+      window.removeEventListener('click', handleGlobalClick, true);
+      if (resetTimer) {
+        clearTimeout(resetTimer);
+      }
+    };
+  }, []);
+
   const filteredSites = useMemo(() => {
     let tag = "在线";
     if (currentCategory === "pan") tag = "网盘";
