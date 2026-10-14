@@ -45,6 +45,12 @@ export interface BackupSite {
   url: string;
 }
 
+export interface RelatedSite {
+  name: string;
+  url: string;
+  displayText?: string;
+}
+
 export interface PromoLink {
   title: string;
   url: string;
@@ -53,6 +59,7 @@ export interface PromoLink {
 
 export interface FooterSection {
   backupSites: BackupSite[];
+  relatedSites?: RelatedSite[];
   promoLinks: PromoLink[];
   bottomText: string;
   githubUrl: string;

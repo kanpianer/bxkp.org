@@ -550,13 +550,19 @@
         "url": "https://bxkp.sld.tw"
       }
     ],
-    "promoLinks": [
+    "relatedSites": [
       {
-        "title": "家宽导航",
-        "url": "https://jiakuan.link",
-        "description": "一些包含家宽节点的机场和VPS。"
+        "name": "不想翻墙",
+        "url": "https://bxfq.sld.tw/",
+        "displayText": "bxfq.sld.tw"
+      },
+      {
+        "name": "不想看书",
+        "url": "https://bxks.sld.tw/",
+        "displayText": "bxks.sld.tw"
       }
     ],
+    "promoLinks": [],
     "bottomText": "Made with ❤",
     "githubUrl": "https://github.com/kanpianer/bxkp.org"
   }

@@ -15,6 +15,31 @@ export default function App() {
   const [isSecretOpen, setIsSecretOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // 家宽导航多镜像权重随机跳转 (50% jiakuan.link / 25% jkdh.sld.tw / 25% jkdh.pages.dev)
+  const getRandomJiakuanUrl = () => {
+    const r = Math.random();
+    if (r < 0.5) {
+      return 'https://jiakuan.link/';
+    } else if (r < 0.75) {
+      return 'https://jkdh.sld.tw/';
+    } else {
+      return 'https://jkdh.pages.dev/';
+    }
+  };
+
+  const [jiakuanUrl, setJiakuanUrl] = useState('https://jiakuan.link/');
+
+  const handleJiakuanPrepare = () => {
+    setJiakuanUrl(getRandomJiakuanUrl());
+  };
+
+  const handleJiakuanClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const targetUrl = getRandomJiakuanUrl();
+    setJiakuanUrl(targetUrl);
+    window.open(targetUrl, '_blank', 'noopener,noreferrer');
+  };
+
   const categoryAnchorRef = useRef<HTMLDivElement>(null);
 
   // Hover transition control refs
@@ -246,6 +271,35 @@ export default function App() {
       <TasselSwitch onToggle={() => setIsSecretOpen(prev => !prev)} isOpen={isSecretOpen} />
       <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
 
+      {/* Top-Left: 家宽导航 链接（无装饰按钮，纯logo与文字，hover高亮，固定于页面左上角不随屏悬浮） */}
+      <a
+        href={jiakuanUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleJiakuanClick}
+        onMouseEnter={handleJiakuanPrepare}
+        onFocus={handleJiakuanPrepare}
+        onTouchStart={handleJiakuanPrepare}
+        title="家宽导航（精选家宽与住宅IP节点推荐）"
+        aria-label="家宽导航"
+        className={`absolute top-4 left-4 sm:top-5 sm:left-6 z-30 flex items-center gap-2 font-serif text-sm font-bold select-none cursor-pointer transition-all duration-300 group ${
+          isDarkActive
+            ? 'text-gray-300/80 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]'
+            : 'text-ink-700/80 hover:text-cinnabar hover:drop-shadow-sm'
+        }`}
+      >
+        <img
+          src="/jkdh-icon.png"
+          alt="家宽导航"
+          width="20"
+          height="20"
+          className="w-5 h-5 object-contain rounded-sm opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+          loading="eager"
+          decoding="async"
+        />
+        <span className="tracking-wide">家宽导航</span>
+      </a>
+
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 sm:px-8 py-8 md:py-10 pb-36 md:pb-6 flex flex-col items-center min-h-screen">
         
@@ -453,6 +507,31 @@ export default function App() {
                        <a href={bSite.url} target="_blank" rel="noopener noreferrer" className={linkClass}>{bSite.name}</a>
                      </React.Fragment>
                    ))}
+                 </p>
+               )}
+               {FOOTER_SECTION.relatedSites && FOOTER_SECTION.relatedSites.length > 0 ? (
+                 <p className="mb-2">
+                   {FOOTER_SECTION.relatedSites.map((item, idx) => (
+                     <React.Fragment key={item.name}>
+                       {idx > 0 && '、'}
+                       <span>{item.name}: </span>
+                       <a 
+                         href={item.url} 
+                         target="_blank" 
+                         rel="noopener noreferrer" 
+                         className={linkClass}
+                       >
+                         {item.displayText || item.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                       </a>
+                     </React.Fragment>
+                   ))}
+                 </p>
+               ) : (
+                 <p className="mb-2">
+                   <span>不想翻墙: </span>
+                   <a href="https://bxfq.sld.tw/" target="_blank" rel="noopener noreferrer" className={linkClass}>bxfq.sld.tw</a>
+                   <span>、不想看书: </span>
+                   <a href="https://bxks.sld.tw/" target="_blank" rel="noopener noreferrer" className={linkClass}>bxks.sld.tw</a>
                  </p>
                )}
                {FOOTER_SECTION.promoLinks && FOOTER_SECTION.promoLinks.map(p => (

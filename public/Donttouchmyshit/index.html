@@ -1099,7 +1099,7 @@
                 <span>🔗 友情推荐与扩展导航</span>
               </h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
-                显示在主站底部的友链或推荐项目（如：家宽导航：一些包含家宽节点的机场和VPS）。
+                显示在主站底部的扩展推荐项目。
               </p>
             </div>
             <button id="btn-add-promo-link" class="btn btn-sm btn-primary">+ 添加推荐链接</button>
@@ -1916,11 +1916,11 @@
             card.style.padding = '12px';
             card.innerHTML = `
               <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
-                <input type="text" class="form-control" style="width: 160px;" placeholder="导航标题 (如: 家宽导航)" value="${p.title || ''}" onchange="updateFooterPromo(${idx}, 'title', this.value)">
+                <input type="text" class="form-control" style="width: 160px;" placeholder="导航标题 (如: 扩展推荐)" value="${p.title || ''}" onchange="updateFooterPromo(${idx}, 'title', this.value)">
                 <input type="url" class="form-control" style="flex: 1;" placeholder="跳转链接 (如: https://...)" value="${p.url || ''}" onchange="updateFooterPromo(${idx}, 'url', this.value)">
                 <button class="btn btn-sm btn-danger" onclick="deleteFooterPromo(${idx})">🗑️ 删除</button>
               </div>
-              <input type="text" class="form-control" placeholder="描述说明 (如: 一些包含家宽节点的机场和VPS。)" value="${p.description || ''}" onchange="updateFooterPromo(${idx}, 'description', this.value)">
+              <input type="text" class="form-control" placeholder="描述说明 (如: 相关资源推荐说明)" value="${p.description || ''}" onchange="updateFooterPromo(${idx}, 'description', this.value)">
             `;
             promoContainer.appendChild(card);
           });
