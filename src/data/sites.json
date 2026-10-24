@@ -197,15 +197,15 @@
       "desc": "海量网盘影视资源聚合搜索"
     },
     {
-      "name": "原牛",
-      "main_url": "https://mihoyonb.com/pan-search",
-      "backup_url": "https://x.com/yuxing39",
+      "name": "4K-HDHub",
+      "main_url": "https://4khdhub.one",
+      "backup_url": "https://hdhub4u.fast",
       "tags": [
         "网盘",
         "夸克"
       ],
       "isHidden": false,
-      "desc": "原牛网盘搜索，秒存4K影视资源"
+      "desc": "HDHub4u : The Best Free Site for Movie Lovers"
     },
     {
       "name": "小云搜索",
@@ -219,7 +219,7 @@
     },
     {
       "name": "XDMovies",
-      "main_url": "https://top.xdmovies.wtf",
+      "main_url": "https://huh.xdmovies.wtf",
       "backup_url": "https://xdmovies.com",
       "tags": [
         "网盘"
