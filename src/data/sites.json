@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-13",
+  "updatedAt": "2026-10-24",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -228,9 +228,9 @@
       "desc": "丰富高清网盘资源精选"
     },
     {
-      "name": "小酷盘",
-      "main_url": "https://xiaokupan.com",
-      "backup_url": "",
+      "name": "SeedHub",
+      "main_url": "https://sidhub.cc",
+      "backup_url": "https://seeduck.cc/zuixin-di-zhi/",
       "tags": [
         "网盘"
       ],
