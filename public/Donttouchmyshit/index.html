@@ -1091,7 +1091,7 @@
           <div id="footer-backups-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
 
-        <!-- 友情推荐导航卡片 -->
+        <!-- 友情推荐与扩展导航卡片 -->
         <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
             <div>
@@ -1099,10 +1099,26 @@
                 <span>🔗 友情推荐与扩展导航</span>
               </h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
-                显示在主站底部的扩展推荐项目。
+                显示在主站底部的友链与扩展导航（例如：不想翻墙: bxfq.sld.tw、不想看书: bxks.sld.tw），支持修改名称、网址、显示文本与增删排序。
               </p>
             </div>
-            <button id="btn-add-promo-link" class="btn btn-sm btn-primary">+ 添加推荐链接</button>
+            <button id="btn-add-related-site" class="btn btn-sm btn-primary">+ 添加导航链接</button>
+          </div>
+          <div id="footer-related-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+
+        <!-- 底部推广说明链接 (可选) -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                <span>📢 底部推广说明链接 (可选)</span>
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                带描述说明文案的推荐条目（例如：项目名称：详细介绍文案）。
+              </p>
+            </div>
+            <button id="btn-add-promo-link" class="btn btn-sm btn-primary">+ 添加推广链接</button>
           </div>
           <div id="footer-promos-list" style="display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
@@ -1344,6 +1360,7 @@
         faqs: [],
         footer: {
           backupSites: [],
+          relatedSites: [],
           promoLinks: [],
           bottomText: 'Made with ❤',
           githubUrl: 'https://github.com/kanpianer/bxkp.org'
@@ -1875,14 +1892,28 @@
       });
 
       // 4.5 页脚与友情扩展表单渲染与交互
+      function escapeAttr(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
       function renderFooterForms() {
         if (!cmsData.footer) {
           cmsData.footer = {
             backupSites: [],
+            relatedSites: [],
             promoLinks: [],
             bottomText: 'Made with ❤',
             githubUrl: 'https://github.com/kanpianer/bxkp.org'
           };
+        }
+        if (!cmsData.footer.relatedSites) {
+          cmsData.footer.relatedSites = [];
         }
         const footer = cmsData.footer;
 
@@ -1896,37 +1927,79 @@
             row.style.gap = '8px';
             row.style.alignItems = 'center';
             row.innerHTML = `
-              <input type="text" class="form-control" style="width: 160px;" placeholder="网站名称 (如: HedgeDoc)" value="${item.name || ''}" onchange="updateFooterBackup(${idx}, 'name', this.value)">
-              <input type="url" class="form-control" style="flex: 1;" placeholder="网站网址 (如: https://...)" value="${item.url || ''}" onchange="updateFooterBackup(${idx}, 'url', this.value)">
+              <input type="text" class="form-control" style="width: 160px;" placeholder="网站名称 (如: HedgeDoc)" value="${escapeAttr(item.name || '')}" onchange="updateFooterBackup(${idx}, 'name', this.value)">
+              <input type="url" class="form-control" style="flex: 1;" placeholder="网站网址 (如: https://...)" value="${escapeAttr(item.url || '')}" onchange="updateFooterBackup(${idx}, 'url', this.value)">
               <button class="btn btn-sm btn-danger" onclick="deleteFooterBackup(${idx})">✕</button>
             `;
             backupContainer.appendChild(row);
           });
         }
 
-        // 2. 友情推荐与扩展导航渲染
+        // 2. 友情推荐与扩展导航渲染 (relatedSites)
+        const relatedContainer = document.getElementById('footer-related-list');
+        if (relatedContainer) {
+          relatedContainer.innerHTML = '';
+          if (!footer.relatedSites || footer.relatedSites.length === 0) {
+            relatedContainer.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; padding: 6px 0;">暂无友情推荐链接，点击右上角「+ 添加导航链接」进行新增</div>';
+          } else {
+            footer.relatedSites.forEach((item, idx) => {
+              const row = document.createElement('div');
+              row.style.background = 'var(--bg-card)';
+              row.style.border = '1px solid var(--border-color)';
+              row.style.borderRadius = 'var(--radius-sm)';
+              row.style.padding = '10px 12px';
+              row.style.display = 'flex';
+              row.style.gap = '10px';
+              row.style.alignItems = 'center';
+              row.style.flexWrap = 'wrap';
+
+              row.innerHTML = `
+                <div style="display: flex; gap: 8px; align-items: center; flex: 1; min-width: 280px;">
+                  <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">名称:</span>
+                  <input type="text" class="form-control" style="width: 130px;" placeholder="如: 不想翻墙" value="${escapeAttr(item.name || '')}" onchange="updateFooterRelated(${idx}, 'name', this.value)">
+                  <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">链接:</span>
+                  <input type="url" class="form-control" style="flex: 1; min-width: 140px;" placeholder="如: https://bxfq.sld.tw/" value="${escapeAttr(item.url || '')}" onchange="updateFooterRelated(${idx}, 'url', this.value)">
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">显示文本:</span>
+                  <input type="text" class="form-control" style="width: 140px;" placeholder="留空默认显示网址" value="${escapeAttr(item.displayText || '')}" onchange="updateFooterRelated(${idx}, 'displayText', this.value)">
+                  <button type="button" class="btn btn-sm" onclick="moveFooterRelated(${idx}, -1)" title="上移" ${idx === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>↑</button>
+                  <button type="button" class="btn btn-sm" onclick="moveFooterRelated(${idx}, 1)" title="下移" ${idx === (footer.relatedSites.length - 1) ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>↓</button>
+                  <button type="button" class="btn btn-sm btn-danger" onclick="deleteFooterRelated(${idx})" title="删除此链接">🗑️ 删除</button>
+                </div>
+              `;
+              relatedContainer.appendChild(row);
+            });
+          }
+        }
+
+        // 3. 底部推广说明链接渲染 (promoLinks)
         const promoContainer = document.getElementById('footer-promos-list');
         if (promoContainer) {
           promoContainer.innerHTML = '';
-          (footer.promoLinks || []).forEach((p, idx) => {
-            const card = document.createElement('div');
-            card.style.background = 'var(--bg-card)';
-            card.style.border = '1px solid var(--border-color)';
-            card.style.borderRadius = 'var(--radius-sm)';
-            card.style.padding = '12px';
-            card.innerHTML = `
-              <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
-                <input type="text" class="form-control" style="width: 160px;" placeholder="导航标题 (如: 扩展推荐)" value="${p.title || ''}" onchange="updateFooterPromo(${idx}, 'title', this.value)">
-                <input type="url" class="form-control" style="flex: 1;" placeholder="跳转链接 (如: https://...)" value="${p.url || ''}" onchange="updateFooterPromo(${idx}, 'url', this.value)">
-                <button class="btn btn-sm btn-danger" onclick="deleteFooterPromo(${idx})">🗑️ 删除</button>
-              </div>
-              <input type="text" class="form-control" placeholder="描述说明 (如: 相关资源推荐说明)" value="${p.description || ''}" onchange="updateFooterPromo(${idx}, 'description', this.value)">
-            `;
-            promoContainer.appendChild(card);
-          });
+          if (!footer.promoLinks || footer.promoLinks.length === 0) {
+            promoContainer.innerHTML = '<div style="color: var(--text-muted); font-size: 0.85rem; padding: 4px 0;">暂无推广条目（可选）</div>';
+          } else {
+            footer.promoLinks.forEach((p, idx) => {
+              const card = document.createElement('div');
+              card.style.background = 'var(--bg-card)';
+              card.style.border = '1px solid var(--border-color)';
+              card.style.borderRadius = 'var(--radius-sm)';
+              card.style.padding = '12px';
+              card.innerHTML = `
+                <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
+                  <input type="text" class="form-control" style="width: 160px;" placeholder="导航标题 (如: 扩展推荐)" value="${escapeAttr(p.title || '')}" onchange="updateFooterPromo(${idx}, 'title', this.value)">
+                  <input type="url" class="form-control" style="flex: 1;" placeholder="跳转链接 (如: https://...)" value="${escapeAttr(p.url || '')}" onchange="updateFooterPromo(${idx}, 'url', this.value)">
+                  <button class="btn btn-sm btn-danger" onclick="deleteFooterPromo(${idx})">🗑️ 删除</button>
+                </div>
+                <input type="text" class="form-control" placeholder="描述说明 (如: 相关资源推荐说明)" value="${escapeAttr(p.description || '')}" onchange="updateFooterPromo(${idx}, 'description', this.value)">
+              `;
+              promoContainer.appendChild(card);
+            });
+          }
         }
 
-        // 3. 版权文案与 Github 链接
+        // 4. 版权文案与 Github 链接
         const bottomTextInput = document.getElementById('footer-bottom-text');
         if (bottomTextInput) bottomTextInput.value = footer.bottomText || 'Made with ❤';
 
@@ -1945,6 +2018,30 @@
           cmsData.footer.backupSites.splice(idx, 1);
           renderFooterForms();
         }
+      };
+
+      window.updateFooterRelated = function(idx, key, val) {
+        if (cmsData.footer && cmsData.footer.relatedSites && cmsData.footer.relatedSites[idx]) {
+          cmsData.footer.relatedSites[idx][key] = val.trim();
+        }
+      };
+
+      window.deleteFooterRelated = function(idx) {
+        if (cmsData.footer && cmsData.footer.relatedSites) {
+          cmsData.footer.relatedSites.splice(idx, 1);
+          renderFooterForms();
+        }
+      };
+
+      window.moveFooterRelated = function(idx, dir) {
+        if (!cmsData.footer || !cmsData.footer.relatedSites) return;
+        const list = cmsData.footer.relatedSites;
+        const targetIdx = idx + dir;
+        if (targetIdx < 0 || targetIdx >= list.length) return;
+        const temp = list[idx];
+        list[idx] = list[targetIdx];
+        list[targetIdx] = temp;
+        renderFooterForms();
       };
 
       window.updateFooterPromo = function(idx, key, val) {
@@ -1966,6 +2063,16 @@
         cmsData.footer.backupSites.push({ name: '新备份网站', url: 'https://...' });
         renderFooterForms();
       });
+
+      const btnAddRelatedSite = document.getElementById('btn-add-related-site');
+      if (btnAddRelatedSite) {
+        btnAddRelatedSite.addEventListener('click', () => {
+          if (!cmsData.footer) cmsData.footer = {};
+          if (!cmsData.footer.relatedSites) cmsData.footer.relatedSites = [];
+          cmsData.footer.relatedSites.push({ name: '', url: 'https://', displayText: '' });
+          renderFooterForms();
+        });
+      }
 
       document.getElementById('btn-add-promo-link').addEventListener('click', () => {
         if (!cmsData.footer) cmsData.footer = {};

@@ -509,23 +509,25 @@ export default function App() {
                    ))}
                  </p>
                )}
-               {FOOTER_SECTION.relatedSites && FOOTER_SECTION.relatedSites.length > 0 ? (
-                 <p className="mb-2">
-                   {FOOTER_SECTION.relatedSites.map((item, idx) => (
-                     <React.Fragment key={item.name}>
-                       {idx > 0 && '、'}
-                       <span>{item.name}: </span>
-                       <a 
-                         href={item.url} 
-                         target="_blank" 
-                         rel="noopener noreferrer" 
-                         className={linkClass}
-                       >
-                         {item.displayText || item.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-                       </a>
-                     </React.Fragment>
-                   ))}
-                 </p>
+               {FOOTER_SECTION.relatedSites ? (
+                 FOOTER_SECTION.relatedSites.length > 0 && (
+                   <p className="mb-2">
+                     {FOOTER_SECTION.relatedSites.map((item, idx) => (
+                       <React.Fragment key={`${item.name}-${item.url}-${idx}`}>
+                         {idx > 0 && '、'}
+                         <span>{item.name}: </span>
+                         <a 
+                           href={item.url} 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           className={linkClass}
+                         >
+                           {item.displayText || item.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                         </a>
+                       </React.Fragment>
+                     ))}
+                   </p>
+                 )
                ) : (
                  <p className="mb-2">
                    <span>不想翻墙: </span>
