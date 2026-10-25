@@ -567,7 +567,7 @@
     "githubUrl": "https://github.com/kanpianer/bxkp.org"
   },
   "popup": {
-    "cycleStartTime": 1729887354000,
+    "cycleStartTime": 1792963372253,
     "videos": [
       {
         "id": "pv-1",
@@ -592,9 +592,19 @@
         "durationSeconds": 0,
         "duration": 3888000,
         "enabled": true
+      },
+      {
+        "id": "pv_1792962058876",
+        "title": "The Bureau 2015 - 2020",
+        "type": "url",
+        "content": "https://www.vidy.st/tv/62476/1/1?color=DC2626&nextEpisode=true&episodeSelector=true",
+        "durationDays": 56,
+        "durationHours": 14,
+        "durationMinutes": 32,
+        "durationSeconds": 43,
+        "duration": 4890763,
+        "enabled": true
       }
-    ],
-    "activeVideoId": "pv-1",
-    "activeExpiresAt": 1733827717000
+    ]
   }
 }
