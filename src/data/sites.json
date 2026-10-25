@@ -592,18 +592,6 @@
         "durationSeconds": 0,
         "duration": 3888000,
         "enabled": true
-      },
-      {
-        "id": "pv_1792961611467",
-        "title": "The Bureau 2015 - 2020",
-        "type": "url",
-        "content": "https://www.vidy.st/tv/62476/1/1?color=DC2626&nextEpisode=true&episodeSelector=true",
-        "durationDays": 56,
-        "durationHours": 14,
-        "durationMinutes": 32,
-        "durationSeconds": 43,
-        "duration": 4890763,
-        "enabled": true
       }
     ]
   }
