@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-24",
+  "updatedAt": "2026-10-25",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -565,5 +565,34 @@
     "promoLinks": [],
     "bottomText": "Made with ❤",
     "githubUrl": "https://github.com/kanpianer/bxkp.org"
+  },
+  "popup": {
+    "cycleStartTime": 1729887354000,
+    "videos": [
+      {
+        "id": "pv-1",
+        "title": "绝命毒师 Breaking Bad",
+        "type": "url",
+        "content": "https://www.vidy.st/tv/1396/1/1?color=DC2626&nextEpisode=true&episodeSelector=true",
+        "durationDays": 45,
+        "durationHours": 14,
+        "durationMinutes": 32,
+        "durationSeconds": 43,
+        "duration": 3940363,
+        "enabled": true
+      },
+      {
+        "id": "pv-2",
+        "title": "火线 The Wire",
+        "type": "url",
+        "content": "https://www.vidy.st/tv/1438/1/1?color=DC2626&nextEpisode=true&episodeSelector=true",
+        "durationDays": 45,
+        "durationHours": 0,
+        "durationMinutes": 0,
+        "durationSeconds": 0,
+        "duration": 3888000,
+        "enabled": true
+      }
+    ]
   }
 }

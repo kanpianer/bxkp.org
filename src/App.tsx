@@ -67,19 +67,33 @@ export default function App() {
     isSecretOpenRef.current = isSecretOpen;
   }, [isSecretOpen]);
 
-  // 在网页空白处连续点击5次，在新标签页打开 CMS 内容管理界面 (域名/Donttouchmyshit/)
+  // 在网页空白处快速连续点击5次，在新标签页打开 CMS 内容管理界面 (域名/Donttouchmyshit/)
   useEffect(() => {
-    let clickCount = 0;
+    // 快速连续点击判定参数：
+    // 1. 相邻两次点击的最大允许间隔为 450ms，超过则视为连击中断并重新计数
+    // 2. 连续5次点击的总耗时不得超过 1500ms
+    const REQUIRED_CLICKS = 5;
+    const MAX_CLICK_INTERVAL = 450;
+    const MAX_TOTAL_DURATION = 1500;
+
+    let clickTimestamps: number[] = [];
     let resetTimer: ReturnType<typeof setTimeout> | null = null;
 
+    const resetClicks = () => {
+      clickTimestamps = [];
+      if (resetTimer) {
+        clearTimeout(resetTimer);
+        resetTimer = null;
+      }
+    };
+
     const handleGlobalClick = (e: MouseEvent) => {
+      // 仅响应鼠标左键或移动端轻触 (button === 0)
+      if (e.button !== 0) return;
+
       // 弹窗打开时不处理
       if (isSecretOpenRef.current) {
-        clickCount = 0;
-        if (resetTimer) {
-          clearTimeout(resetTimer);
-          resetTimer = null;
-        }
+        resetClicks();
         return;
       }
 
@@ -100,47 +114,60 @@ export default function App() {
       }
 
       if (interactiveEl || isPointer) {
-        // 点中可交互元素时重置计数
-        clickCount = 0;
-        if (resetTimer) {
-          clearTimeout(resetTimer);
-          resetTimer = null;
-        }
+        // 点中可交互元素时立即重置计数
+        resetClicks();
         return;
       }
 
-      // 点在网页空白处，计数自增
-      clickCount += 1;
-      if (resetTimer) {
-        clearTimeout(resetTimer);
+      const now = Date.now();
+
+      // 如果已有点击记录且距离上一次点击超过最大间隔，则重置并从当前点击重新开始
+      if (clickTimestamps.length > 0) {
+        const lastClickTime = clickTimestamps[clickTimestamps.length - 1];
+        if (now - lastClickTime > MAX_CLICK_INTERVAL) {
+          clickTimestamps = [];
+        }
       }
 
-      if (clickCount >= 5) {
-        clickCount = 0;
-        resetTimer = null;
-        window.getSelection()?.removeAllRanges();
+      clickTimestamps.push(now);
 
-        // 动态根据当前所在域名（兼容多域名/备份域名/本地开发环境）在新标签页打开后台
-        const origin = window.location.origin && window.location.origin !== 'null'
-          ? window.location.origin
-          : `${window.location.protocol}//${window.location.host}`;
-        const targetUrl = `${origin}/Donttouchmyshit/`;
-        window.open(targetUrl, '_blank');
+      // 清除旧的重置定时器
+      if (resetTimer) {
+        clearTimeout(resetTimer);
+        resetTimer = null;
+      }
+
+      // 如果达到要求的点击次数
+      if (clickTimestamps.length >= REQUIRED_CLICKS) {
+        const firstClickTime = clickTimestamps[clickTimestamps.length - REQUIRED_CLICKS];
+        const totalDuration = now - firstClickTime;
+
+        // 立即重置点击计数与状态
+        resetClicks();
+
+        // 必须在规定的总耗时上限内完成快速点击
+        if (totalDuration <= MAX_TOTAL_DURATION) {
+          window.getSelection()?.removeAllRanges();
+
+          // 动态根据当前所在域名（兼容多域名/备份域名/本地开发环境）在新标签页打开后台
+          const origin = window.location.origin && window.location.origin !== 'null'
+            ? window.location.origin
+            : `${window.location.protocol}//${window.location.host}`;
+          const targetUrl = `${origin}/Donttouchmyshit/`;
+          window.open(targetUrl, '_blank');
+        }
       } else {
-        // 1.5秒内没有下一次点击则重置计数
+        // 若在 MAX_CLICK_INTERVAL 内未发生下一次快速点击，则自动重置计数
         resetTimer = setTimeout(() => {
-          clickCount = 0;
-          resetTimer = null;
-        }, 1500);
+          resetClicks();
+        }, MAX_CLICK_INTERVAL);
       }
     };
 
     window.addEventListener('click', handleGlobalClick, true);
     return () => {
       window.removeEventListener('click', handleGlobalClick, true);
-      if (resetTimer) {
-        clearTimeout(resetTimer);
-      }
+      resetClicks();
     };
   }, []);
 

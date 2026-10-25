@@ -1,4 +1,4 @@
-export type { Site } from '../constants';
+export type { Site, PopupVideoItem, PopupConfig } from '../constants';
 
 export type Category = 'online' | 'pan' | 'bt';
 

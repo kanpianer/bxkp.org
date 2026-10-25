@@ -945,6 +945,7 @@
   <nav class="cms-tabs-bar">
     <div class="cms-tab-item active" data-tab="tab-sites">🗂️ 影视站点库 (<span id="count-total">0</span>)</div>
     <div class="cms-tab-item" data-tab="tab-emby-ok">📺 Emby与OK影视</div>
+    <div class="cms-tab-item" data-tab="tab-popup">🎬 弹窗视频管理 (<span id="count-popup">0</span>)</div>
     <div class="cms-tab-item" data-tab="tab-footer">🏮 页脚与友情扩展</div>
     <div class="cms-tab-item" data-tab="tab-faqs">💡 FAQ问答与SEO</div>
     <div class="cms-tab-item" data-tab="tab-health">🩺 链接健康体检</div>
@@ -1067,6 +1068,65 @@
             <label class="form-label">播放器免责与提示：</label>
             <input type="text" id="ok-notice-input" class="form-control">
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: 弹窗嵌入视频与寿命轮播管理 -->
+    <section id="tab-popup" class="tab-panel">
+      <!-- 顶部操作条与仪表盘 -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 20px;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px;">
+          <div>
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--cinnabar); display: flex; align-items: center; gap: 8px; margin: 0 0 6px 0;">
+              <span>🎬 弹窗嵌入视频与寿命轮播管理</span>
+            </h2>
+            <div style="font-size: 0.86rem; color: var(--text-light);">
+              配置挂件弹窗呼出的嵌入式视频内容（支持直接链接与 iframe 嵌入代码），设定各内容存活寿命倒计时。存活时长倒计时结束后按顺序显示下一个内容，末尾循环。
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button id="btn-add-popup-video" class="btn btn-primary">
+              <span>➕ 增录新视频内容</span>
+            </button>
+            <button id="btn-reset-cycle-time" class="btn" title="将轮播倒计时起点重置为当前时刻">
+              <span>🔄 重置倒计时起点</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 实时轮播时钟状态仪表板 -->
+        <div style="background: var(--bg-base); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-base);">当前主站生效内容：</span>
+              <span id="popup-status-current-title" style="font-size: 0.88rem; font-weight: 700; color: var(--cinnabar);">加载中...</span>
+            </div>
+            <!-- 倒计时数字时钟 -->
+            <div id="popup-live-clock" style="display: inline-flex; align-items: center; background: rgba(0,0,0,0.7); color: #fbbf24; font-family: monospace; font-size: 0.95rem; font-weight: 700; padding: 4px 14px; border-radius: 9999px; border: 1px solid rgba(251,191,36,0.4); letter-spacing: 0.05em; box-shadow: 0 0 10px rgba(251,191,36,0.15);">
+              视频寿命：0天00小时00分00秒
+            </div>
+          </div>
+
+          <div style="font-size: 0.82rem; color: var(--text-light); display: flex; gap: 14px; flex-wrap: wrap;">
+            <span>视频总数：<strong id="popup-status-total-count" style="color: var(--text-base);">0</strong> 部</span>
+            <span>单轮总寿命：<strong id="popup-status-total-cycle" style="color: var(--text-base);">0秒</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 视频列表卡片区域 -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-base); margin: 0; display: flex; align-items: center; gap: 6px;">
+            <span>📋 弹窗视频播放顺序列表</span>
+            <span style="font-size: 0.78rem; font-weight: normal; color: var(--text-light);">（支持拖拽排序或点击上下移动调整播放次序）</span>
+          </h3>
+        </div>
+
+        <!-- 列表容器 -->
+        <div id="popup-videos-list-container" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- 动态渲染视频条目 -->
         </div>
       </div>
     </section>
@@ -1331,6 +1391,117 @@
     </div>
   </div>
 
+  <!-- 模态弹窗：增录/编辑弹窗嵌入视频 -->
+  <div id="modal-popup-overlay" class="modal-overlay">
+    <div class="modal-container" style="max-width: 760px;">
+      <div class="modal-header">
+        <h3 id="modal-popup-heading" class="modal-title">增录弹窗嵌入视频</h3>
+        <button class="btn btn-sm" id="btn-close-popup-modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- 视频名称 -->
+          <div class="form-group">
+            <label class="form-label">视频标题 / 备注名称 *</label>
+            <input type="text" id="popup-input-title" class="form-control" placeholder="例如：官方默认片源 / 热门院线推荐">
+          </div>
+
+          <!-- 内容类型 -->
+          <div class="form-group">
+            <label class="form-label">嵌入内容类型 *</label>
+            <div style="display: flex; gap: 20px; align-items: center;">
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem;">
+                <input type="radio" name="popup-input-type" value="url" checked> 🔗 视频链接 (URL)
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem;">
+                <input type="radio" name="popup-input-type" value="iframe"> 🖼️ 嵌入代码 (&lt;iframe&gt;)
+              </label>
+            </div>
+          </div>
+
+          <!-- 视频内容 (链接或 iframe) -->
+          <div class="form-group">
+            <label class="form-label" id="popup-content-label">视频内容 (链接或 iframe 代码) *</label>
+            <textarea id="popup-input-content" class="form-control" rows="3" placeholder="https://www.vidy.st/... 或 <iframe src='...'></iframe>"></textarea>
+            <div style="font-size: 0.78rem; color: var(--text-light); margin-top: 4px;">
+              支持填写任意直接播放/嵌入链接（如 vidy.st、YouTube、第三方播放源等），或粘贴平台提供的完整 &lt;iframe&gt; 嵌入代码。
+            </div>
+          </div>
+
+          <!-- 存活时长设置 (Lifespan) -->
+          <div class="form-group">
+            <label class="form-label">存活时长设置 (寿命倒计时) *</label>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-light); margin-bottom: 2px; display: block;">天数 (Days)</label>
+                <input type="number" id="popup-input-days" class="form-control" min="0" value="12">
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-light); margin-bottom: 2px; display: block;">小时 (Hours)</label>
+                <input type="number" id="popup-input-hours" class="form-control" min="0" max="23" value="14">
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-light); margin-bottom: 2px; display: block;">分钟 (Minutes)</label>
+                <input type="number" id="popup-input-minutes" class="form-control" min="0" max="59" value="32">
+              </div>
+              <div>
+                <label style="font-size: 0.78rem; color: var(--text-light); margin-bottom: 2px; display: block;">秒数 (Seconds)</label>
+                <input type="number" id="popup-input-seconds" class="form-control" min="0" max="59" value="43">
+              </div>
+            </div>
+
+            <!-- 快捷预设按钮 -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center;">
+              <span style="font-size: 0.78rem; color: var(--text-light);">快捷设定：</span>
+              <button type="button" class="btn btn-sm btn-preset-duration" data-d="0" data-h="0" data-m="0" data-s="30">30秒测试</button>
+              <button type="button" class="btn btn-sm btn-preset-duration" data-d="0" data-h="1" data-m="0" data-s="0">1小时</button>
+              <button type="button" class="btn btn-sm btn-preset-duration" data-d="1" data-h="0" data-m="0" data-s="0">1天</button>
+              <button type="button" class="btn btn-sm btn-preset-duration" data-d="7" data-h="0" data-m="0" data-s="0">7天</button>
+              <button type="button" class="btn btn-sm btn-preset-duration" data-d="12" data-h="14" data-m="32" data-s="43">12天14小时32分43秒 (标准示例)</button>
+            </div>
+          </div>
+
+          <!-- 状态 -->
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.88rem; font-weight: 600;">
+              <input type="checkbox" id="popup-input-enabled" checked> ✅ 启用此视频在弹窗轮播中展示
+            </label>
+          </div>
+
+          <!-- 实时预览区 -->
+          <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; background: #000;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border-color);">
+              <span style="font-size: 0.78rem; color: #aaa;">📺 嵌入效果实时预览</span>
+              <button type="button" id="btn-refresh-popup-preview" class="btn btn-sm" style="font-size: 0.72rem; padding: 2px 8px;">刷新预览</button>
+            </div>
+            <div id="popup-modal-preview-box" style="width: 100%; height: 240px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 0.84rem;">
+              <span>输入内容后点击刷新即可实时预览播放</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" id="btn-cancel-popup-modal">取消</button>
+        <button class="btn btn-primary" id="btn-save-popup-item">保存视频</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 独立播放预览弹窗 -->
+  <div id="modal-video-standalone-preview" class="modal-overlay">
+    <div class="modal-container" style="max-width: 900px; height: 580px;">
+      <div class="modal-header">
+        <h3 id="modal-standalone-preview-title" class="modal-title">视频播放预览</h3>
+        <button class="btn btn-sm" id="btn-close-standalone-preview">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 0; background: #000; overflow: hidden;">
+        <div id="standalone-preview-content" style="width: 100%; height: 100%;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast 容器 -->
   <div id="toast-container"></div>
 
@@ -1467,8 +1638,15 @@
       }
 
       function onDataLoaded() {
+        if (!cmsData.popup) {
+          cmsData.popup = { cycleStartTime: Date.now(), videos: [] };
+        }
+        if (!Array.isArray(cmsData.popup.videos)) {
+          cmsData.popup.videos = [];
+        }
         renderSiteList();
         renderEmbyAndOkForms();
+        renderPopupVideosList();
         renderFooterForms();
         renderFaqsList();
         updateCountBadges();
@@ -1481,6 +1659,10 @@
         document.getElementById('count-online').textContent = sites.filter(s => s.tags?.includes('在线')).length;
         document.getElementById('count-pan').textContent = sites.filter(s => s.tags?.includes('网盘')).length;
         document.getElementById('count-bt').textContent = sites.filter(s => s.tags?.includes('BT')).length;
+
+        const popupCount = (cmsData.popup?.videos || []).length;
+        const countPopupEl = document.getElementById('count-popup');
+        if (countPopupEl) countPopupEl.textContent = popupCount;
       }
 
       // 2. 渲染站点列表
@@ -2222,6 +2404,472 @@
         container.appendChild(table);
         showToast('链接体检完毕！');
       }
+
+      // -------------------------------------------------------------
+      // 6.5 弹窗嵌入视频管理逻辑 (CRUD、存活寿命倒计时与轮播时钟)
+      // -------------------------------------------------------------
+      let editingPopupVideoIndex = -1;
+      let popupClockInterval = null;
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function formatDurationSeconds(totalSec) {
+        const sec = Math.max(0, Math.floor(totalSec));
+        const days = Math.floor(sec / 86400);
+        const hours = Math.floor((sec % 86400) / 3600);
+        const minutes = Math.floor((sec % 3600) / 60);
+        const seconds = sec % 60;
+        const pad = (n) => String(n).padStart(2, '0');
+        return `${days}天${pad(hours)}小时${pad(minutes)}分${pad(seconds)}秒`;
+      }
+
+      function calculatePopupCycleStatus() {
+        if (!cmsData.popup) {
+          cmsData.popup = { cycleStartTime: Date.now(), videos: [] };
+        }
+        const videos = cmsData.popup.videos || [];
+        const enabledVideos = videos.filter(v => v.enabled !== false);
+        const totalDuration = enabledVideos.reduce((acc, v) => acc + Math.max(1, v.duration || 1), 0);
+
+        if (enabledVideos.length === 0 || totalDuration <= 0) {
+          return {
+            activeVideo: null,
+            activeIndex: -1,
+            remainingSeconds: 0,
+            totalDuration: 0,
+            enabledCount: 0
+          };
+        }
+
+        const now = Date.now();
+        const cycleStart = cmsData.popup.cycleStartTime || 0;
+        const totalMs = totalDuration * 1000;
+        let elapsedMs = (now - cycleStart) % totalMs;
+        if (elapsedMs < 0) elapsedMs += totalMs;
+        const elapsedSec = elapsedMs / 1000;
+
+        let accum = 0;
+        let activeIdx = 0;
+        let activeRemaining = 0;
+
+        for (let i = 0; i < enabledVideos.length; i++) {
+          const d = Math.max(1, enabledVideos[i].duration || 1);
+          if (elapsedSec < accum + d) {
+            activeIdx = i;
+            activeRemaining = (accum + d) - elapsedSec;
+            break;
+          }
+          accum += d;
+        }
+
+        return {
+          activeVideo: enabledVideos[activeIdx],
+          activeIndex: activeIdx,
+          remainingSeconds: activeRemaining,
+          totalDuration,
+          enabledCount: enabledVideos.length
+        };
+      }
+
+      function updatePopupLiveClock() {
+        const status = calculatePopupCycleStatus();
+        const clockEl = document.getElementById('popup-live-clock');
+        const titleEl = document.getElementById('popup-status-current-title');
+        const countEl = document.getElementById('popup-status-total-count');
+        const cycleEl = document.getElementById('popup-status-total-cycle');
+
+        if (countEl) countEl.textContent = (cmsData.popup?.videos || []).length;
+        if (cycleEl) cycleEl.textContent = status.totalDuration > 0 ? formatDurationSeconds(status.totalDuration) : '0秒';
+
+        if (status.activeVideo) {
+          if (titleEl) titleEl.textContent = `【${status.activeVideo.title || '未命名视频'}】`;
+          if (clockEl) {
+            clockEl.textContent = `视频寿命：${formatDurationSeconds(status.remainingSeconds)}`;
+          }
+        } else {
+          if (titleEl) titleEl.textContent = '暂无启用中的视频内容';
+          if (clockEl) clockEl.textContent = '视频寿命：0天00小时00分00秒';
+        }
+
+        // 同步更新列表中高亮的正在生效条目徽章
+        const items = document.querySelectorAll('.popup-video-item-card');
+        items.forEach((card) => {
+          const vId = card.dataset.videoId;
+          const statusBadge = card.querySelector('.popup-active-badge');
+          if (statusBadge) {
+            if (status.activeVideo && status.activeVideo.id === vId) {
+              statusBadge.style.display = 'inline-flex';
+              statusBadge.innerHTML = `🟢 播放中 (剩余: ${formatDurationSeconds(status.remainingSeconds)})`;
+            } else {
+              statusBadge.style.display = 'none';
+            }
+          }
+        });
+      }
+
+      function renderPopupVideosList() {
+        if (!cmsData.popup) {
+          cmsData.popup = { cycleStartTime: Date.now(), videos: [] };
+        }
+        if (!Array.isArray(cmsData.popup.videos)) {
+          cmsData.popup.videos = [];
+        }
+
+        const container = document.getElementById('popup-videos-list-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const videos = cmsData.popup.videos;
+
+        if (videos.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 40px 20px; color: var(--text-light); border: 2px dashed var(--border-color); border-radius: var(--radius-md);">
+              <div style="font-size: 2rem; margin-bottom: 8px;">🎬</div>
+              <div style="font-size: 0.95rem; margin-bottom: 12px;">暂无弹窗视频内容</div>
+              <button class="btn btn-sm btn-primary" onclick="openPopupVideoModal(-1)">➕ 增录第一个弹窗视频</button>
+            </div>
+          `;
+          updatePopupLiveClock();
+          return;
+        }
+
+        videos.forEach((video, index) => {
+          const card = document.createElement('div');
+          card.className = 'popup-video-item-card';
+          card.dataset.videoId = video.id;
+          card.dataset.index = index;
+          card.style.background = 'var(--bg-card)';
+          card.style.border = '1px solid var(--border-color)';
+          card.style.borderRadius = 'var(--radius-md)';
+          card.style.padding = '14px 16px';
+          card.style.display = 'flex';
+          card.style.flexDirection = 'column';
+          card.style.gap = '10px';
+          card.style.transition = 'all 0.2s ease';
+
+          const isIframe = video.type === 'iframe' || (video.content || '').startsWith('<iframe');
+          const typeBadgeText = isIframe ? '🖼️ iframe 嵌入' : '🔗 URL 链接';
+          const typeBadgeColor = isIframe ? 'var(--indigo)' : 'var(--cinnabar)';
+          const durationFormatted = formatDurationSeconds(video.duration || 0);
+
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <span class="popup-drag-handle" style="cursor: grab; color: var(--text-light); font-size: 1.1rem; user-select: none;" title="按住拖拽以调整顺序">⋮⋮</span>
+                <span style="font-weight: 700; font-size: 0.88rem; background: var(--bg-surface); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-color);">#${index + 1}</span>
+                <span style="font-weight: 700; font-size: 1rem; color: var(--text-base);">${escapeHtml(video.title || '未命名视频')}</span>
+                <span style="font-size: 0.75rem; padding: 2px 8px; border-radius: 9999px; background: rgba(0,0,0,0.06); color: ${typeBadgeColor}; border: 1px solid ${typeBadgeColor}40; font-weight: 600;">${typeBadgeText}</span>
+                <span class="popup-active-badge" style="display: none; font-size: 0.75rem; padding: 2px 8px; border-radius: 9999px; background: #10b98120; color: #10b981; border: 1px solid #10b98150; font-weight: 700;"></span>
+                ${video.enabled === false ? '<span style="font-size: 0.75rem; padding: 2px 8px; border-radius: 9999px; background: #ef444420; color: #ef4444; border: 1px solid #ef444450;">⏸️ 已停用</span>' : ''}
+              </div>
+
+              <!-- 右侧操作 -->
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <button class="btn btn-sm" onclick="movePopupVideo(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="上移次序">↑</button>
+                <button class="btn btn-sm" onclick="movePopupVideo(${index}, 1)" ${index === videos.length - 1 ? 'disabled' : ''} title="下移次序">↓</button>
+                <button class="btn btn-sm" onclick="previewPopupVideoItem(${index})" title="在弹窗中试播此视频">👁️ 试播</button>
+                <button class="btn btn-sm" onclick="openPopupVideoModal(${index})" title="编辑视频内容与寿命">✏️ 编辑</button>
+                <button class="btn btn-sm btn-danger" onclick="deletePopupVideoItem(${index})" title="删除此视频">🗑️ 删除</button>
+              </div>
+            </div>
+
+            <!-- 内容与寿命详情 -->
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.82rem; background: var(--bg-surface); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+              <div style="flex: 1; min-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: monospace; color: var(--text-light);" title="${escapeHtml(video.content || '')}">
+                ${escapeHtml(video.content || '(无内容)')}
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-weight: 600; color: var(--text-base);">⏱️ 设定寿命：<strong style="color: var(--cinnabar);">${durationFormatted}</strong></span>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer; user-select: none;">
+                  <input type="checkbox" ${video.enabled !== false ? 'checked' : ''} onchange="togglePopupVideoEnabled(${index}, this.checked)">
+                  <span>启用轮播</span>
+                </label>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+
+        // 绑定 SortableJS 拖拽排序
+        if (window.Sortable) {
+          Sortable.create(container, {
+            handle: '.popup-drag-handle',
+            animation: 150,
+            onEnd: function(evt) {
+              if (evt.oldIndex === evt.newIndex) return;
+              const moved = cmsData.popup.videos.splice(evt.oldIndex, 1)[0];
+              cmsData.popup.videos.splice(evt.newIndex, 0, moved);
+              renderPopupVideosList();
+              updatePopupLiveClock();
+              showToast('视频播放顺序已调整');
+            }
+          });
+        }
+
+        updatePopupLiveClock();
+        if (!popupClockInterval) {
+          popupClockInterval = setInterval(updatePopupLiveClock, 1000);
+        }
+      }
+
+      window.movePopupVideo = function(index, direction) {
+        const target = index + direction;
+        const videos = cmsData.popup?.videos || [];
+        if (target < 0 || target >= videos.length) return;
+        const item = videos.splice(index, 1)[0];
+        videos.splice(target, 0, item);
+        renderPopupVideosList();
+        updatePopupLiveClock();
+        showToast('视频播放顺序已更新');
+      };
+
+      window.deletePopupVideoItem = function(index) {
+        const video = cmsData.popup?.videos?.[index];
+        if (!video) return;
+        if (!confirm(`确定要删除弹窗视频【${video.title || '此视频'}】吗？`)) return;
+        cmsData.popup.videos.splice(index, 1);
+        renderPopupVideosList();
+        updateCountBadges();
+        updatePopupLiveClock();
+        showToast('视频已删除');
+      };
+
+      window.togglePopupVideoEnabled = function(index, checked) {
+        if (cmsData.popup?.videos?.[index]) {
+          cmsData.popup.videos[index].enabled = checked;
+          updatePopupLiveClock();
+          showToast(checked ? '已启用该视频' : '已停用该视频');
+        }
+      };
+
+      function updatePopupModalPreview() {
+        const box = document.getElementById('popup-modal-preview-box');
+        const content = (document.getElementById('popup-input-content').value || '').trim();
+        const type = document.querySelector('input[name="popup-input-type"]:checked')?.value || 'url';
+
+        if (!content) {
+          box.innerHTML = '<span>输入内容后点击刷新即可实时预览播放</span>';
+          return;
+        }
+
+        const isIframe = type === 'iframe' || content.startsWith('<iframe') || content.includes('</iframe>');
+        const isDirectMedia = /\.(mp4|webm|ogg|m4v)(\?.*)?$/i.test(content);
+
+        if (isDirectMedia) {
+          box.innerHTML = `<video src="${escapeHtml(content)}" controls autoplay style="width: 100%; height: 100%; object-fit: contain;"></video>`;
+        } else if (isIframe) {
+          box.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">${content}</div>`;
+          const ifr = box.querySelector('iframe');
+          if (ifr) {
+            ifr.style.width = '100%';
+            ifr.style.height = '100%';
+            ifr.style.border = 'none';
+          }
+        } else {
+          box.innerHTML = `<iframe src="${escapeHtml(content)}" style="width: 100%; height: 100%; border: none;" allowfullscreen allow="encrypted-media; autoplay *; fullscreen *"></iframe>`;
+        }
+      }
+
+      function closePopupModal() {
+        document.getElementById('modal-popup-overlay').classList.remove('open');
+        document.getElementById('popup-modal-preview-box').innerHTML = '<span>输入内容后点击刷新即可实时预览播放</span>';
+      }
+
+      window.openPopupVideoModal = function(index) {
+        editingPopupVideoIndex = index;
+        const modal = document.getElementById('modal-popup-overlay');
+        const heading = document.getElementById('modal-popup-heading');
+
+        if (index >= 0 && cmsData.popup?.videos?.[index]) {
+          const v = cmsData.popup.videos[index];
+          heading.textContent = '编辑弹窗嵌入视频';
+          document.getElementById('popup-input-title').value = v.title || '';
+          document.getElementById('popup-input-content').value = v.content || '';
+          
+          const typeRadios = document.querySelectorAll('input[name="popup-input-type"]');
+          typeRadios.forEach(r => {
+            r.checked = (r.value === v.type);
+          });
+
+          const dur = v.duration || 0;
+          const d = v.durationDays !== undefined ? v.durationDays : Math.floor(dur / 86400);
+          const h = v.durationHours !== undefined ? v.durationHours : Math.floor((dur % 86400) / 3600);
+          const m = v.durationMinutes !== undefined ? v.durationMinutes : Math.floor((dur % 3600) / 60);
+          const s = v.durationSeconds !== undefined ? v.durationSeconds : (dur % 60);
+
+          document.getElementById('popup-input-days').value = d;
+          document.getElementById('popup-input-hours').value = h;
+          document.getElementById('popup-input-minutes').value = m;
+          document.getElementById('popup-input-seconds').value = s;
+          document.getElementById('popup-input-enabled').checked = (v.enabled !== false);
+        } else {
+          heading.textContent = '增录弹窗嵌入视频';
+          document.getElementById('popup-input-title').value = '';
+          document.getElementById('popup-input-content').value = '';
+          
+          const typeRadios = document.querySelectorAll('input[name="popup-input-type"]');
+          typeRadios.forEach(r => {
+            r.checked = (r.value === 'url');
+          });
+
+          // 默认设置：12天14小时32分43秒 (与需求匹配)
+          document.getElementById('popup-input-days').value = 12;
+          document.getElementById('popup-input-hours').value = 14;
+          document.getElementById('popup-input-minutes').value = 32;
+          document.getElementById('popup-input-seconds').value = 43;
+          document.getElementById('popup-input-enabled').checked = true;
+        }
+
+        modal.classList.add('open');
+        updatePopupModalPreview();
+      };
+
+      window.previewPopupVideoItem = function(index) {
+        const video = cmsData.popup?.videos?.[index];
+        if (!video) return;
+        const modal = document.getElementById('modal-video-standalone-preview');
+        const titleEl = document.getElementById('modal-standalone-preview-title');
+        const contentBox = document.getElementById('standalone-preview-content');
+
+        titleEl.textContent = `视频试播预览：${video.title || '未命名视频'}`;
+
+        const content = (video.content || '').trim();
+        const isIframe = video.type === 'iframe' || content.startsWith('<iframe') || content.includes('</iframe>');
+        const isDirectMedia = /\.(mp4|webm|ogg|m4v)(\?.*)?$/i.test(content);
+
+        if (isDirectMedia) {
+          contentBox.innerHTML = `<video src="${escapeHtml(content)}" controls autoplay style="width: 100%; height: 100%; object-fit: contain;"></video>`;
+        } else if (isIframe) {
+          contentBox.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">${content}</div>`;
+          const ifr = contentBox.querySelector('iframe');
+          if (ifr) {
+            ifr.style.width = '100%';
+            ifr.style.height = '100%';
+            ifr.style.border = 'none';
+          }
+        } else {
+          contentBox.innerHTML = `<iframe src="${escapeHtml(content)}" style="width: 100%; height: 100%; border: none;" allowfullscreen allow="encrypted-media; autoplay *; fullscreen *"></iframe>`;
+        }
+
+        modal.classList.add('open');
+      };
+
+      document.getElementById('btn-close-standalone-preview').addEventListener('click', () => {
+        document.getElementById('modal-video-standalone-preview').classList.remove('open');
+        document.getElementById('standalone-preview-content').innerHTML = '';
+      });
+
+      document.getElementById('btn-close-popup-modal').addEventListener('click', closePopupModal);
+      document.getElementById('btn-cancel-popup-modal').addEventListener('click', closePopupModal);
+
+      document.getElementById('btn-add-popup-video').addEventListener('click', () => {
+        openPopupVideoModal(-1);
+      });
+
+      document.getElementById('btn-refresh-popup-preview').addEventListener('click', () => {
+        updatePopupModalPreview();
+      });
+
+      document.getElementById('popup-input-content').addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        if (val.startsWith('<iframe') || val.includes('</iframe>')) {
+          const radio = document.querySelector('input[name="popup-input-type"][value="iframe"]');
+          if (radio) radio.checked = true;
+        } else if (val.startsWith('http://') || val.startsWith('https://')) {
+          const radio = document.querySelector('input[name="popup-input-type"][value="url"]');
+          if (radio) radio.checked = true;
+        }
+      });
+
+      document.querySelectorAll('.btn-preset-duration').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('popup-input-days').value = btn.dataset.d || 0;
+          document.getElementById('popup-input-hours').value = btn.dataset.h || 0;
+          document.getElementById('popup-input-minutes').value = btn.dataset.m || 0;
+          document.getElementById('popup-input-seconds').value = btn.dataset.s || 0;
+        });
+      });
+
+      document.getElementById('btn-reset-cycle-time').addEventListener('click', () => {
+        if (!confirm('确定要将轮播倒计时起点重置为当前时刻吗？')) return;
+        if (!cmsData.popup) {
+          cmsData.popup = { cycleStartTime: Date.now(), videos: [] };
+        }
+        cmsData.popup.cycleStartTime = Date.now();
+        updatePopupLiveClock();
+        showToast('倒计时起点已重置为当前时刻');
+      });
+
+      document.getElementById('btn-save-popup-item').addEventListener('click', () => {
+        const title = (document.getElementById('popup-input-title').value || '').trim();
+        const content = (document.getElementById('popup-input-content').value || '').trim();
+        const type = document.querySelector('input[name="popup-input-type"]:checked')?.value || 'url';
+        const enabled = document.getElementById('popup-input-enabled').checked;
+
+        const d = parseInt(document.getElementById('popup-input-days').value) || 0;
+        const h = parseInt(document.getElementById('popup-input-hours').value) || 0;
+        const m = parseInt(document.getElementById('popup-input-minutes').value) || 0;
+        const s = parseInt(document.getElementById('popup-input-seconds').value) || 0;
+
+        if (!title) {
+          alert('请填写视频标题');
+          document.getElementById('popup-input-title').focus();
+          return;
+        }
+
+        if (!content) {
+          alert('请填写视频内容（URL链接或 iframe 代码）');
+          document.getElementById('popup-input-content').focus();
+          return;
+        }
+
+        const totalDuration = (d * 86400) + (h * 3600) + (m * 60) + s;
+        if (totalDuration <= 0) {
+          alert('请设置有效的存活时长（至少大于0秒）');
+          return;
+        }
+
+        if (!cmsData.popup) {
+          cmsData.popup = { cycleStartTime: Date.now(), videos: [] };
+        }
+        if (!Array.isArray(cmsData.popup.videos)) {
+          cmsData.popup.videos = [];
+        }
+
+        const itemData = {
+          id: editingPopupVideoIndex >= 0 ? cmsData.popup.videos[editingPopupVideoIndex].id : 'pv_' + Date.now(),
+          title,
+          type,
+          content,
+          durationDays: d,
+          durationHours: h,
+          durationMinutes: m,
+          durationSeconds: s,
+          duration: totalDuration,
+          enabled
+        };
+
+        if (editingPopupVideoIndex >= 0) {
+          cmsData.popup.videos[editingPopupVideoIndex] = itemData;
+          showToast(`视频【${title}】更新成功`);
+        } else {
+          cmsData.popup.videos.push(itemData);
+          showToast(`视频【${title}】已增录加入播放列表`);
+        }
+
+        closePopupModal();
+        renderPopupVideosList();
+        updateCountBadges();
+      });
 
       // 7. 快照历史
       async function loadBackupsList() {
