@@ -571,7 +571,7 @@
     "videos": [
       {
         "id": "pv-1",
-        "title": "绝命毒师 Breaking Bad",
+        "title": "绝命毒师 Breaking Bad 2008 - 2013",
         "type": "url",
         "content": "https://www.vidy.st/tv/1396/1/1?color=DC2626&nextEpisode=true&episodeSelector=true",
         "durationDays": 45,
@@ -583,7 +583,7 @@
       },
       {
         "id": "pv-2",
-        "title": "火线 The Wire",
+        "title": "火线 The Wire 2002 - 2008",
         "type": "url",
         "content": "https://www.vidy.st/tv/1438/1/1?color=DC2626&nextEpisode=true&episodeSelector=true",
         "durationDays": 45,
@@ -591,6 +591,18 @@
         "durationMinutes": 0,
         "durationSeconds": 0,
         "duration": 3888000,
+        "enabled": true
+      },
+      {
+        "id": "pv_1792961611467",
+        "title": "The Bureau 2015 - 2020",
+        "type": "url",
+        "content": "https://www.vidy.st/tv/62476/1/1?color=DC2626&nextEpisode=true&episodeSelector=true",
+        "durationDays": 56,
+        "durationHours": 14,
+        "durationMinutes": 32,
+        "durationSeconds": 43,
+        "duration": 4890763,
         "enabled": true
       }
     ]
