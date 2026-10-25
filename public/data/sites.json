@@ -593,6 +593,8 @@
         "duration": 3888000,
         "enabled": true
       }
-    ]
+    ],
+    "activeVideoId": "pv-1",
+    "activeExpiresAt": 1733827717000
   }
 }

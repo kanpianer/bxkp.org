@@ -2450,31 +2450,46 @@
         }
 
         const now = Date.now();
-        const cycleStart = cmsData.popup.cycleStartTime || 0;
-        const totalMs = totalDuration * 1000;
-        let elapsedMs = (now - cycleStart) % totalMs;
-        if (elapsedMs < 0) elapsedMs += totalMs;
-        const elapsedSec = elapsedMs / 1000;
+        const totalDurationMs = totalDuration * 1000;
 
-        let accum = 0;
-        let activeIdx = 0;
-        let activeRemaining = 0;
+        let activeId = cmsData.popup.activeVideoId;
+        let expiresAt = cmsData.popup.activeExpiresAt;
 
-        for (let i = 0; i < enabledVideos.length; i++) {
-          const d = Math.max(1, enabledVideos[i].duration || 1);
-          if (elapsedSec < accum + d) {
-            activeIdx = i;
-            activeRemaining = (accum + d) - elapsedSec;
-            break;
-          }
-          accum += d;
+        let activeIndex = enabledVideos.findIndex(v => v.id === activeId);
+        if (activeIndex === -1 || !expiresAt || typeof expiresAt !== 'number') {
+          activeIndex = 0;
+          activeId = enabledVideos[0].id;
+          const baseStart = cmsData.popup.cycleStartTime || now;
+          expiresAt = baseStart + Math.max(1, enabledVideos[0].duration || 1) * 1000;
         }
 
+        if (now >= expiresAt) {
+          const overdueMs = now - expiresAt;
+          if (overdueMs > totalDurationMs && totalDurationMs > 0) {
+            const fullCycles = Math.floor(overdueMs / totalDurationMs);
+            expiresAt += fullCycles * totalDurationMs;
+          }
+
+          while (now >= expiresAt) {
+            activeIndex = (activeIndex + 1) % enabledVideos.length;
+            activeId = enabledVideos[activeIndex].id;
+            expiresAt += Math.max(1, enabledVideos[activeIndex].duration || 1) * 1000;
+          }
+        }
+
+        // 同步写回状态以持久锁定当前播放项目及到期时间戳，新增项目不会抢占当前播放
+        cmsData.popup.activeVideoId = activeId;
+        cmsData.popup.activeExpiresAt = expiresAt;
+
+        const remainingSeconds = Math.max(0, (expiresAt - now) / 1000);
+
         return {
-          activeVideo: enabledVideos[activeIdx],
-          activeIndex: activeIdx,
-          remainingSeconds: activeRemaining,
-          totalDuration,
+          activeVideo: enabledVideos[activeIndex],
+          activeIndex: activeIndex,
+          activeId: activeId,
+          remainingSeconds: remainingSeconds,
+          totalDuration: totalDuration,
+          expiresAt: expiresAt,
           enabledCount: enabledVideos.length
         };
       }
@@ -2636,6 +2651,21 @@
         const video = cmsData.popup?.videos?.[index];
         if (!video) return;
         if (!confirm(`确定要删除弹窗视频【${video.title || '此视频'}】吗？`)) return;
+
+        // 若删除的是当前正在播放的项目，播放权自动顺延至下一个可用视频
+        if (cmsData.popup && cmsData.popup.activeVideoId === video.id) {
+          const remaining = (cmsData.popup.videos || []).filter((_, i) => i !== index && _.enabled !== false);
+          if (remaining.length > 0) {
+            const nextIdx = index < remaining.length ? index : 0;
+            const nextVid = remaining[nextIdx];
+            cmsData.popup.activeVideoId = nextVid.id;
+            cmsData.popup.activeExpiresAt = Date.now() + Math.max(1, nextVid.duration || 1) * 1000;
+          } else {
+            cmsData.popup.activeVideoId = null;
+            cmsData.popup.activeExpiresAt = null;
+          }
+        }
+
         cmsData.popup.videos.splice(index, 1);
         renderPopupVideosList();
         updateCountBadges();
@@ -2804,7 +2834,11 @@
         if (!cmsData.popup) {
           cmsData.popup = { cycleStartTime: Date.now(), videos: [] };
         }
+        const enabledVids = (cmsData.popup.videos || []).filter(v => v.enabled !== false);
+        const firstVid = enabledVids[0];
         cmsData.popup.cycleStartTime = Date.now();
+        cmsData.popup.activeVideoId = firstVid ? firstVid.id : null;
+        cmsData.popup.activeExpiresAt = firstVid ? Date.now() + Math.max(1, firstVid.duration || 1) * 1000 : null;
         updatePopupLiveClock();
         showToast('倒计时起点已重置为当前时刻');
       });

@@ -51,41 +51,50 @@ const SecretPanel: React.FC<SecretPanelProps> = ({ isOpen, onClose }) => {
     return enabledVideos.reduce((acc, v) => acc + Math.max(1, v.duration || 1), 0);
   }, [enabledVideos]);
 
-  // 核心倒计时与轮播时钟循环计算
+  // 核心倒计时与轮播时钟循环计算：依据 activeVideoId 和 activeExpiresAt 锁定当前内容，新增内容绝不抢占当前播放
   useEffect(() => {
-    if (!isOpen || enabledVideos.length === 0 || totalCycleSeconds <= 0) return;
+    if (!isOpen || enabledVideos.length === 0) return;
 
     const tick = () => {
       const now = Date.now();
-      const cycleStart = popupConfig.cycleStartTime || 0;
-      const totalCycleMs = totalCycleSeconds * 1000;
+      const totalDuration = enabledVideos.reduce((acc, v) => acc + Math.max(1, v.duration || 1), 0);
+      const totalDurationMs = totalDuration * 1000;
 
-      let elapsedMs = (now - cycleStart) % totalCycleMs;
-      if (elapsedMs < 0) elapsedMs += totalCycleMs;
-      const elapsedSec = elapsedMs / 1000;
+      let activeId = popupConfig.activeVideoId;
+      let expiresAt = popupConfig.activeExpiresAt;
 
-      let accumulated = 0;
-      let targetIndex = 0;
-      let targetRemaining = 0;
-
-      for (let i = 0; i < enabledVideos.length; i++) {
-        const itemDuration = Math.max(1, enabledVideos[i].duration || 1);
-        if (elapsedSec < accumulated + itemDuration) {
-          targetIndex = i;
-          targetRemaining = (accumulated + itemDuration) - elapsedSec;
-          break;
-        }
-        accumulated += itemDuration;
+      let activeIndex = enabledVideos.findIndex(v => v.id === activeId);
+      if (activeIndex === -1 || !expiresAt || typeof expiresAt !== 'number') {
+        activeIndex = 0;
+        activeId = enabledVideos[0].id;
+        const baseStart = popupConfig.cycleStartTime || now;
+        expiresAt = baseStart + Math.max(1, enabledVideos[0].duration || 1) * 1000;
       }
 
-      setActiveCycleIndex(targetIndex);
-      setRemainingSeconds(targetRemaining);
+      // 若当前内容寿命已到期，顺序步进到下一个内容；跨整轮时亦循环衔接
+      if (now >= expiresAt) {
+        const overdueMs = now - expiresAt;
+        if (overdueMs > totalDurationMs && totalDurationMs > 0) {
+          const fullCycles = Math.floor(overdueMs / totalDurationMs);
+          expiresAt += fullCycles * totalDurationMs;
+        }
+
+        while (now >= expiresAt) {
+          activeIndex = (activeIndex + 1) % enabledVideos.length;
+          activeId = enabledVideos[activeIndex].id;
+          expiresAt += Math.max(1, enabledVideos[activeIndex].duration || 1) * 1000;
+        }
+      }
+
+      const remainingSec = Math.max(0, (expiresAt - now) / 1000);
+      setActiveCycleIndex(activeIndex);
+      setRemainingSeconds(remainingSec);
     };
 
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, [isOpen, enabledVideos, totalCycleSeconds, popupConfig.cycleStartTime]);
+  }, [isOpen, enabledVideos, popupConfig.activeVideoId, popupConfig.activeExpiresAt, popupConfig.cycleStartTime]);
 
   // 键盘与滚动锁
   useEffect(() => {

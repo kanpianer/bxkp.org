@@ -80,6 +80,8 @@ export interface PopupVideoItem {
 
 export interface PopupConfig {
   cycleStartTime: number;
+  activeVideoId?: string | null;
+  activeExpiresAt?: number | null;
   videos: PopupVideoItem[];
 }
 
@@ -90,6 +92,8 @@ export const FAQS_LIST: FaqItem[] = sitesData.faqs as FaqItem[];
 export const FOOTER_SECTION: FooterSection = sitesData.footer as FooterSection;
 export const POPUP_CONFIG: PopupConfig = (sitesData as any).popup || {
   cycleStartTime: 1729887354000,
+  activeVideoId: "pv-1",
+  activeExpiresAt: 1730976517000,
   videos: [
     {
       id: "pv-1",
