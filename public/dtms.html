@@ -112,6 +112,9 @@
     html {
       scrollbar-width: none;
       -ms-overflow-style: none;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
     }
 
     body {
@@ -123,6 +126,8 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
       transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
     }
@@ -418,6 +423,8 @@
       flex: 1;
       position: relative;
       z-index: 10;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
 
     .tab-panel {
@@ -690,6 +697,11 @@
       font-size: 0.84rem;
       color: var(--text-muted);
       flex-wrap: wrap;
+      max-width: 100%;
+    }
+
+    .card-url-line span {
+      max-width: 100%;
     }
 
     .card-url-link {
@@ -1191,9 +1203,10 @@
       display: flex;
       flex-direction: column;
       transform: translateX(-100%);
-      transition: transform 0.35s cubic-bezier(0.34, 1.25, 0.64, 1);
+      transition: transform 0.35s cubic-bezier(0.34, 1.25, 0.64, 1), visibility 0.35s;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
+      visibility: hidden;
     }
 
     body.dark .project-drawer {
@@ -1202,6 +1215,7 @@
 
     .project-drawer.open {
       transform: translateX(0);
+      visibility: visible;
     }
 
     .drawer-header {
@@ -1345,6 +1359,9 @@
       .cms-navbar {
         padding: 10px 14px;
         gap: 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
 
       .btn-hamburger {
@@ -1397,6 +1414,10 @@
       /* 3. 主内容区与工具栏 */
       .cms-container {
         padding: 12px 10px 48px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
       }
 
       .toolbar-wrapper {
@@ -1404,6 +1425,9 @@
         gap: 12px;
         border-radius: var(--radius-md);
         margin-bottom: 14px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
 
       .toolbar-left, .toolbar-right {
@@ -1426,6 +1450,8 @@
         padding: 7px 2px;
         font-size: 0.78rem;
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .search-input-wrap {
@@ -1465,12 +1491,18 @@
         gap: 10px;
         padding: 14px;
         border-radius: var(--radius-md);
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
 
       .card-row-left {
         width: 100%;
+        max-width: 100%;
+        min-width: 0;
         align-items: flex-start;
         gap: 10px;
+        box-sizing: border-box;
       }
 
       .drag-handle {
@@ -1483,6 +1515,8 @@
       .card-meta-main {
         width: 100%;
         min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
       }
 
       .card-title-line {
@@ -1491,11 +1525,14 @@
         align-items: center;
         justify-content: space-between;
         gap: 6px;
+        width: 100%;
+        max-width: 100%;
       }
 
       .card-site-name {
         font-size: 1.08rem;
         word-break: break-all;
+        overflow-wrap: anywhere;
       }
 
       .card-url-line {
@@ -1503,11 +1540,25 @@
         align-items: flex-start;
         gap: 4px;
         font-size: 0.8rem;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .card-url-line span {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        word-break: break-all;
+        overflow-wrap: anywhere;
       }
 
       .card-url-link {
+        display: inline;
         max-width: 100%;
-        word-break: break-all;
+        white-space: normal !important;
+        word-break: break-all !important;
+        overflow-wrap: anywhere !important;
       }
 
       .card-desc-snippet {
@@ -1517,6 +1568,8 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        word-break: break-all;
+        overflow-wrap: anywhere;
       }
 
       .card-row-right {
@@ -1665,7 +1718,7 @@
 <body>
 
   <!-- 背景水墨山水画布 (与主站山水意境完全同步) -->
-  <canvas id="cms-ink-canvas" style="position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.55;"></canvas>
+  <canvas id="cms-ink-canvas" style="position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.55;"></canvas>
 
   <!-- 顶部导航栏 -->
   <header class="cms-navbar">
