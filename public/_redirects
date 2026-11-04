@@ -1,7 +1,17 @@
 # Direct CMS Route mapping for Cloudflare Pages / Static hosts
-/Donttouchmyshit          /Donttouchmyshit/ 200
-/donttouchmyshit          /Donttouchmyshit/ 200
-/public/Donttouchmyshit   /Donttouchmyshit/ 200
-/public/Donttouchmyshit/  /Donttouchmyshit/ 200
-/public/donttouchmyshit   /Donttouchmyshit/ 200
-/public/donttouchmyshit/  /Donttouchmyshit/ 200
+/dtms                     /dtms/ 200
+/dtms/                    /dtms/index.html 200
+/public/dtms              /dtms/ 200
+/public/dtms/             /dtms/index.html 200
+/dtms.html                /dtms/ 301
+
+# Legacy CMS Route compatibility
+/Donttouchmyshit          /dtms/ 301
+/Donttouchmyshit/         /dtms/ 301
+/donttouchmyshit          /dtms/ 301
+/donttouchmyshit/         /dtms/ 301
+/public/Donttouchmyshit   /dtms/ 301
+/public/Donttouchmyshit/  /dtms/ 301
+/public/donttouchmyshit   /dtms/ 301
+/public/donttouchmyshit/  /dtms/ 301
+/Donttouchmyshit.html     /dtms/ 301

@@ -67,17 +67,19 @@ export default function App() {
     isSecretOpenRef.current = isSecretOpen;
   }, [isSecretOpen]);
 
-  // 在网页空白处快速连续点击5次，在新标签页打开 CMS 内容管理界面 (域名/Donttouchmyshit/)
+  // 在网页空白处快速连续点击5次，打开 CMS 内容管理界面 (域名/dtms/)
   useEffect(() => {
     // 快速连续点击判定参数：
-    // 1. 相邻两次点击的最大允许间隔为 450ms，超过则视为连击中断并重新计数
-    // 2. 连续5次点击的总耗时不得超过 1500ms
+    // 1. 相邻两次点击的最大允许间隔为 600ms（移动端轻触与手指抬起节奏更宽容自然）
+    // 2. 连续5次点击的总耗时上限为 3000ms
     const REQUIRED_CLICKS = 5;
-    const MAX_CLICK_INTERVAL = 450;
-    const MAX_TOTAL_DURATION = 1500;
+    const MAX_CLICK_INTERVAL = 600;
+    const MAX_TOTAL_DURATION = 3000;
 
     let clickTimestamps: number[] = [];
     let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    let lastTouchEndTime = 0;
+    let touchStartPos: { x: number; y: number; time: number } | null = null;
 
     const resetClicks = () => {
       clickTimestamps = [];
@@ -87,34 +89,30 @@ export default function App() {
       }
     };
 
-    const handleGlobalClick = (e: MouseEvent) => {
-      // 仅响应鼠标左键或移动端轻触 (button === 0)
-      if (e.button !== 0) return;
+    // 检查元素是否属于可交互元素（如链接、按钮、输入框、标签、选项卡、卡片等）
+    const isInteractive = (target: Element | null): boolean => {
+      if (!target || !target.closest) return false;
+      const interactiveEl = target.closest(
+        'a, button, input, textarea, select, label, iframe, [role="button"], [role="tab"], .cursor-pointer'
+      );
+      if (interactiveEl) return true;
+      try {
+        if (window.getComputedStyle(target).cursor === 'pointer') return true;
+      } catch (_) {
+        // ignore
+      }
+      return false;
+    };
 
+    const registerTap = (target: Element | null) => {
       // 弹窗打开时不处理
       if (isSecretOpenRef.current) {
         resetClicks();
         return;
       }
 
-      const rawTarget = e.target as Node | null;
-      const target = (rawTarget instanceof Element ? rawTarget : rawTarget?.parentElement) as Element | null;
-      if (!target || !target.closest) return;
-
-      // 检查是否点击在可交互元素（如链接、按钮、输入框、标签、选项卡、或带 cursor-pointer 的元素等）
-      const interactiveEl = target.closest(
-        'a, button, input, textarea, select, label, iframe, [role="button"], [role="tab"], .cursor-pointer'
-      );
-
-      let isPointer = false;
-      try {
-        isPointer = window.getComputedStyle(target).cursor === 'pointer';
-      } catch (_) {
-        // ignore
-      }
-
-      if (interactiveEl || isPointer) {
-        // 点中可交互元素时立即重置计数
+      // 点中可交互元素时立即重置计数
+      if (isInteractive(target)) {
         resetClicks();
         return;
       }
@@ -131,6 +129,11 @@ export default function App() {
 
       clickTimestamps.push(now);
 
+      // 连续点击中清理可能触发的移动端/PC端文字选中
+      if (clickTimestamps.length >= 2) {
+        window.getSelection()?.removeAllRanges();
+      }
+
       // 清除旧的重置定时器
       if (resetTimer) {
         clearTimeout(resetTimer);
@@ -145,16 +148,41 @@ export default function App() {
         // 立即重置点击计数与状态
         resetClicks();
 
-        // 必须在规定的总耗时上限内完成快速点击
+        // 必须在规定的总耗时上限内完成连续点击
         if (totalDuration <= MAX_TOTAL_DURATION) {
           window.getSelection()?.removeAllRanges();
 
-          // 动态根据当前所在域名（兼容多域名/备份域名/本地开发环境）在新标签页打开后台
+          // 移动端轻微触觉震动反馈
+          try {
+            if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+              navigator.vibrate(50);
+            }
+          } catch (_) {
+            // ignore
+          }
+
+          // 动态根据当前所在域名（兼容多域名/备份域名/本地开发环境）打开后台
           const origin = window.location.origin && window.location.origin !== 'null'
             ? window.location.origin
             : `${window.location.protocol}//${window.location.host}`;
-          const targetUrl = `${origin}/Donttouchmyshit/`;
-          window.open(targetUrl, '_blank');
+          const targetUrl = `${origin}/dtms/`;
+
+          // 判断是否为移动端环境（含触摸屏及移动浏览器识别）
+          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+            || (window.matchMedia && window.matchMedia('(max-width: 768px)').matches)
+            || ('ontouchstart' in window && navigator.maxTouchPoints > 0);
+
+          if (isMobile) {
+            // 移动端直接在当前窗口跳转，百分之百规避各大移动浏览器（iOS Safari、Chrome、微信/QQ内置浏览器等）拦截弹窗
+            window.location.href = targetUrl;
+          } else {
+            // PC 桌面端优先在新标签页打开
+            const newWin = window.open(targetUrl, '_blank');
+            if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+              // 桌面浏览器拦截弹窗时的优雅降级
+              window.location.href = targetUrl;
+            }
+          }
         }
       } else {
         // 若在 MAX_CLICK_INTERVAL 内未发生下一次快速点击，则自动重置计数
@@ -164,8 +192,67 @@ export default function App() {
       }
     };
 
+    // 移动端触摸处理：精确识别轻触空白处，杜绝滑动页面与双指缩放误触
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 1) {
+        resetClicks();
+        touchStartPos = null;
+        return;
+      }
+      const touch = e.touches[0];
+      touchStartPos = {
+        x: touch.clientX,
+        y: touch.clientY,
+        time: Date.now(),
+      };
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!touchStartPos) return;
+      const touch = e.changedTouches[0];
+      const distX = touch.clientX - touchStartPos.x;
+      const distY = touch.clientY - touchStartPos.y;
+      const elapsed = Date.now() - touchStartPos.time;
+      const dist = Math.hypot(distX, distY);
+      touchStartPos = null;
+
+      // 允许手指接触微弱抖动（位移 < 20px 且持续时间 < 500ms 即判定为合法轻触，排除长按与滑动翻屏）
+      if (dist < 20 && elapsed < 500) {
+        lastTouchEndTime = Date.now();
+        const rawTarget = (document.elementFromPoint ? document.elementFromPoint(touch.clientX, touch.clientY) : e.target) as Node | null;
+        const target = (rawTarget instanceof Element ? rawTarget : rawTarget?.parentElement) as Element | null;
+        registerTap(target);
+      }
+    };
+
+    const handleTouchCancel = () => {
+      touchStartPos = null;
+    };
+
+    // 桌面端鼠标点击处理
+    const handleGlobalClick = (e: MouseEvent) => {
+      // 仅响应鼠标左键 (button === 0)
+      if (e.button !== 0) return;
+
+      // 如果刚刚通过触摸端 touch 触发过，避免移动端合成 click 重复计数
+      if (Date.now() - lastTouchEndTime < 600) {
+        return;
+      }
+
+      const rawTarget = e.target as Node | null;
+      const target = (rawTarget instanceof Element ? rawTarget : rawTarget?.parentElement) as Element | null;
+      registerTap(target);
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true, capture: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true, capture: true });
+    window.addEventListener('touchcancel', handleTouchCancel, { passive: true, capture: true });
     window.addEventListener('click', handleGlobalClick, true);
+
     return () => {
+      window.removeEventListener('touchstart', handleTouchStart, true);
+      window.removeEventListener('touchend', handleTouchEnd, true);
+      window.removeEventListener('touchcancel', handleTouchCancel, true);
       window.removeEventListener('click', handleGlobalClick, true);
       resetClicks();
     };

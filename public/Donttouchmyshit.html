@@ -144,13 +144,54 @@
       transition: all 0.4s ease;
     }
 
-    .cms-brand {
+    .cms-nav-left {
       display: flex;
       align-items: center;
       gap: 12px;
+      min-width: 0;
+    }
+
+    /* 三明治折叠菜单按钮 */
+    .btn-hamburger {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 1.15rem;
+      line-height: 1;
+      transition: all 0.25s cubic-bezier(0.34, 1.3, 0.64, 1);
+      flex-shrink: 0;
+      user-select: none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .btn-hamburger:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-hover);
+      color: var(--cinnabar);
+      transform: scale(1.08);
+    }
+
+    .btn-hamburger:active {
+      transform: scale(0.95);
+    }
+
+    .cms-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       text-decoration: none;
       color: var(--text-main);
       user-select: none;
+      min-width: 0;
     }
 
     .cms-brand-logo {
@@ -159,6 +200,7 @@
       object-fit: contain;
       filter: drop-shadow(0 2px 6px rgba(229, 0, 0, 0.35));
       transition: transform 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
+      flex-shrink: 0;
     }
 
     .cms-brand:hover .cms-brand-logo {
@@ -166,24 +208,19 @@
     }
 
     .cms-brand-title {
-      font-size: 1.28rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       display: flex;
       align-items: center;
       gap: 10px;
       font-family: var(--font-serif);
+      white-space: nowrap;
     }
 
     .brand-title-main {
       color: var(--text-main);
-    }
-
-    .brand-title-sub {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--cinnabar);
-      letter-spacing: 0.05em;
+      white-space: nowrap;
     }
 
     .cms-badge {
@@ -598,6 +635,13 @@
       color: var(--cinnabar);
     }
 
+    .card-tags-wrap {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+
     .tag-badge {
       font-size: 0.72rem;
       padding: 3px 10px;
@@ -608,6 +652,10 @@
       background: rgba(0, 0, 0, 0.04);
       color: var(--text-muted);
       letter-spacing: 0.04em;
+      white-space: nowrap;
+      word-break: keep-all;
+      display: inline-block;
+      flex-shrink: 0;
     }
 
     body.dark .tag-badge {
@@ -1049,6 +1097,569 @@
       opacity: 0.95 !important;
       cursor: grabbing !important;
     }
+
+    /* 移动端当前编辑项目快捷栏 (仅在移动端显示) */
+    .mobile-section-bar {
+      display: none;
+      position: sticky;
+      top: 54px;
+      z-index: 70;
+      margin: 8px 12px 6px;
+    }
+
+    .mobile-section-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 18px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-sm);
+      color: var(--text-main);
+      font-family: var(--font-serif);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.25s ease;
+    }
+
+    .mobile-section-trigger:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-surface-hover);
+    }
+
+    .mobile-section-trigger:active {
+      transform: scale(0.98);
+    }
+
+    .mobile-section-curr {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--cinnabar);
+    }
+
+    .mobile-section-arrow {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: rgba(0, 0, 0, 0.05);
+      padding: 3px 12px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+    }
+
+    body.dark .mobile-section-arrow {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    /* 三明治抽屉侧边菜单 */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 95;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .project-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 290px;
+      max-width: 82vw;
+      background: var(--bg-base);
+      background-image: var(--bg-paper-texture);
+      border-right: 1px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+      z-index: 96;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.34, 1.25, 0.64, 1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    body.dark .project-drawer {
+      background: rgba(14, 20, 30, 0.96);
+    }
+
+    .project-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+    }
+
+    .drawer-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: var(--font-serif);
+    }
+
+    .drawer-close-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+    }
+
+    .drawer-close-btn:hover {
+      background: var(--bg-surface-hover);
+      color: var(--cinnabar);
+      border-color: var(--cinnabar);
+      transform: scale(1.08);
+    }
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 12px;
+      scrollbar-width: none;
+    }
+
+    .drawer-body::-webkit-scrollbar {
+      display: none;
+    }
+
+    .drawer-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .drawer-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font-serif);
+      color: var(--text-muted);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      user-select: none;
+      transition: all 0.25s cubic-bezier(0.34, 1.3, 0.64, 1);
+    }
+
+    .drawer-nav-item:hover {
+      background: var(--bg-surface-hover);
+      color: var(--cinnabar);
+      border-color: var(--border-hover);
+      transform: translateX(4px);
+    }
+
+    .drawer-nav-item.active {
+      background: rgba(158, 42, 43, 0.82) !important;
+      color: #ffffff !important;
+      border-color: rgba(185, 58, 58, 0.9) !important;
+      box-shadow: 0 4px 16px rgba(158, 42, 43, 0.35);
+      transform: translateX(4px);
+    }
+
+    .drawer-tab-name {
+      flex: 1;
+    }
+
+    .drawer-tab-badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(0, 0, 0, 0.08);
+      color: inherit;
+    }
+
+    .drawer-nav-item.active .drawer-tab-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    .drawer-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      font-size: 0.78rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    /* 响应式子组件默认基础样式 */
+    .emby-server-row, .ok-item-row, .footer-backup-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .footer-related-card, .footer-promo-card {
+      transition: border-color 0.2s ease;
+    }
+
+    .health-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* 移动端媒体查询 (全量响应式适配) */
+    @media (max-width: 768px) {
+      /* 1. 顶部导航栏适配 */
+      .cms-navbar {
+        padding: 10px 14px;
+        gap: 8px;
+      }
+
+      .btn-hamburger {
+        display: inline-flex !important;
+      }
+
+      .cms-brand-logo {
+        width: 28px;
+        height: 28px;
+      }
+
+      .cms-brand-title {
+        font-size: 1.08rem;
+        gap: 6px;
+        letter-spacing: 0.05em;
+      }
+
+      .cms-badge {
+        font-size: 0.68rem;
+        padding: 3px 8px;
+      }
+
+      .cms-nav-actions {
+        gap: 6px;
+      }
+
+      .btn-nav-home .home-text {
+        display: none;
+      }
+
+      .btn-nav-home {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+      }
+
+      .btn-save-action {
+        padding: 6px 14px;
+        font-size: 0.85rem;
+      }
+
+      /* 2. 隐藏原多行巨大圆盘 Tab，显示三明治菜单和顶部编辑项目快捷栏 */
+      .cms-tabs-bar {
+        display: none !important;
+      }
+
+      .mobile-section-bar {
+        display: block !important;
+      }
+
+      /* 3. 主内容区与工具栏 */
+      .cms-container {
+        padding: 12px 10px 48px;
+      }
+
+      .toolbar-wrapper {
+        padding: 12px 14px;
+        gap: 12px;
+        border-radius: var(--radius-md);
+        margin-bottom: 14px;
+      }
+
+      .toolbar-left, .toolbar-right {
+        width: 100%;
+        gap: 10px;
+      }
+
+      .filter-pills-group {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3px;
+        padding: 3px;
+        box-sizing: border-box;
+      }
+
+      .filter-pill {
+        width: 100%;
+        text-align: center;
+        padding: 7px 2px;
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+
+      .search-input-wrap {
+        width: 100%;
+      }
+
+      .search-input-wrap input {
+        width: 100% !important;
+        font-size: 16px;
+        padding: 9px 14px 9px 34px;
+        box-sizing: border-box;
+      }
+
+      .toolbar-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      #btn-add-site {
+        grid-column: 1 / -1;
+        width: 100%;
+        padding: 10px;
+        font-size: 0.92rem;
+      }
+
+      #btn-export-json, #btn-import-json-trigger {
+        width: 100%;
+        padding: 8px 4px;
+        font-size: 0.82rem;
+      }
+
+      /* 4. 站点卡片重塑 */
+      .card-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 14px;
+        border-radius: var(--radius-md);
+      }
+
+      .card-row-left {
+        width: 100%;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .drag-handle {
+        padding: 4px 6px;
+        margin-top: 1px;
+        font-size: 1.35rem;
+        flex-shrink: 0;
+      }
+
+      .card-meta-main {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .card-title-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+      }
+
+      .card-site-name {
+        font-size: 1.08rem;
+        word-break: break-all;
+      }
+
+      .card-url-line {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        font-size: 0.8rem;
+      }
+
+      .card-url-link {
+        max-width: 100%;
+        word-break: break-all;
+      }
+
+      .card-desc-snippet {
+        max-width: 100%;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .card-row-right {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 8px;
+        border-top: 1px dashed var(--border-color);
+        padding-top: 10px;
+        margin-top: 2px;
+      }
+
+      .card-row-right .btn, .card-row-right .pill-switch {
+        padding: 6px 14px;
+        font-size: 0.82rem;
+      }
+
+      /* 5. Emby / OK 影视 / 页脚单条记录栅格堆叠 */
+      .emby-server-row, .ok-item-row, .footer-backup-row {
+        display: grid !important;
+        grid-template-columns: 1fr auto !important;
+        gap: 6px !important;
+        background: var(--bg-surface);
+        padding: 8px 10px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-color);
+      }
+
+      .emby-server-row .input-url, .ok-item-row .input-url, .footer-backup-row .input-url {
+        grid-column: 1 / -1;
+        width: 100% !important;
+      }
+
+      .emby-server-row .input-name, .ok-item-row .input-name, .footer-backup-row .input-name {
+        width: 100% !important;
+      }
+
+      /* 6. 页脚友情链接卡片 */
+      .footer-related-card {
+        padding: 10px 12px !important;
+      }
+
+      .footer-related-fields {
+        flex-direction: column !important;
+        gap: 8px !important;
+        width: 100% !important;
+      }
+
+      .footer-field-item {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+      }
+
+      .footer-related-actions {
+        width: 100% !important;
+        justify-content: flex-end !important;
+        margin-top: 6px;
+      }
+
+      .footer-promo-top {
+        flex-direction: column !important;
+        gap: 6px !important;
+      }
+
+      .footer-promo-top input {
+        width: 100% !important;
+      }
+
+      /* 7. 弹窗视频管理条目卡片 */
+      .popup-video-card-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+      }
+
+      .popup-video-actions {
+        width: 100% !important;
+        justify-content: flex-end !important;
+        flex-wrap: wrap !important;
+      }
+
+      .popup-video-detail-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+      }
+
+      .popup-video-timing-box {
+        width: 100% !important;
+        justify-content: space-between !important;
+      }
+
+      .lifespan-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      /* 8. 快照卡片 */
+      .backup-item-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+      }
+
+      .backup-item-row button {
+        width: 100%;
+      }
+
+      /* 9. 模态弹窗 */
+      .modal-container {
+        width: 95vw !important;
+        max-height: 92vh !important;
+        margin: 10px !important;
+        border-radius: 20px !important;
+      }
+
+      .modal-header, .modal-body, .modal-footer {
+        padding: 14px 16px !important;
+      }
+
+      /* 10. 浮层 Toast */
+      #toast-container {
+        bottom: 18px;
+        left: 14px;
+        right: 14px;
+        align-items: center;
+      }
+
+      .toast-item {
+        width: auto;
+        max-width: 100%;
+        text-align: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        padding: 10px 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cms-badge {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1058,34 +1669,46 @@
 
   <!-- 顶部导航栏 -->
   <header class="cms-navbar">
-    <div class="cms-brand">
-      <img src="/favicon.svg" alt="不想看片" class="cms-brand-logo">
-      <div>
+    <div class="cms-nav-left">
+      <!-- 三明治折叠按钮 (选择编辑项目) -->
+      <button id="btn-menu-toggle" class="btn-hamburger" title="选择编辑项目" aria-label="选择编辑项目">
+        ☰
+      </button>
+
+      <a href="/" class="cms-brand" title="不想看片">
+        <img src="/favicon.svg" alt="不想看片" class="cms-brand-logo">
         <div class="cms-brand-title">
           <span class="brand-title-main">不想看片</span>
-          <span class="brand-title-sub">· 掌柜后台</span>
           <span id="cms-mode-badge" class="cms-badge badge-local">🍀 本地模式</span>
         </div>
-      </div>
+      </a>
     </div>
 
     <div class="cms-nav-actions">
       <!-- 昼夜模式切换按钮 -->
-      <button id="btn-theme-toggle" class="btn btn-sm" title="切换极夜与宣纸主题" style="display: flex; align-items: center; justify-content: center; min-width: 42px; padding: 6px 12px; font-size: 1.15rem; line-height: 1;">
+      <button id="btn-theme-toggle" class="btn btn-sm btn-icon-theme" title="切换极夜与宣纸主题" style="display: flex; align-items: center; justify-content: center; min-width: 38px; padding: 6px 10px; font-size: 1.15rem; line-height: 1;">
         <span id="theme-icon">🌙</span>
       </button>
 
       <!-- 返回主站 -->
-      <a href="/" target="_blank" class="btn btn-sm" title="新窗口打开不想看片主站">
-        ↗ 浏览主站
+      <a href="/" target="_blank" class="btn btn-sm btn-nav-home" title="新窗口打开不想看片主站">
+        <span class="home-arrow">↗</span><span class="home-text"> 浏览主站</span>
       </a>
 
       <!-- 部署/保存 -->
-      <button id="btn-save-all" class="btn btn-primary" title="落盘并同步至站点">
-        <span>💾</span> <span>应用</span>
+      <button id="btn-save-all" class="btn btn-primary btn-save-action" title="落盘并同步至站点">
+        <span>💾</span> <span class="save-text">应用</span>
       </button>
     </div>
   </header>
+
+  <!-- 移动端当前编辑项目快捷栏 (点击呼出三明治菜单) -->
+  <div class="mobile-section-bar">
+    <button id="mobile-section-trigger" class="mobile-section-trigger" title="点击选择其他编辑项目">
+      <span class="mobile-section-curr" id="mobile-curr-section-text">🗂️ 影视站点库</span>
+      <span class="mobile-section-arrow">选择项目 ▾</span>
+    </button>
+  </div>
 
   <!-- 选项卡导航栏 -->
   <nav class="cms-tabs-bar">
@@ -1461,6 +2084,58 @@
 
   </main>
 
+  <!-- 三明治菜单抽屉 (选择编辑项目) -->
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+  <aside id="project-drawer" class="project-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-title-wrap">
+        <span>📑 选择编辑项目</span>
+      </div>
+      <button id="btn-close-drawer" class="drawer-close-btn" aria-label="关闭抽屉">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="drawer-nav-list">
+        <button class="drawer-nav-item active" data-tab="tab-sites">
+          <span class="drawer-tab-icon">🗂️</span>
+          <span class="drawer-tab-name">影视站点库</span>
+          <span class="drawer-tab-badge" id="drawer-count-total">0</span>
+        </button>
+        <button class="drawer-nav-item" data-tab="tab-emby-ok">
+          <span class="drawer-tab-icon">📺</span>
+          <span class="drawer-tab-name">Emby与OK影视</span>
+        </button>
+        <button class="drawer-nav-item" data-tab="tab-popup">
+          <span class="drawer-tab-icon">🎬</span>
+          <span class="drawer-tab-name">弹窗视频管理</span>
+          <span class="drawer-tab-badge" id="drawer-count-popup">0</span>
+        </button>
+        <button class="drawer-nav-item" data-tab="tab-footer">
+          <span class="drawer-tab-icon">🏮</span>
+          <span class="drawer-tab-name">页脚与友情扩展</span>
+        </button>
+        <button class="drawer-nav-item" data-tab="tab-faqs">
+          <span class="drawer-tab-icon">💡</span>
+          <span class="drawer-tab-name">FAQ问答与SEO</span>
+        </button>
+        <button class="drawer-nav-item" data-tab="tab-health">
+          <span class="drawer-tab-icon">🩺</span>
+          <span class="drawer-tab-name">链接健康体检</span>
+        </button>
+        <button class="drawer-nav-item" data-tab="tab-backups">
+          <span class="drawer-tab-icon">🕒</span>
+          <span class="drawer-tab-name">快照与版本回滚</span>
+        </button>
+        <button class="drawer-nav-item" data-tab="tab-settings">
+          <span class="drawer-tab-icon">⚙️</span>
+          <span class="drawer-tab-name">系统与GitHub配置</span>
+        </button>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <span>不想看片 · 禅意管理台</span>
+    </div>
+  </aside>
+
   <!-- 站点编辑/增录模态弹窗 (内置 1:1 像素级实时预览) -->
   <div id="site-modal" class="modal-overlay">
     <div class="modal-container">
@@ -1637,12 +2312,12 @@
 
   <!-- 独立播放预览弹窗 -->
   <div id="modal-video-standalone-preview" class="modal-overlay">
-    <div class="modal-container" style="max-width: 900px; height: 580px;">
+    <div class="modal-container" style="max-width: 900px; width: 95vw; max-height: 85vh; height: auto;">
       <div class="modal-header">
         <h3 id="modal-standalone-preview-title" class="modal-title">视频播放预览</h3>
         <button class="btn btn-sm" id="btn-close-standalone-preview">✕</button>
       </div>
-      <div class="modal-body" style="padding: 0; background: #000; overflow: hidden;">
+      <div class="modal-body" style="padding: 0; background: #000; overflow: hidden; min-height: 240px; aspect-ratio: 16/9; max-height: 70vh;">
         <div id="standalone-preview-content" style="width: 100%; height: 100%;"></div>
       </div>
     </div>
@@ -1736,18 +2411,85 @@
         showToast(isDark ? '已切换至极夜水墨视觉' : '已切换至宣纸纸韵视觉');
       });
 
-      // 选项卡切换
-      document.querySelectorAll('.cms-tab-item').forEach(tab => {
+      // 通用转义函数
+      function escapeAttr(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      // 统一项目/选项卡切换逻辑与三明治抽屉控制
+      const projectDrawer = document.getElementById('project-drawer');
+      const drawerBackdrop = document.getElementById('drawer-backdrop');
+      const btnMenuToggle = document.getElementById('btn-menu-toggle');
+      const btnCloseDrawer = document.getElementById('btn-close-drawer');
+      const mobileSectionTrigger = document.getElementById('mobile-section-trigger');
+
+      function openDrawer() {
+        if (projectDrawer && drawerBackdrop) {
+          projectDrawer.classList.add('open');
+          drawerBackdrop.classList.add('open');
+          projectDrawer.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      function closeDrawer() {
+        if (projectDrawer && drawerBackdrop) {
+          projectDrawer.classList.remove('open');
+          drawerBackdrop.classList.remove('open');
+          projectDrawer.setAttribute('aria-hidden', 'true');
+        }
+      }
+
+      if (btnMenuToggle) btnMenuToggle.addEventListener('click', openDrawer);
+      if (mobileSectionTrigger) mobileSectionTrigger.addEventListener('click', openDrawer);
+      if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', closeDrawer);
+      if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeDrawer);
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDrawer();
+      });
+
+      function switchTab(targetId) {
+        document.querySelectorAll('.cms-tab-item').forEach(t => {
+          t.classList.toggle('active', t.dataset.tab === targetId);
+        });
+        document.querySelectorAll('.drawer-nav-item').forEach(t => {
+          t.classList.toggle('active', t.dataset.tab === targetId);
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => {
+          p.classList.toggle('active', p.id === targetId);
+        });
+
+        const titles = {
+          'tab-sites': '🗂️ 影视站点库',
+          'tab-emby-ok': '📺 Emby与OK影视',
+          'tab-popup': '🎬 弹窗视频管理',
+          'tab-footer': '🏮 页脚与友情扩展',
+          'tab-faqs': '💡 FAQ问答与SEO',
+          'tab-health': '🩺 链接健康体检',
+          'tab-backups': '🕒 快照与版本回滚',
+          'tab-settings': '⚙️ 系统与GitHub配置'
+        };
+        const currTextEl = document.getElementById('mobile-curr-section-text');
+        if (currTextEl && titles[targetId]) {
+          currTextEl.textContent = titles[targetId];
+        }
+
+        if (targetId === 'tab-backups') loadBackupsList();
+        closeDrawer();
+      }
+
+      window.switchTab = switchTab;
+
+      document.querySelectorAll('.cms-tab-item, .drawer-nav-item').forEach(tab => {
         tab.addEventListener('click', () => {
-          document.querySelectorAll('.cms-tab-item').forEach(t => t.classList.remove('active'));
-          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-
-          tab.classList.add('active');
           const targetId = tab.dataset.tab;
-          const panel = document.getElementById(targetId);
-          if (panel) panel.classList.add('active');
-
-          if (targetId === 'tab-backups') loadBackupsList();
+          if (targetId) switchTab(targetId);
         });
       });
 
@@ -1800,15 +2542,26 @@
 
       function updateCountBadges() {
         const sites = cmsData.sites || [];
-        document.getElementById('count-total').textContent = sites.length;
-        document.getElementById('count-all').textContent = sites.length;
-        document.getElementById('count-online').textContent = sites.filter(s => s.tags?.includes('在线')).length;
-        document.getElementById('count-pan').textContent = sites.filter(s => s.tags?.includes('网盘')).length;
-        document.getElementById('count-bt').textContent = sites.filter(s => s.tags?.includes('BT')).length;
+        const total = sites.length;
+        const countTotalEl = document.getElementById('count-total');
+        if (countTotalEl) countTotalEl.textContent = total;
+        const drawerTotalEl = document.getElementById('drawer-count-total');
+        if (drawerTotalEl) drawerTotalEl.textContent = total;
+
+        const countAllEl = document.getElementById('count-all');
+        if (countAllEl) countAllEl.textContent = total;
+        const countOnlineEl = document.getElementById('count-online');
+        if (countOnlineEl) countOnlineEl.textContent = sites.filter(s => s.tags?.includes('在线')).length;
+        const countPanEl = document.getElementById('count-pan');
+        if (countPanEl) countPanEl.textContent = sites.filter(s => s.tags?.includes('网盘')).length;
+        const countBtEl = document.getElementById('count-bt');
+        if (countBtEl) countBtEl.textContent = sites.filter(s => s.tags?.includes('BT')).length;
 
         const popupCount = (cmsData.popup?.videos || []).length;
         const countPopupEl = document.getElementById('count-popup');
         if (countPopupEl) countPopupEl.textContent = popupCount;
+        const drawerPopupEl = document.getElementById('drawer-count-popup');
+        if (drawerPopupEl) drawerPopupEl.textContent = popupCount;
       }
 
       // 2. 渲染站点列表
@@ -1865,7 +2618,7 @@
                     ${site.name}
                     ${site.isHidden ? '<span style="font-size: 0.72rem; color: #ef4444; margin-left: 4px;">[已隐藏]</span>' : ''}
                   </span>
-                  <div>${tagsHtml}</div>
+                  <div class="card-tags-wrap">${tagsHtml}</div>
                 </div>
                 <div class="card-url-line">
                   <span>主站：<a href="${site.main_url}" target="_blank" class="card-url-link">${site.main_url}</a></span>
@@ -2133,11 +2886,10 @@
           c.innerHTML = '';
           (list || []).forEach((s, i) => {
             const item = document.createElement('div');
-            item.style.display = 'flex';
-            item.style.gap = '8px';
+            item.className = 'emby-server-row';
             item.innerHTML = `
-              <input type="text" class="form-control" style="width: 130px;" value="${s.name}" onchange="updateEmbyServer('${type}', ${i}, 'name', this.value)">
-              <input type="url" class="form-control" style="flex: 1;" value="${s.url}" onchange="updateEmbyServer('${type}', ${i}, 'url', this.value)">
+              <input type="text" class="form-control input-name" placeholder="名称" value="${escapeAttr(s.name || '')}" onchange="updateEmbyServer('${type}', ${i}, 'name', this.value)">
+              <input type="url" class="form-control input-url" placeholder="连接地址 (https://...)" value="${escapeAttr(s.url || '')}" onchange="updateEmbyServer('${type}', ${i}, 'url', this.value)">
               <button class="btn btn-sm btn-danger" onclick="deleteEmbyServer('${type}', ${i})">✕</button>
             `;
             c.appendChild(item);
@@ -2158,11 +2910,10 @@
           c.innerHTML = '';
           (list || []).forEach((itemData, i) => {
             const row = document.createElement('div');
-            row.style.display = 'flex';
-            row.style.gap = '8px';
+            row.className = 'ok-item-row';
             row.innerHTML = `
-              <input type="text" class="form-control" style="width: 160px;" value="${itemData.name}" onchange="updateOkItem('${type}', ${i}, 'name', this.value)">
-              <input type="url" class="form-control" style="flex: 1;" value="${itemData.url}" onchange="updateOkItem('${type}', ${i}, 'url', this.value)">
+              <input type="text" class="form-control input-name" placeholder="名称" value="${escapeAttr(itemData.name || '')}" onchange="updateOkItem('${type}', ${i}, 'name', this.value)">
+              <input type="url" class="form-control input-url" placeholder="地址 (https://...)" value="${escapeAttr(itemData.url || '')}" onchange="updateOkItem('${type}', ${i}, 'url', this.value)">
               <button class="btn btn-sm btn-danger" onclick="deleteOkItem('${type}', ${i})">✕</button>
             `;
             c.appendChild(row);
@@ -2251,12 +3002,10 @@
           backupContainer.innerHTML = '';
           (footer.backupSites || []).forEach((item, idx) => {
             const row = document.createElement('div');
-            row.style.display = 'flex';
-            row.style.gap = '8px';
-            row.style.alignItems = 'center';
+            row.className = 'footer-backup-row';
             row.innerHTML = `
-              <input type="text" class="form-control" style="width: 160px;" placeholder="网站名称 (如: HedgeDoc)" value="${escapeAttr(item.name || '')}" onchange="updateFooterBackup(${idx}, 'name', this.value)">
-              <input type="url" class="form-control" style="flex: 1;" placeholder="网站网址 (如: https://...)" value="${escapeAttr(item.url || '')}" onchange="updateFooterBackup(${idx}, 'url', this.value)">
+              <input type="text" class="form-control input-name" placeholder="网站名称 (如: HedgeDoc)" value="${escapeAttr(item.name || '')}" onchange="updateFooterBackup(${idx}, 'name', this.value)">
+              <input type="url" class="form-control input-url" placeholder="网站网址 (如: https://...)" value="${escapeAttr(item.url || '')}" onchange="updateFooterBackup(${idx}, 'url', this.value)">
               <button class="btn btn-sm btn-danger" onclick="deleteFooterBackup(${idx})">✕</button>
             `;
             backupContainer.appendChild(row);
@@ -2272,6 +3021,7 @@
           } else {
             footer.relatedSites.forEach((item, idx) => {
               const row = document.createElement('div');
+              row.className = 'footer-related-card';
               row.style.background = 'var(--bg-card)';
               row.style.border = '1px solid var(--border-color)';
               row.style.borderRadius = 'var(--radius-sm)';
@@ -2282,15 +3032,21 @@
               row.style.flexWrap = 'wrap';
 
               row.innerHTML = `
-                <div style="display: flex; gap: 8px; align-items: center; flex: 1; min-width: 280px;">
-                  <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">名称:</span>
-                  <input type="text" class="form-control" style="width: 130px;" placeholder="如: 不想翻墙" value="${escapeAttr(item.name || '')}" onchange="updateFooterRelated(${idx}, 'name', this.value)">
-                  <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">链接:</span>
-                  <input type="url" class="form-control" style="flex: 1; min-width: 140px;" placeholder="如: https://bxfq.sld.tw/" value="${escapeAttr(item.url || '')}" onchange="updateFooterRelated(${idx}, 'url', this.value)">
+                <div class="footer-related-fields" style="display: flex; gap: 8px; align-items: center; flex: 1; min-width: 240px; flex-wrap: wrap;">
+                  <div class="footer-field-item" style="display: flex; align-items: center; gap: 4px; flex: 1; min-width: 110px;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">名称:</span>
+                    <input type="text" class="form-control input-name" placeholder="如: 不想翻墙" value="${escapeAttr(item.name || '')}" onchange="updateFooterRelated(${idx}, 'name', this.value)">
+                  </div>
+                  <div class="footer-field-item" style="display: flex; align-items: center; gap: 4px; flex: 2; min-width: 140px;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">链接:</span>
+                    <input type="url" class="form-control input-url" placeholder="如: https://bxfq.sld.tw/" value="${escapeAttr(item.url || '')}" onchange="updateFooterRelated(${idx}, 'url', this.value)">
+                  </div>
+                  <div class="footer-field-item" style="display: flex; align-items: center; gap: 4px; flex: 1; min-width: 120px;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">显示文本:</span>
+                    <input type="text" class="form-control input-display" placeholder="留空默认显示网址" value="${escapeAttr(item.displayText || '')}" onchange="updateFooterRelated(${idx}, 'displayText', this.value)">
+                  </div>
                 </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                  <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">显示文本:</span>
-                  <input type="text" class="form-control" style="width: 140px;" placeholder="留空默认显示网址" value="${escapeAttr(item.displayText || '')}" onchange="updateFooterRelated(${idx}, 'displayText', this.value)">
+                <div class="footer-related-actions" style="display: flex; gap: 6px; align-items: center;">
                   <button type="button" class="btn btn-sm" onclick="moveFooterRelated(${idx}, -1)" title="上移" ${idx === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>↑</button>
                   <button type="button" class="btn btn-sm" onclick="moveFooterRelated(${idx}, 1)" title="下移" ${idx === (footer.relatedSites.length - 1) ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>↓</button>
                   <button type="button" class="btn btn-sm btn-danger" onclick="deleteFooterRelated(${idx})" title="删除此链接">🗑️ 删除</button>
@@ -2310,14 +3066,15 @@
           } else {
             footer.promoLinks.forEach((p, idx) => {
               const card = document.createElement('div');
+              card.className = 'footer-promo-card';
               card.style.background = 'var(--bg-card)';
               card.style.border = '1px solid var(--border-color)';
               card.style.borderRadius = 'var(--radius-sm)';
               card.style.padding = '12px';
               card.innerHTML = `
-                <div style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center;">
-                  <input type="text" class="form-control" style="width: 160px;" placeholder="导航标题 (如: 扩展推荐)" value="${escapeAttr(p.title || '')}" onchange="updateFooterPromo(${idx}, 'title', this.value)">
-                  <input type="url" class="form-control" style="flex: 1;" placeholder="跳转链接 (如: https://...)" value="${escapeAttr(p.url || '')}" onchange="updateFooterPromo(${idx}, 'url', this.value)">
+                <div class="footer-promo-top" style="display: flex; gap: 8px; margin-bottom: 8px; align-items: center; flex-wrap: wrap;">
+                  <input type="text" class="form-control input-title" style="flex: 1; min-width: 120px;" placeholder="导航标题 (如: 扩展推荐)" value="${escapeAttr(p.title || '')}" onchange="updateFooterPromo(${idx}, 'title', this.value)">
+                  <input type="url" class="form-control input-url" style="flex: 2; min-width: 160px;" placeholder="跳转链接 (如: https://...)" value="${escapeAttr(p.url || '')}" onchange="updateFooterPromo(${idx}, 'url', this.value)">
                   <button class="btn btn-sm btn-danger" onclick="deleteFooterPromo(${idx})">🗑️ 删除</button>
                 </div>
                 <input type="text" class="form-control" placeholder="描述说明 (如: 相关资源推荐说明)" value="${escapeAttr(p.description || '')}" onchange="updateFooterPromo(${idx}, 'description', this.value)">
@@ -2513,6 +3270,9 @@
         const container = document.getElementById('health-results-container');
         container.innerHTML = '';
 
+        const wrap = document.createElement('div');
+        wrap.className = 'health-table-wrap';
+
         const table = document.createElement('table');
         table.className = 'health-table';
 
@@ -2547,7 +3307,8 @@
           table.appendChild(tr);
         });
 
-        container.appendChild(table);
+        wrap.appendChild(table);
+        container.appendChild(wrap);
         showToast('链接体检完毕！');
       }
 
@@ -3070,6 +3831,7 @@
             container.innerHTML = '';
             res.backups.forEach(b => {
               const item = document.createElement('div');
+              item.className = 'backup-item-row';
               item.style.background = 'var(--bg-surface)';
               item.style.border = '1px solid var(--border-color)';
               item.style.borderRadius = 'var(--radius-sm)';
@@ -3077,12 +3839,13 @@
               item.style.display = 'flex';
               item.style.justifyContent = 'space-between';
               item.style.alignItems = 'center';
+              item.style.gap = '10px';
               item.innerHTML = `
-                <div>
-                  <strong style="color: var(--text-main);">${b.id}</strong>
+                <div style="min-width: 0;">
+                  <strong style="color: var(--text-main); word-break: break-all;">${b.id}</strong>
                   <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 10px;">[${b.note}] ${b.createdAt}</span>
                 </div>
-                <button class="btn btn-sm btn-danger" onclick="restoreSnapshot('${b.id}')">⏮️ 还原此版本</button>
+                <button class="btn btn-sm btn-danger" style="flex-shrink: 0;" onclick="restoreSnapshot('${b.id}')">⏮️ 还原此版本</button>
               `;
               container.appendChild(item);
             });

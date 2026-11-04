@@ -61,7 +61,26 @@ export function cmsLocalPlugin(): Plugin {
           lowerUrl === '/public/donttouchmyshit/' ||
           lowerUrl === '/public/donttouchmyshit/index.html'
         ) {
-          const cmsHtmlPath = path.resolve(rootDir, 'public/Donttouchmyshit/index.html');
+          res.writeHead(302, { Location: '/dtms/' });
+          res.end();
+          return;
+        }
+
+        if (
+          lowerUrl === '/dtms' ||
+          lowerUrl === '/dtms/' ||
+          lowerUrl === '/dtms/index.html' ||
+          lowerUrl === '/dtms.html' ||
+          lowerUrl === '/public/dtms' ||
+          lowerUrl === '/public/dtms/' ||
+          lowerUrl === '/public/dtms/index.html' ||
+          lowerUrl === '/public/dtms.html'
+        ) {
+          const cmsHtmlPath = fs.existsSync(path.resolve(rootDir, 'public/dtms/index.html'))
+            ? path.resolve(rootDir, 'public/dtms/index.html')
+            : (fs.existsSync(path.resolve(rootDir, 'public/dtms.html'))
+              ? path.resolve(rootDir, 'public/dtms.html')
+              : path.resolve(rootDir, 'public/Donttouchmyshit/index.html'));
           if (fs.existsSync(cmsHtmlPath)) {
             res.writeHead(200, {
               'Content-Type': 'text/html; charset=utf-8',
