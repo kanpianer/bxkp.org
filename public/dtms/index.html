@@ -1957,18 +1957,18 @@
     <section id="tab-footer" class="tab-panel">
       <div style="display: flex; flex-direction: column; gap: 20px;">
         
-        <!-- 备份网站列表卡片 -->
+        <!-- 本站网址列表卡片 -->
         <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
             <div>
               <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--cinnabar); display: flex; align-items: center; gap: 8px;">
-                <span>📑 备份网站列表</span>
+                <span>📑 本站网址列表</span>
               </h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
-                显示在主站底部「备份网站：...」区域，方便访客访问备选镜像地址与发布页。
+                显示在主站底部「本站网址：...」区域，方便访客访问备选镜像地址与发布页。
               </p>
             </div>
-            <button id="btn-add-backup-site" class="btn btn-sm btn-primary">+ 添加备份网站</button>
+            <button id="btn-add-backup-site" class="btn btn-sm btn-primary">+ 添加本站网址</button>
           </div>
           <div id="footer-backups-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
@@ -3049,7 +3049,7 @@
         }
         const footer = cmsData.footer;
 
-        // 1. 备份网站列表渲染
+        // 1. 本站网址列表渲染
         const backupContainer = document.getElementById('footer-backups-list');
         if (backupContainer) {
           backupContainer.innerHTML = '';
@@ -3057,7 +3057,7 @@
             const row = document.createElement('div');
             row.className = 'footer-backup-row';
             row.innerHTML = `
-              <input type="text" class="form-control input-name" placeholder="网站名称 (如: HedgeDoc)" value="${escapeAttr(item.name || '')}" onchange="updateFooterBackup(${idx}, 'name', this.value)">
+              <input type="text" class="form-control input-name" placeholder="网站名称 (如: bxkp.org)" value="${escapeAttr(item.name || '')}" onchange="updateFooterBackup(${idx}, 'name', this.value)">
               <input type="url" class="form-control input-url" placeholder="网站网址 (如: https://...)" value="${escapeAttr(item.url || '')}" onchange="updateFooterBackup(${idx}, 'url', this.value)">
               <button class="btn btn-sm btn-danger" onclick="deleteFooterBackup(${idx})">✕</button>
             `;
@@ -3198,7 +3198,7 @@
       document.getElementById('btn-add-backup-site').addEventListener('click', () => {
         if (!cmsData.footer) cmsData.footer = {};
         if (!cmsData.footer.backupSites) cmsData.footer.backupSites = [];
-        cmsData.footer.backupSites.push({ name: '新备份网站', url: 'https://...' });
+        cmsData.footer.backupSites.push({ name: '新网址', url: 'https://...' });
         renderFooterForms();
       });
 

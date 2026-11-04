@@ -614,7 +614,7 @@ export default function App() {
             <div className={`text-sm leading-relaxed max-w-2xl mx-auto p-4 text-center transition-colors duration-[800ms] ${isDarkActive ? 'text-paper-200' : 'text-black/90'}`}>
                {FOOTER_SECTION.backupSites && FOOTER_SECTION.backupSites.length > 0 && (
                  <p className="mb-2">
-                   备份网站：
+                   本站网址：
                    {FOOTER_SECTION.backupSites.map((bSite, idx) => (
                      <React.Fragment key={bSite.name}>
                        {idx > 0 && '、'}
