@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-25",
+  "updatedAt": "2026-11-04",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -542,8 +542,8 @@
   "footer": {
     "backupSites": [
       {
-        "name": "HedgeDoc",
-        "url": "https://md.picasoft.net/LMlgl6FTRW-bTx3GgT2txQ"
+        "name": "Nekoweb",
+        "url": "https://bxkp.nekoweb.org/"
       },
       {
         "name": "bxkp.sld.tw",
@@ -605,6 +605,8 @@
         "duration": 4890763,
         "enabled": true
       }
-    ]
+    ],
+    "activeVideoId": "pv-1",
+    "activeExpiresAt": 1796903735253
   }
 }
