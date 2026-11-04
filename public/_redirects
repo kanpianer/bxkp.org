@@ -5,13 +5,3 @@
 /public/dtms/             /dtms/index.html 200
 /dtms.html                /dtms/ 301
 
-# Legacy CMS Route compatibility
-/Donttouchmyshit          /dtms/ 301
-/Donttouchmyshit/         /dtms/ 301
-/donttouchmyshit          /dtms/ 301
-/donttouchmyshit/         /dtms/ 301
-/public/Donttouchmyshit   /dtms/ 301
-/public/Donttouchmyshit/  /dtms/ 301
-/public/donttouchmyshit   /dtms/ 301
-/public/donttouchmyshit/  /dtms/ 301
-/Donttouchmyshit.html     /dtms/ 301

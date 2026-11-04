@@ -54,19 +54,6 @@ export function cmsLocalPlugin(): Plugin {
 
         // 0. 直接拦截并提供 CMS 页面 (无论是否带尾随斜杠、无论大小写、无论是否带 /public 前缀)
         if (
-          lowerUrl === '/donttouchmyshit' ||
-          lowerUrl === '/donttouchmyshit/' ||
-          lowerUrl === '/donttouchmyshit/index.html' ||
-          lowerUrl === '/public/donttouchmyshit' ||
-          lowerUrl === '/public/donttouchmyshit/' ||
-          lowerUrl === '/public/donttouchmyshit/index.html'
-        ) {
-          res.writeHead(302, { Location: '/dtms/' });
-          res.end();
-          return;
-        }
-
-        if (
           lowerUrl === '/dtms' ||
           lowerUrl === '/dtms/' ||
           lowerUrl === '/dtms/index.html' ||
@@ -78,9 +65,7 @@ export function cmsLocalPlugin(): Plugin {
         ) {
           const cmsHtmlPath = fs.existsSync(path.resolve(rootDir, 'public/dtms/index.html'))
             ? path.resolve(rootDir, 'public/dtms/index.html')
-            : (fs.existsSync(path.resolve(rootDir, 'public/dtms.html'))
-              ? path.resolve(rootDir, 'public/dtms.html')
-              : path.resolve(rootDir, 'public/Donttouchmyshit/index.html'));
+            : path.resolve(rootDir, 'public/dtms.html');
           if (fs.existsSync(cmsHtmlPath)) {
             res.writeHead(200, {
               'Content-Type': 'text/html; charset=utf-8',
