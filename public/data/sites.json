@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-04",
+  "updatedAt": "2026-11-06",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -560,6 +560,11 @@
         "name": "不想看书",
         "url": "https://bxks.sld.tw/",
         "displayText": "bxks.sld.tw"
+      },
+      {
+        "name": "纯家宽机场",
+        "url": "https://jiakuan.link/resip",
+        "displayText": "RESIP"
       }
     ],
     "promoLinks": [],
