@@ -72,6 +72,11 @@ export interface FooterSection {
   githubUrl: string;
 }
 
+export interface CardLayout {
+  rows: number; // 竖向行数 (0 表示不限制行数)
+  cols: number; // 横向排数 (水平列数)
+}
+
 export interface PopupVideoItem {
   id: string;
   title: string;
@@ -103,6 +108,12 @@ export const DEFAULT_QUICK_NAV: QuickNavConfig = {
   url: 'https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/'
 };
 export const QUICK_NAV: QuickNavConfig = (sitesData as any).quickNav || (sitesData.footer as any)?.quickNav || DEFAULT_QUICK_NAV;
+export const DEFAULT_CARD_LAYOUT: CardLayout = {
+  rows: 5,
+  cols: 4
+};
+export const CARD_LAYOUT: CardLayout = (sitesData as any).cardLayout || DEFAULT_CARD_LAYOUT;
+
 export const POPUP_CONFIG: PopupConfig = (sitesData as any).popup || {
   cycleStartTime: 1729887354000,
   activeVideoId: "pv-1",

@@ -248,6 +248,33 @@
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
       }
+      /* 网站卡片行排规格响应式布局 - 卡片尺寸恒定不变 */
+      .site-cards-grid {
+        display: grid;
+        gap: 1.25rem;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+      }
+      @media (min-width: 1024px) {
+        .site-cards-grid {
+          grid-template-columns: repeat(var(--desktop-cols, 4), 200px);
+          max-width: calc(var(--desktop-cols, 4) * 200px + (var(--desktop-cols, 4) - 1) * 20px);
+        }
+      }
+      @media (min-width: 640px) and (max-width: 1023px) {
+        .site-cards-grid {
+          grid-template-columns: repeat(var(--tablet-cols, 3), minmax(0, 200px));
+          max-width: calc(var(--tablet-cols, 3) * 200px + (var(--tablet-cols, 3) - 1) * 20px);
+        }
+      }
+      @media (max-width: 639px) {
+        .site-cards-grid {
+          grid-template-columns: repeat(var(--mobile-cols, 2), minmax(0, 1fr));
+          gap: 0.75rem;
+        }
+      }
     </style>
     <script>
       // Prevent pinch-to-zoom gestures on iOS Safari

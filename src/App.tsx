@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { SITES, EMBY_SECTION, OK_SECTION, FOOTER_SECTION, QUICK_NAV } from '../constants';
+import { SITES, EMBY_SECTION, OK_SECTION, FOOTER_SECTION, QUICK_NAV, CARD_LAYOUT, CardLayout } from '../constants';
 import { Category, InfoType } from './types';
 import { formatThemeRed, stripHashes } from './utils';
 import InkCanvas from './components/InkCanvas';
@@ -15,6 +15,28 @@ export default function App() {
   const [infoType, setInfoType] = useState<InfoType>(null);
   const [isSecretOpen, setIsSecretOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // 网站卡片行排规格（行为竖向，排为横向）
+  const [cardLayout, setCardLayout] = useState<CardLayout>(CARD_LAYOUT);
+
+  useEffect(() => {
+    const fetchLatestLayout = () => {
+      fetch(`/data/sites.json?t=${Date.now()}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.cardLayout) {
+            setCardLayout(data.cardLayout);
+          }
+        })
+        .catch(() => {});
+    };
+    fetchLatestLayout();
+    window.addEventListener('focus', fetchLatestLayout);
+    return () => window.removeEventListener('focus', fetchLatestLayout);
+  }, []);
+
+  const cardCols = typeof cardLayout?.cols === 'number' && cardLayout.cols > 0 ? cardLayout.cols : 4;
+  const cardRows = typeof cardLayout?.rows === 'number' && cardLayout.rows >= 0 ? cardLayout.rows : 5;
 
   // 左上角快捷导航链接解析（支持逗号/换行分隔的多镜像分流）
   const quickNavConfig = FOOTER_SECTION.quickNav || QUICK_NAV;
@@ -267,6 +289,13 @@ export default function App() {
     if (currentCategory === "bt") tag = "BT";
     return SITES.filter(site => !site.isHidden && site.tags.includes(tag));
   }, [currentCategory]);
+
+  const displayedSites = useMemo(() => {
+    if (cardRows > 0) {
+      return filteredSites.slice(0, cardRows * cardCols);
+    }
+    return filteredSites;
+  }, [filteredSites, cardRows, cardCols]);
 
   useEffect(() => {
     if (infoType) {
@@ -551,12 +580,19 @@ export default function App() {
               )}
             </div>
           ) : (
-            /* Grid View */
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 animate-fade-in">
-              {filteredSites.map((site) => (
+            /* Grid View - 网站卡片行排规格响应式布局（尺寸恒定不变） */
+            <div 
+              className="site-cards-grid animate-fade-in"
+              style={{
+                '--desktop-cols': cardCols,
+                '--tablet-cols': Math.min(cardCols, 3),
+                '--mobile-cols': Math.min(cardCols, 2),
+              } as React.CSSProperties}
+            >
+              {displayedSites.map((site) => (
                 <div 
                   key={site.name} 
-                  className={`group relative rounded-2xl border p-5 flex flex-col items-center hover:-translate-y-1 transition-all duration-500 cursor-pointer ${
+                  className={`group relative rounded-2xl border p-5 flex flex-col items-center justify-between min-h-[106px] w-full hover:-translate-y-1 transition-all duration-500 cursor-pointer ${
                     isDarkActive
                       ? 'bg-midnight-card backdrop-blur-md border-midnight-border hover:bg-midnight-700/80 hover:border-cinnabar/50 hover:shadow-[0_8px_20px_rgba(0,0,0,0.5)]'
                       : 'bg-paper-100/75 backdrop-blur-[2px] border-ink-500/10 hover:shadow-[0_4px_12px_rgba(158,42,43,0.15)] hover:bg-paper-100/90 hover:border-cinnabar/30'
@@ -570,7 +606,7 @@ export default function App() {
                         onClick={(e) => e.stopPropagation()}
                         title={`访问 ${stripHashes(site.name)} 官网`}
                         aria-label={`访问 ${stripHashes(site.name)} 官网`}
-                        className={`text-lg font-bold mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20 ${
+                        className={`text-lg font-bold mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20 text-center ${
                           isDarkActive ? 'text-gray-100' : 'text-ink-800'
                         }`}
                     >

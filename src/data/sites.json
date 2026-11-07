@@ -115,7 +115,7 @@
     {
       "name": "Atlantic",
       "main_url": "https://atlantic.st",
-      "backup_url": "https://discord.gg/ekUMJ7WVnW",
+      "backup_url": "https://fprime.at/",
       "tags": [
         "在线",
         "海外直连"
@@ -559,7 +559,7 @@
       {
         "name": "",
         "url": "https://jiakuan.link/resip",
-        "displayText": "#纯家宽机场#·RESIP"
+        "displayText": "纯家宽机场·#RESIP#"
       },
       {
         "name": "",
@@ -620,8 +620,8 @@
     "activeExpiresAt": 1796903735253
   },
   "cardLayout": {
-    "rows": 4,
-    "cols": 5
+    "rows": 3,
+    "cols": 4
   },
   "quickNav": {
     "icon": "/jkdh-icon.png",

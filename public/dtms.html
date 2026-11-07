@@ -2135,42 +2135,42 @@
               </div>
 
               <div class="grid-spec-body">
-                <p class="grid-spec-desc">自定义网站主页展示的卡片排数（列数）与行数限制：</p>
+                <p class="grid-spec-desc">规定行为竖向、排为横向。支持快捷预设与自定义调整：</p>
                 
                 <div class="grid-spec-fields">
                   <div class="grid-spec-field">
-                    <label for="input-card-rows" class="grid-spec-field-label">展示行数：</label>
+                    <label for="input-card-cols" class="grid-spec-field-label">横向排数：</label>
                     <div class="grid-spec-input-box">
-                      <input type="number" id="input-card-rows" min="0" max="50" step="1" placeholder="默认 4 行">
-                      <span class="grid-spec-unit">行</span>
+                      <input type="number" id="input-card-cols" min="1" max="10" step="1" placeholder="默认 4 排">
+                      <span class="grid-spec-unit">排 (横向)</span>
                     </div>
                   </div>
 
                   <div class="grid-spec-field">
-                    <label for="input-card-cols" class="grid-spec-field-label">每排数量：</label>
+                    <label for="input-card-rows" class="grid-spec-field-label">竖向行数：</label>
                     <div class="grid-spec-input-box">
-                      <input type="number" id="input-card-cols" min="1" max="10" step="1" placeholder="默认 5 排">
-                      <span class="grid-spec-unit">排/列</span>
+                      <input type="number" id="input-card-rows" min="0" max="50" step="1" placeholder="默认 5 行">
+                      <span class="grid-spec-unit">行 (竖向)</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="grid-spec-hint">
-                  * 提示：行数设为 0 或留空表示不限制行数；排数建议设为 4 ~ 6 排。
+                  * 提示：行数设为 0 或留空表示不限制行数；卡片大小在各规格下均保持恒定不变。
                 </div>
 
                 <div class="grid-spec-presets">
                   <span class="grid-spec-presets-label">快捷预设：</span>
                   <div class="grid-spec-preset-chips">
-                    <button type="button" class="grid-spec-chip" data-rows="4" data-cols="5">4行 × 5排 (推荐)</button>
-                    <button type="button" class="grid-spec-chip" data-rows="3" data-cols="4">3行 × 4排</button>
-                    <button type="button" class="grid-spec-chip" data-rows="5" data-cols="5">5行 × 5排</button>
-                    <button type="button" class="grid-spec-chip" data-rows="0" data-cols="5">全部 × 5排</button>
+                    <button type="button" class="grid-spec-chip" data-cols="3" data-rows="4">3排4行</button>
+                    <button type="button" class="grid-spec-chip" data-cols="3" data-rows="5">3排5行</button>
+                    <button type="button" class="grid-spec-chip" data-cols="4" data-rows="5">4排5行</button>
+                    <button type="button" class="grid-spec-chip" data-cols="5" data-rows="5">5排5行</button>
                   </div>
                 </div>
 
                 <div class="grid-spec-summary" id="grid-spec-summary">
-                  当前规格：<strong>4 行 × 5 排</strong>（主站首屏展示 20 张卡片）
+                  当前规格：<strong>4 排 × 5 行</strong>（主站展示 20 张卡片）
                 </div>
               </div>
 
@@ -3044,7 +3044,7 @@
           cmsData.popup.videos = [];
         }
         if (!cmsData.cardLayout) {
-          cmsData.cardLayout = { rows: 4, cols: 5 };
+          cmsData.cardLayout = { rows: 5, cols: 4 };
         }
         renderSiteList();
         renderEmbyAndOkForms();
@@ -3309,30 +3309,30 @@
         });
 
         function syncInputsFromData() {
-          const layout = cmsData.cardLayout || { rows: 4, cols: 5 };
-          const rows = typeof layout.rows === 'number' ? layout.rows : 4;
-          const cols = typeof layout.cols === 'number' ? layout.cols : 5;
+          const layout = cmsData.cardLayout || { rows: 5, cols: 4 };
+          const rows = typeof layout.rows === 'number' ? layout.rows : 5;
+          const cols = typeof layout.cols === 'number' ? layout.cols : 4;
           if (inputRows) inputRows.value = rows;
           if (inputCols) inputCols.value = cols;
-          updateSummaryAndChips(rows, cols);
-          updateBtnLabel(rows, cols);
+          updateSummaryAndChips(cols, rows);
+          updateBtnLabel(cols, rows);
         }
 
-        function updateSummaryAndChips(rows, cols) {
+        function updateSummaryAndChips(cols, rows) {
           const summaryEl = document.getElementById('grid-spec-summary');
           if (summaryEl) {
             if (rows > 0) {
               const totalCards = rows * cols;
-              summaryEl.innerHTML = `当前规格：<strong>${rows} 行 × ${cols} 排</strong>（主站首屏展示 ${totalCards} 张卡片）`;
+              summaryEl.innerHTML = `当前规格：<strong>${cols} 排 × ${rows} 行</strong>（主站展示 ${totalCards} 张卡片）`;
             } else {
-              summaryEl.innerHTML = `当前规格：<strong>不限制行数 × ${cols} 排</strong>（主站展示全部站点卡片）`;
+              summaryEl.innerHTML = `当前规格：<strong>${cols} 排 × 不限制行数</strong>（主站展示全部站点卡片）`;
             }
           }
 
           presetChips.forEach(chip => {
-            const cRows = parseInt(chip.dataset.rows, 10);
             const cCols = parseInt(chip.dataset.cols, 10);
-            if (cRows === rows && cCols === cols) {
+            const cRows = parseInt(chip.dataset.rows, 10);
+            if (cCols === cols && cRows === rows) {
               chip.classList.add('active');
             } else {
               chip.classList.remove('active');
@@ -3340,19 +3340,19 @@
           });
         }
 
-        function updateBtnLabel(rows, cols) {
+        function updateBtnLabel(cols, rows) {
           const labelEl = document.getElementById('grid-spec-btn-label');
           if (labelEl) {
-            labelEl.textContent = rows > 0 ? `行排规格 (${rows}×${cols})` : `行排规格 (全×${cols})`;
+            labelEl.textContent = rows > 0 ? `行排规格 (${cols}排${rows}行)` : `行排规格 (${cols}排全行)`;
           }
         }
 
         const onInputChange = () => {
-          const r = parseInt(inputRows.value, 10);
           const c = parseInt(inputCols.value, 10);
+          const r = parseInt(inputRows.value, 10);
+          const validCols = isNaN(c) || c < 1 ? 4 : Math.min(c, 10);
           const validRows = isNaN(r) || r < 0 ? 0 : r;
-          const validCols = isNaN(c) || c < 1 ? 5 : Math.min(c, 10);
-          updateSummaryAndChips(validRows, validCols);
+          updateSummaryAndChips(validCols, validRows);
         };
 
         if (inputRows) inputRows.addEventListener('input', onInputChange);
@@ -3361,19 +3361,19 @@
         presetChips.forEach(chip => {
           chip.addEventListener('click', (e) => {
             e.stopPropagation();
-            const r = parseInt(chip.dataset.rows, 10);
             const c = parseInt(chip.dataset.cols, 10);
-            if (inputRows) inputRows.value = r;
+            const r = parseInt(chip.dataset.rows, 10);
             if (inputCols) inputCols.value = c;
-            updateSummaryAndChips(r, c);
+            if (inputRows) inputRows.value = r;
+            updateSummaryAndChips(c, r);
           });
         });
 
         if (btnReset) {
           btnReset.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (inputRows) inputRows.value = 4;
-            if (inputCols) inputCols.value = 5;
+            if (inputCols) inputCols.value = 4;
+            if (inputRows) inputRows.value = 5;
             updateSummaryAndChips(4, 5);
           });
         }
@@ -3381,21 +3381,21 @@
         if (btnSave) {
           btnSave.addEventListener('click', async (e) => {
             e.stopPropagation();
-            const r = parseInt(inputRows.value, 10);
             const c = parseInt(inputCols.value, 10);
+            const r = parseInt(inputRows.value, 10);
+            const validCols = isNaN(c) || c < 1 ? 4 : Math.min(c, 10);
             const validRows = isNaN(r) || r < 0 ? 0 : r;
-            const validCols = isNaN(c) || c < 1 ? 5 : Math.min(c, 10);
 
             cmsData.cardLayout = {
               rows: validRows,
               cols: validCols
             };
 
-            updateSummaryAndChips(validRows, validCols);
-            updateBtnLabel(validRows, validCols);
+            updateSummaryAndChips(validCols, validRows);
+            updateBtnLabel(validCols, validRows);
             togglePopover(false);
 
-            showToast(`行排规格已更新：${validRows > 0 ? validRows + ' 行 × ' : '全部行 × '}${validCols} 排！`);
+            showToast(`行排规格已更新：${validCols} 排 × ${validRows > 0 ? validRows + ' 行' : '全部行'}！`);
 
             if (isLocal) {
               try {
@@ -3404,7 +3404,7 @@
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
                     data: cmsData,
-                    note: `更新网站卡片规格: ${validRows}行×${validCols}排`
+                    note: `更新网站卡片规格: ${validCols}排×${validRows}行`
                   })
                 });
                 showToast(`行排规格已保存并自动同步！`);
@@ -4755,7 +4755,7 @@
           const c = parseInt(colsInput.value, 10);
           cmsData.cardLayout = {
             rows: isNaN(r) || r < 0 ? 0 : r,
-            cols: isNaN(c) || c < 1 ? 5 : Math.min(c, 10)
+            cols: isNaN(c) || c < 1 ? 4 : Math.min(c, 10)
           };
         }
 
