@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { SITES, EMBY_SECTION, OK_SECTION, FOOTER_SECTION } from '../constants';
+import { SITES, EMBY_SECTION, OK_SECTION, FOOTER_SECTION, QUICK_NAV } from '../constants';
 import { Category, InfoType } from './types';
+import { formatThemeRed, stripHashes } from './utils';
 import InkCanvas from './components/InkCanvas';
 import NightCanvas from './components/NightCanvas';
 import TasselSwitch from './components/TasselSwitch';
@@ -15,28 +16,30 @@ export default function App() {
   const [isSecretOpen, setIsSecretOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // 家宽导航多镜像权重随机跳转 (50% jiakuan.link / 25% jkdh.sld.tw / 25% jkdh.pages.dev)
-  const getRandomJiakuanUrl = () => {
-    const r = Math.random();
-    if (r < 0.5) {
-      return 'https://jiakuan.link/';
-    } else if (r < 0.75) {
-      return 'https://jkdh.sld.tw/';
-    } else {
-      return 'https://jkdh.pages.dev/';
-    }
+  // 左上角快捷导航链接解析（支持逗号/换行分隔的多镜像分流）
+  const quickNavConfig = FOOTER_SECTION.quickNav || QUICK_NAV;
+  const quickNavUrls = useMemo(() => {
+    const raw = (quickNavConfig.url || 'https://jiakuan.link/').trim();
+    const list = raw.split(/[\n,，]+/).map(u => u.trim()).filter(Boolean);
+    return list.length > 0 ? list : ['https://jiakuan.link/'];
+  }, [quickNavConfig.url]);
+
+  const getRandomQuickNavUrl = () => {
+    if (quickNavUrls.length === 1) return quickNavUrls[0];
+    const randomIndex = Math.floor(Math.random() * quickNavUrls.length);
+    return quickNavUrls[randomIndex];
   };
 
-  const [jiakuanUrl, setJiakuanUrl] = useState('https://jiakuan.link/');
+  const [quickNavUrl, setQuickNavUrl] = useState(quickNavUrls[0] || 'https://jiakuan.link/');
 
-  const handleJiakuanPrepare = () => {
-    setJiakuanUrl(getRandomJiakuanUrl());
+  const handleQuickNavPrepare = () => {
+    setQuickNavUrl(getRandomQuickNavUrl());
   };
 
-  const handleJiakuanClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleQuickNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const targetUrl = getRandomJiakuanUrl();
-    setJiakuanUrl(targetUrl);
+    const targetUrl = getRandomQuickNavUrl();
+    setQuickNavUrl(targetUrl);
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -385,33 +388,38 @@ export default function App() {
       <TasselSwitch onToggle={() => setIsSecretOpen(prev => !prev)} isOpen={isSecretOpen} />
       <SecretPanel isOpen={isSecretOpen} onClose={() => setIsSecretOpen(false)} />
 
-      {/* Top-Left: 家宽导航 链接（无装饰按钮，纯logo与文字，hover高亮，固定于页面左上角不随屏悬浮） */}
+      {/* Top-Left: 快捷导航 链接（无装饰按钮，纯logo与文字，hover高亮，固定于页面左上角不随屏悬浮） */}
       <a
-        href={jiakuanUrl}
+        href={quickNavUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={handleJiakuanClick}
-        onMouseEnter={handleJiakuanPrepare}
-        onFocus={handleJiakuanPrepare}
-        onTouchStart={handleJiakuanPrepare}
-        title="家宽导航（精选家宽与住宅IP节点推荐）"
-        aria-label="家宽导航"
+        onClick={handleQuickNavClick}
+        onMouseEnter={handleQuickNavPrepare}
+        onFocus={handleQuickNavPrepare}
+        onTouchStart={handleQuickNavPrepare}
+        title={stripHashes(quickNavConfig.text || '快捷导航')}
+        aria-label={stripHashes(quickNavConfig.text || '快捷导航')}
         className={`absolute top-4 left-4 sm:top-5 sm:left-6 z-30 flex items-center gap-2 font-serif text-sm font-bold select-none cursor-pointer transition-all duration-300 group ${
           isDarkActive
             ? 'text-gray-300/80 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]'
             : 'text-ink-700/80 hover:text-cinnabar hover:drop-shadow-sm'
         }`}
       >
-        <img
-          src="/jkdh-icon.png"
-          alt="家宽导航"
-          width="20"
-          height="20"
-          className="w-5 h-5 object-contain rounded-sm opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
-          loading="eager"
-          decoding="async"
-        />
-        <span className="tracking-wide">家宽导航</span>
+        {quickNavConfig.icon ? (
+          <img
+            src={quickNavConfig.icon}
+            alt={stripHashes(quickNavConfig.text || '快捷导航')}
+            width="20"
+            height="20"
+            className="w-5 h-5 object-contain rounded-sm opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+            loading="eager"
+            decoding="async"
+            onError={(e) => {
+              (e.currentTarget as HTMLElement).style.display = 'none';
+            }}
+          />
+        ) : null}
+        <span className="tracking-wide">{formatThemeRed(quickNavConfig.text || '家宽导航', isDarkActive)}</span>
       </a>
 
       {/* Main Container */}
@@ -495,49 +503,49 @@ export default function App() {
             }`}>
               {infoType === 'emby' ? (
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{EMBY_SECTION.title}</h3>
-                  <p>{EMBY_SECTION.description}</p>
+                  <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{formatThemeRed(EMBY_SECTION.title, isDarkActive)}</h3>
+                  <p>{formatThemeRed(EMBY_SECTION.description, isDarkActive)}</p>
                   <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
                      <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>公益服：</span>无需付费，但可能有一定入服门槛。
                         <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
                            {EMBY_SECTION.publicServers.map(server => (
-                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{server.name}</a>
+                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(server.name, isDarkActive)}</a>
                            ))}
                         </div>
                      </li>
                      <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>付费服：</span>需要付费，但服务会相对比较稳定。
                         <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
                            {EMBY_SECTION.paidServers.map(server => (
-                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{server.name}</a>
+                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(server.name, isDarkActive)}</a>
                            ))}
                         </div>
                      </li>
                   </ul>
                   <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
-                     {EMBY_SECTION.notice}
+                     {formatThemeRed(EMBY_SECTION.notice, isDarkActive)}
                   </p>
                 </div>
               ) : (
                 <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{OK_SECTION.title}</h3>
+                    <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{formatThemeRed(OK_SECTION.title, isDarkActive)}</h3>
                     <p>
                       {OK_SECTION.apps.map((app, idx) => (
                         <React.Fragment key={app.name}>
                           {idx > 0 && ' 和 '}
-                          <a href={app.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{app.name}</a>
+                          <a href={app.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(app.name, isDarkActive)}</a>
                         </React.Fragment>
                       ))}
-                      {OK_SECTION.description}
+                      {formatThemeRed(OK_SECTION.description, isDarkActive)}
                     </p>
                     <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
                         {OK_SECTION.resources.map(res => (
                           <li key={res.name}>
-                            <a href={res.url} target="_blank" rel="noopener noreferrer" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>{res.name}</a>
+                            <a href={res.url} target="_blank" rel="noopener noreferrer" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>{formatThemeRed(res.name, isDarkActive)}</a>
                           </li>
                         ))}
                     </ul>
                      <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
-                        {OK_SECTION.notice}
+                        {formatThemeRed(OK_SECTION.notice, isDarkActive)}
                     </p>
                 </div>
               )}
@@ -560,13 +568,13 @@ export default function App() {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        title={`访问 ${site.name} 官网`}
-                        aria-label={`访问 ${site.name} 官网`}
+                        title={`访问 ${stripHashes(site.name)} 官网`}
+                        aria-label={`访问 ${stripHashes(site.name)} 官网`}
                         className={`text-lg font-bold mb-3 group-hover:text-cinnabar transition-colors pb-0.5 border-b border-transparent group-hover:border-cinnabar/20 ${
                           isDarkActive ? 'text-gray-100' : 'text-ink-800'
                         }`}
                     >
-                        {site.name}
+                        {formatThemeRed(site.name, isDarkActive)}
                     </a>
                     
                     {site.backup_url ? (
@@ -575,8 +583,8 @@ export default function App() {
                             target="_blank" 
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            title={`${site.name} 备用地址`}
-                            aria-label={`${site.name} 备用地址`}
+                            title={`${stripHashes(site.name)} 备用地址`}
+                            aria-label={`${stripHashes(site.name)} 备用地址`}
                             className={`mt-1 text-xs px-3 py-1 rounded-full border transition-colors ${
                               isDarkActive 
                                 ? 'border-cinnabar/40 text-cinnabar-light hover:bg-cinnabar hover:text-white' 
@@ -618,7 +626,7 @@ export default function App() {
                    {FOOTER_SECTION.backupSites.map((bSite, idx) => (
                      <React.Fragment key={bSite.name}>
                        {idx > 0 && '、'}
-                       <a href={bSite.url} target="_blank" rel="noopener noreferrer" className={linkClass}>{bSite.name}</a>
+                       <a href={bSite.url} target="_blank" rel="noopener noreferrer" className={linkClass}>{formatThemeRed(bSite.name, isDarkActive)}</a>
                      </React.Fragment>
                    ))}
                  </p>
@@ -629,14 +637,16 @@ export default function App() {
                      {FOOTER_SECTION.relatedSites.map((item, idx) => (
                        <React.Fragment key={`${item.name}-${item.url}-${idx}`}>
                          {idx > 0 && '、'}
-                         <span>{item.name}: </span>
+                         {item.name && item.name.trim() ? (
+                           <span>{formatThemeRed(item.name.trim(), isDarkActive)}{item.name.trim().endsWith(':') || item.name.trim().endsWith('：') ? ' ' : ': '}</span>
+                         ) : null}
                          <a 
                            href={item.url} 
                            target="_blank" 
                            rel="noopener noreferrer" 
                            className={linkClass}
                          >
-                           {item.displayText || item.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                           {formatThemeRed(item.displayText || item.url.replace(/^https?:\/\//, '').replace(/\/$/, ''), isDarkActive)}
                          </a>
                        </React.Fragment>
                      ))}
@@ -644,15 +654,14 @@ export default function App() {
                  )
                ) : (
                  <p className="mb-2">
-                   <span>不想翻墙: </span>
-                   <a href="https://bxfq.sld.tw/" target="_blank" rel="noopener noreferrer" className={linkClass}>bxfq.sld.tw</a>
-                   <span>、不想看书: </span>
-                   <a href="https://bxks.sld.tw/" target="_blank" rel="noopener noreferrer" className={linkClass}>bxks.sld.tw</a>
+                   <a href="https://bxfq.sld.tw/" target="_blank" rel="noopener noreferrer" className={linkClass}>不想翻墙</a>
+                   <span>、</span>
+                   <a href="https://bxks.sld.tw/" target="_blank" rel="noopener noreferrer" className={linkClass}>不想看书</a>
                  </p>
                )}
                {FOOTER_SECTION.promoLinks && FOOTER_SECTION.promoLinks.map(p => (
                  <p key={p.title}>
-                   <a href={p.url} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>{p.title}</a>：{p.description}
+                   <a href={p.url} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>{formatThemeRed(p.title, isDarkActive)}</a>{p.description ? `：${formatThemeRed(p.description, isDarkActive)}` : ''}
                  </p>
                ))}
             </div>
@@ -672,7 +681,7 @@ export default function App() {
                 {/* Center Links */}
                 <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[800ms] ${isDarkActive ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
                     <span className="flex items-center gap-1">
-                        {FOOTER_SECTION.bottomText || 'Made with ❤'}
+                        {formatThemeRed(FOOTER_SECTION.bottomText || 'Made with ❤', isDarkActive)}
                     </span>
                     {FOOTER_SECTION.githubUrl && (
                       <a href={FOOTER_SECTION.githubUrl} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>Github</a>
@@ -711,6 +720,13 @@ export default function App() {
         }
         .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .theme-red-text {
+          color: #9e2a2b;
+          transition: color 0.5s ease;
+        }
+        .dark .theme-red-text {
+          color: #e6b0aa;
+        }
       `}</style>
     </div>
   );

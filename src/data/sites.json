@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-06",
+  "updatedAt": "2026-11-07",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -540,6 +540,11 @@
     }
   ],
   "footer": {
+    "quickNav": {
+      "icon": "/jkdh-icon.png",
+      "text": "家宽导航",
+      "url": "https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/"
+    },
     "backupSites": [
       {
         "name": "bxkp.org",
@@ -552,19 +557,19 @@
     ],
     "relatedSites": [
       {
-        "name": "不想翻墙",
-        "url": "https://bxfq.sld.tw/",
-        "displayText": "bxfq.sld.tw"
-      },
-      {
-        "name": "不想看书",
-        "url": "https://bxks.sld.tw/",
-        "displayText": "bxks.sld.tw"
-      },
-      {
-        "name": "纯家宽机场",
+        "name": "",
         "url": "https://jiakuan.link/resip",
-        "displayText": "RESIP"
+        "displayText": "#纯家宽机场#·RESIP"
+      },
+      {
+        "name": "",
+        "url": "https://bxfq.sld.tw/",
+        "displayText": "不想翻墙"
+      },
+      {
+        "name": "",
+        "url": "https://bxks.sld.tw/",
+        "displayText": "不想看书"
       }
     ],
     "promoLinks": [],
@@ -613,5 +618,14 @@
     ],
     "activeVideoId": "pv-1",
     "activeExpiresAt": 1796903735253
+  },
+  "cardLayout": {
+    "rows": 4,
+    "cols": 5
+  },
+  "quickNav": {
+    "icon": "/jkdh-icon.png",
+    "text": "家宽导航",
+    "url": "https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/"
   }
 }

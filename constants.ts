@@ -57,7 +57,14 @@ export interface PromoLink {
   description: string;
 }
 
+export interface QuickNavConfig {
+  icon: string;
+  text: string;
+  url: string;
+}
+
 export interface FooterSection {
+  quickNav?: QuickNavConfig;
   backupSites: BackupSite[];
   relatedSites?: RelatedSite[];
   promoLinks: PromoLink[];
@@ -90,6 +97,12 @@ export const EMBY_SECTION: EmbySection = sitesData.emby as EmbySection;
 export const OK_SECTION: OkSection = sitesData.ok as OkSection;
 export const FAQS_LIST: FaqItem[] = sitesData.faqs as FaqItem[];
 export const FOOTER_SECTION: FooterSection = sitesData.footer as FooterSection;
+export const DEFAULT_QUICK_NAV: QuickNavConfig = {
+  icon: '/jkdh-icon.png',
+  text: '家宽导航',
+  url: 'https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/'
+};
+export const QUICK_NAV: QuickNavConfig = (sitesData as any).quickNav || (sitesData.footer as any)?.quickNav || DEFAULT_QUICK_NAV;
 export const POPUP_CONFIG: PopupConfig = (sitesData as any).popup || {
   cycleStartTime: 1729887354000,
   activeVideoId: "pv-1",

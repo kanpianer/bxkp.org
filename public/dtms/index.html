@@ -443,6 +443,8 @@
 
     /* 工具条 (搜索/筛选/新增) */
     .toolbar-wrapper {
+      position: relative;
+      z-index: 50;
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
@@ -456,6 +458,11 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: var(--shadow-sm);
+    }
+
+    .toolbar-wrapper.has-popover-open,
+    .toolbar-wrapper:has(.grid-spec-popover.open) {
+      z-index: 75;
     }
 
     .toolbar-left, .toolbar-right {
@@ -536,8 +543,270 @@
       font-size: 0.88rem;
     }
 
+    /* 行排规格下拉组件 */
+    .grid-spec-dropdown-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .grid-spec-dropdown-wrap.open {
+      z-index: 120;
+    }
+
+    .btn-grid-spec {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .btn-grid-spec:hover,
+    .btn-grid-spec.active {
+      border-color: var(--border-hover);
+      color: var(--cinnabar);
+      background: var(--bg-surface-hover);
+      box-shadow: 0 2px 10px var(--cinnabar-glow);
+    }
+
+    .btn-grid-spec.active {
+      transform: scale(1.02);
+    }
+
+    .grid-spec-popover {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      z-index: 150;
+      width: 330px;
+      background: #fbf9f4; /* 100% 实体纯色背景，彻底杜绝内容透视穿模 */
+      border: 1px solid rgba(158, 42, 43, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(158, 42, 43, 0.1);
+      animation: gridSpecFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes gridSpecFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .grid-spec-popover.open {
+      display: block;
+    }
+
+    body.dark .grid-spec-popover {
+      background: #0f1622; /* 100% 实体纯黑夜色背景 */
+      border-color: rgba(230, 176, 170, 0.3);
+      box-shadow: 0 20px 52px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .grid-spec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .grid-spec-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--cinnabar);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .grid-spec-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s;
+      line-height: 1;
+    }
+
+    .grid-spec-close-btn:hover {
+      color: var(--cinnabar);
+      background: rgba(158, 42, 43, 0.08);
+    }
+
+    .grid-spec-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .grid-spec-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .grid-spec-fields {
+      display: flex;
+      gap: 10px;
+    }
+
+    .grid-spec-field {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .grid-spec-field-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .grid-spec-input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .grid-spec-input-box input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 6px 36px 6px 10px;
+      font-size: 0.88rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--text-main);
+      transition: all 0.2s;
+      box-sizing: border-box;
+    }
+
+    .grid-spec-input-box input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px var(--cinnabar-glow);
+    }
+
+    .grid-spec-unit {
+      position: absolute;
+      right: 8px;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      pointer-events: none;
+    }
+
+    .grid-spec-hint {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      line-height: 1.35;
+    }
+
+    .grid-spec-presets {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .grid-spec-presets-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .grid-spec-preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .grid-spec-chip {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      padding: 3px 9px;
+      font-size: 0.75rem;
+      font-family: var(--font-serif);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    body.dark .grid-spec-chip {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .grid-spec-chip:hover {
+      border-color: var(--border-hover);
+      color: var(--cinnabar);
+      background: var(--bg-surface-hover);
+    }
+
+    .grid-spec-chip.active {
+      background: rgba(158, 42, 43, 0.15);
+      border-color: var(--cinnabar);
+      color: var(--cinnabar);
+      font-weight: 700;
+    }
+
+    body.dark .grid-spec-chip.active {
+      background: rgba(230, 176, 170, 0.2);
+    }
+
+    .grid-spec-summary {
+      background: rgba(158, 42, 43, 0.06);
+      border: 1px dashed rgba(158, 42, 43, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 7px 10px;
+      font-size: 0.76rem;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    body.dark .grid-spec-summary {
+      background: rgba(230, 176, 170, 0.08);
+      border-color: rgba(230, 176, 170, 0.25);
+    }
+
+    .grid-spec-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-color);
+    }
+
     /* 卡片列表区 (完全对标主站卡片) */
     .card-list-wrapper {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -640,6 +909,19 @@
 
     .card-row:hover .card-site-name {
       color: var(--cinnabar);
+    }
+
+    .theme-red-text {
+      color: var(--cinnabar) !important;
+      font-weight: inherit;
+    }
+
+    .preview-card-replica.preview-dark .theme-red-text {
+      color: #e6b0aa !important;
+    }
+
+    .preview-card-replica:not(.preview-dark) .theme-red-text {
+      color: #9e2a2b !important;
     }
 
     .card-tags-wrap {
@@ -1454,6 +1736,52 @@
         text-overflow: ellipsis;
       }
 
+      .grid-spec-dropdown-wrap {
+        width: 100%;
+        position: relative;
+      }
+
+      .btn-grid-spec {
+        width: 100%;
+        justify-content: center;
+        padding: 8px 14px;
+        box-sizing: border-box;
+      }
+
+      .grid-spec-popover {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        bottom: auto !important;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        z-index: 150;
+        padding: 14px 14px 12px;
+        background: #fbf9f4;
+        border-radius: var(--radius-md);
+        box-shadow: 0 16px 44px rgba(0, 0, 0, 0.22);
+      }
+
+      .grid-spec-popover .grid-spec-desc {
+        display: none;
+      }
+
+      .grid-spec-popover .grid-spec-body {
+        gap: 8px;
+      }
+
+      .grid-spec-popover .grid-spec-footer {
+        margin-top: 10px;
+        padding-top: 8px;
+      }
+
+      body.dark .grid-spec-popover {
+        background: #0f1622;
+        box-shadow: 0 20px 52px rgba(0, 0, 0, 0.85);
+      }
+
       .search-input-wrap {
         width: 100%;
       }
@@ -1790,6 +2118,69 @@
             <button class="filter-pill" data-cat="BT">磁力BT (<span id="count-bt">0</span>)</button>
           </div>
 
+          <!-- 行排规格下拉组件 -->
+          <div class="grid-spec-dropdown-wrap" id="grid-spec-dropdown-wrap">
+            <button type="button" id="btn-grid-spec" class="btn btn-sm btn-grid-spec" title="更改网站卡片行数和排数规格">
+              <span>📐</span>
+              <span id="grid-spec-btn-label">行排规格</span>
+            </button>
+            
+            <div id="grid-spec-popover" class="grid-spec-popover">
+              <div class="grid-spec-header">
+                <div class="grid-spec-title">
+                  <span>📐</span>
+                  <span>网站卡片行排规格</span>
+                </div>
+                <button type="button" id="btn-grid-spec-close" class="grid-spec-close-btn" title="关闭">✕</button>
+              </div>
+
+              <div class="grid-spec-body">
+                <p class="grid-spec-desc">自定义网站主页展示的卡片排数（列数）与行数限制：</p>
+                
+                <div class="grid-spec-fields">
+                  <div class="grid-spec-field">
+                    <label for="input-card-rows" class="grid-spec-field-label">展示行数：</label>
+                    <div class="grid-spec-input-box">
+                      <input type="number" id="input-card-rows" min="0" max="50" step="1" placeholder="默认 4 行">
+                      <span class="grid-spec-unit">行</span>
+                    </div>
+                  </div>
+
+                  <div class="grid-spec-field">
+                    <label for="input-card-cols" class="grid-spec-field-label">每排数量：</label>
+                    <div class="grid-spec-input-box">
+                      <input type="number" id="input-card-cols" min="1" max="10" step="1" placeholder="默认 5 排">
+                      <span class="grid-spec-unit">排/列</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid-spec-hint">
+                  * 提示：行数设为 0 或留空表示不限制行数；排数建议设为 4 ~ 6 排。
+                </div>
+
+                <div class="grid-spec-presets">
+                  <span class="grid-spec-presets-label">快捷预设：</span>
+                  <div class="grid-spec-preset-chips">
+                    <button type="button" class="grid-spec-chip" data-rows="4" data-cols="5">4行 × 5排 (推荐)</button>
+                    <button type="button" class="grid-spec-chip" data-rows="3" data-cols="4">3行 × 4排</button>
+                    <button type="button" class="grid-spec-chip" data-rows="5" data-cols="5">5行 × 5排</button>
+                    <button type="button" class="grid-spec-chip" data-rows="0" data-cols="5">全部 × 5排</button>
+                  </div>
+                </div>
+
+                <div class="grid-spec-summary" id="grid-spec-summary">
+                  当前规格：<strong>4 行 × 5 排</strong>（主站首屏展示 20 张卡片）
+                </div>
+              </div>
+
+              <div class="grid-spec-footer">
+                <button type="button" id="btn-grid-spec-reset" class="btn btn-sm">恢复默认</button>
+                <button type="button" id="btn-grid-spec-save" class="btn btn-sm btn-primary">保存规格</button>
+              </div>
+            </div>
+          </div>
+
           <!-- 搜索输入框 -->
           <div class="search-input-wrap">
             <span class="search-input-icon">🔍</span>
@@ -1987,6 +2378,35 @@
             <button id="btn-add-related-site" class="btn btn-sm btn-primary">+ 添加导航链接</button>
           </div>
           <div id="footer-related-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+
+        <!-- 左上角常驻快捷导航配置卡片 (原家宽导航) -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <div style="margin-bottom: 14px;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--cinnabar); display: flex; align-items: center; gap: 8px;">
+              <span>🧭 左上角快捷导航设置</span>
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+              自定义前台网页左上角常驻的快捷入口（默认：家宽导航），支持图标、文字名称与跳转链接。
+            </p>
+          </div>
+          <div class="modal-grid-2" style="margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">导航图标 (本地路径或图片URL)：</label>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" id="quick-nav-icon" class="form-control" placeholder="如: /jkdh-icon.png 或 https://...">
+                <img id="quick-nav-icon-preview" src="/jkdh-icon.png" alt="预览" style="width: 28px; height: 28px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border-color); padding: 2px; background: var(--bg-card); flex-shrink: 0;" onerror="this.style.opacity='0.2'">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">导航文字名称：</label>
+              <input type="text" id="quick-nav-text" class="form-control" placeholder="如: 家宽导航 (支持 #文字# 主题红高亮)">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">跳转链接 (单链接直接打开；多个链接用逗号或换行隔开可实现随机分流)：</label>
+            <input type="text" id="quick-nav-url" class="form-control" placeholder="如: https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/">
+          </div>
         </div>
 
         <!-- 底部推广说明链接 (可选) -->
@@ -2415,7 +2835,27 @@
       let currentEditingIndex = -1;
       let currentCategoryFilter = 'all';
       let currentSearchQuery = '';
-      let isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+      function checkIsLocal() {
+        const h = window.location.hostname;
+        const p = window.location.port;
+        return (
+          h === 'localhost' ||
+          h === '127.0.0.1' ||
+          h === '[::1]' ||
+          h === '0.0.0.0' ||
+          h === '' ||
+          h.endsWith('.local') ||
+          h.endsWith('.test') ||
+          h.startsWith('192.168.') ||
+          h.startsWith('10.') ||
+          /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(h) ||
+          window.location.protocol === 'file:' ||
+          p === '5173' ||
+          p === '3000' ||
+          p === '8080'
+        );
+      }
+      let isLocal = checkIsLocal();
       let previewIsDark = false;
 
       // 预设高频标签
@@ -2443,6 +2883,18 @@
           toast.style.opacity = '0';
           setTimeout(() => toast.remove(), 300);
         }, 3200);
+      }
+
+      // 将用两个 # 包裹的文字转换为主题红色 span
+      function formatThemeRedHtml(str) {
+        if (!str) return '';
+        const escaped = String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+        return escaped.replace(/#([^#\r\n]+)#/g, '<span class="theme-red-text">$1</span>');
       }
 
       // 昼夜模式切换 (仅显示太阳/月亮图标)
@@ -2548,19 +3000,25 @@
 
       // 1. 数据装载 (本地开发接口优先，降级到静态文件)
       async function loadInitialData() {
-        if (isLocal) {
-          try {
-            const resp = await fetch('/api/cms/data');
+        try {
+          const resp = await fetch('/api/cms/data');
+          if (resp.ok) {
             const res = await resp.json();
             if (res.success && res.data) {
+              isLocal = true;
+              const badge = document.getElementById('cms-mode-badge');
+              if (badge) {
+                badge.textContent = '🍀 本地模式';
+                badge.className = 'cms-badge badge-local';
+              }
               cmsData = res.data;
               onDataLoaded();
               showToast(`本地数据装载成功！共加载 ${cmsData.sites.length} 处影视站点`);
               return;
             }
-          } catch (e) {
-            console.warn('[CMS] 本地 /api/cms/data 连接失败，尝试静态载入');
           }
+        } catch (e) {
+          console.warn('[CMS] 本地 /api/cms/data 连接失败，尝试静态载入');
         }
 
         // 线上或静态模式
@@ -2585,12 +3043,18 @@
         if (!Array.isArray(cmsData.popup.videos)) {
           cmsData.popup.videos = [];
         }
+        if (!cmsData.cardLayout) {
+          cmsData.cardLayout = { rows: 4, cols: 5 };
+        }
         renderSiteList();
         renderEmbyAndOkForms();
         renderPopupVideosList();
         renderFooterForms();
         renderFaqsList();
         updateCountBadges();
+        if (window.refreshGridSpecUI) {
+          window.refreshGridSpecUI();
+        }
       }
 
       function updateCountBadges() {
@@ -2668,7 +3132,7 @@
               <div class="card-meta-main">
                 <div class="card-title-line">
                   <span class="card-site-name">
-                    ${site.name}
+                    ${formatThemeRedHtml(site.name)}
                     ${site.isHidden ? '<span style="font-size: 0.72rem; color: #ef4444; margin-left: 4px;">[已隐藏]</span>' : ''}
                   </span>
                   <div class="card-tags-wrap">${tagsHtml}</div>
@@ -2785,6 +3249,182 @@
         renderSiteList();
       });
 
+      // 2.1 行排规格下拉组件交互
+      function initGridSpec() {
+        const wrap = document.getElementById('grid-spec-dropdown-wrap');
+        const btnToggle = document.getElementById('btn-grid-spec');
+        const popover = document.getElementById('grid-spec-popover');
+        const btnClose = document.getElementById('btn-grid-spec-close');
+        const inputRows = document.getElementById('input-card-rows');
+        const inputCols = document.getElementById('input-card-cols');
+        const btnReset = document.getElementById('btn-grid-spec-reset');
+        const btnSave = document.getElementById('btn-grid-spec-save');
+        const presetChips = document.querySelectorAll('.grid-spec-chip');
+
+        if (!wrap || !btnToggle || !popover) return;
+
+        const togglePopover = (open) => {
+          const willOpen = typeof open === 'boolean' ? open : !popover.classList.contains('open');
+          const toolbar = wrap.closest('.toolbar-wrapper');
+          if (willOpen) {
+            syncInputsFromData();
+            popover.classList.add('open');
+            wrap.classList.add('open');
+            btnToggle.classList.add('active');
+            if (toolbar) toolbar.classList.add('has-popover-open');
+          } else {
+            popover.classList.remove('open');
+            wrap.classList.remove('open');
+            btnToggle.classList.remove('active');
+            if (toolbar) toolbar.classList.remove('has-popover-open');
+          }
+        };
+
+        btnToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          togglePopover();
+        });
+
+        if (btnClose) {
+          btnClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            togglePopover(false);
+          });
+        }
+
+        document.addEventListener('click', (e) => {
+          if (!wrap.contains(e.target)) {
+            togglePopover(false);
+          }
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && popover.classList.contains('open')) {
+            togglePopover(false);
+          }
+        });
+
+        popover.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+
+        function syncInputsFromData() {
+          const layout = cmsData.cardLayout || { rows: 4, cols: 5 };
+          const rows = typeof layout.rows === 'number' ? layout.rows : 4;
+          const cols = typeof layout.cols === 'number' ? layout.cols : 5;
+          if (inputRows) inputRows.value = rows;
+          if (inputCols) inputCols.value = cols;
+          updateSummaryAndChips(rows, cols);
+          updateBtnLabel(rows, cols);
+        }
+
+        function updateSummaryAndChips(rows, cols) {
+          const summaryEl = document.getElementById('grid-spec-summary');
+          if (summaryEl) {
+            if (rows > 0) {
+              const totalCards = rows * cols;
+              summaryEl.innerHTML = `当前规格：<strong>${rows} 行 × ${cols} 排</strong>（主站首屏展示 ${totalCards} 张卡片）`;
+            } else {
+              summaryEl.innerHTML = `当前规格：<strong>不限制行数 × ${cols} 排</strong>（主站展示全部站点卡片）`;
+            }
+          }
+
+          presetChips.forEach(chip => {
+            const cRows = parseInt(chip.dataset.rows, 10);
+            const cCols = parseInt(chip.dataset.cols, 10);
+            if (cRows === rows && cCols === cols) {
+              chip.classList.add('active');
+            } else {
+              chip.classList.remove('active');
+            }
+          });
+        }
+
+        function updateBtnLabel(rows, cols) {
+          const labelEl = document.getElementById('grid-spec-btn-label');
+          if (labelEl) {
+            labelEl.textContent = rows > 0 ? `行排规格 (${rows}×${cols})` : `行排规格 (全×${cols})`;
+          }
+        }
+
+        const onInputChange = () => {
+          const r = parseInt(inputRows.value, 10);
+          const c = parseInt(inputCols.value, 10);
+          const validRows = isNaN(r) || r < 0 ? 0 : r;
+          const validCols = isNaN(c) || c < 1 ? 5 : Math.min(c, 10);
+          updateSummaryAndChips(validRows, validCols);
+        };
+
+        if (inputRows) inputRows.addEventListener('input', onInputChange);
+        if (inputCols) inputCols.addEventListener('input', onInputChange);
+
+        presetChips.forEach(chip => {
+          chip.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const r = parseInt(chip.dataset.rows, 10);
+            const c = parseInt(chip.dataset.cols, 10);
+            if (inputRows) inputRows.value = r;
+            if (inputCols) inputCols.value = c;
+            updateSummaryAndChips(r, c);
+          });
+        });
+
+        if (btnReset) {
+          btnReset.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (inputRows) inputRows.value = 4;
+            if (inputCols) inputCols.value = 5;
+            updateSummaryAndChips(4, 5);
+          });
+        }
+
+        if (btnSave) {
+          btnSave.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const r = parseInt(inputRows.value, 10);
+            const c = parseInt(inputCols.value, 10);
+            const validRows = isNaN(r) || r < 0 ? 0 : r;
+            const validCols = isNaN(c) || c < 1 ? 5 : Math.min(c, 10);
+
+            cmsData.cardLayout = {
+              rows: validRows,
+              cols: validCols
+            };
+
+            updateSummaryAndChips(validRows, validCols);
+            updateBtnLabel(validRows, validCols);
+            togglePopover(false);
+
+            showToast(`行排规格已更新：${validRows > 0 ? validRows + ' 行 × ' : '全部行 × '}${validCols} 排！`);
+
+            if (isLocal) {
+              try {
+                await fetch('/api/cms/save', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    data: cmsData,
+                    note: `更新网站卡片规格: ${validRows}行×${validCols}排`
+                  })
+                });
+                showToast(`行排规格已保存并自动同步！`);
+              } catch (err) {
+                console.warn('[CMS] 自动保存规格异常:', err);
+              }
+            }
+          });
+        }
+
+        window.refreshGridSpecUI = () => {
+          syncInputsFromData();
+        };
+
+        // 初始化执行一次同步
+        syncInputsFromData();
+      }
+
+      initGridSpec();
+
       // 卡片行内部事件委托 (隐藏/编辑/删除)
       document.getElementById('site-list-container').addEventListener('click', (e) => {
         const target = e.target.closest('[data-action]');
@@ -2863,7 +3503,7 @@
         const previewName = document.getElementById('preview-card-name');
         const previewBadge = document.getElementById('preview-card-badge');
 
-        previewName.textContent = name;
+        previewName.innerHTML = formatThemeRedHtml(name);
         previewBadge.textContent = backupUrl ? '备份网址' : '没有备份';
 
         if (previewIsDark) {
@@ -3088,7 +3728,7 @@
                 <div class="footer-related-fields" style="display: flex; gap: 8px; align-items: center; flex: 1; min-width: 240px; flex-wrap: wrap;">
                   <div class="footer-field-item" style="display: flex; align-items: center; gap: 4px; flex: 1; min-width: 110px;">
                     <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">名称:</span>
-                    <input type="text" class="form-control input-name" placeholder="如: 不想翻墙" value="${escapeAttr(item.name || '')}" onchange="updateFooterRelated(${idx}, 'name', this.value)">
+                    <input type="text" class="form-control input-name" placeholder="前缀名称 (留空不显示冒号)" value="${escapeAttr(item.name || '')}" onchange="updateFooterRelated(${idx}, 'name', this.value)">
                   </div>
                   <div class="footer-field-item" style="display: flex; align-items: center; gap: 4px; flex: 2; min-width: 140px;">
                     <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">链接:</span>
@@ -3143,6 +3783,23 @@
 
         const githubUrlInput = document.getElementById('footer-github-url');
         if (githubUrlInput) githubUrlInput.value = footer.githubUrl || 'https://github.com/kanpianer/bxkp.org';
+
+        // 5. 左上角快捷导航
+        const quickNav = footer.quickNav || cmsData.quickNav || {
+          icon: '/jkdh-icon.png',
+          text: '家宽导航',
+          url: 'https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/'
+        };
+        const quickNavIconInput = document.getElementById('quick-nav-icon');
+        const quickNavIconPreview = document.getElementById('quick-nav-icon-preview');
+        if (quickNavIconInput) {
+          quickNavIconInput.value = quickNav.icon || '';
+          if (quickNavIconPreview) quickNavIconPreview.src = quickNav.icon || '/jkdh-icon.png';
+        }
+        const quickNavTextInput = document.getElementById('quick-nav-text');
+        if (quickNavTextInput) quickNavTextInput.value = quickNav.text || '';
+        const quickNavUrlInput = document.getElementById('quick-nav-url');
+        if (quickNavUrlInput) quickNavUrlInput.value = quickNav.url || '';
       }
 
       window.updateFooterBackup = function(idx, key, val) {
@@ -3217,6 +3874,13 @@
         if (!cmsData.footer.promoLinks) cmsData.footer.promoLinks = [];
         cmsData.footer.promoLinks.push({ title: '新推荐标题', url: 'https://...', description: '说明文案' });
         renderFooterForms();
+      });
+
+      document.getElementById('quick-nav-icon')?.addEventListener('input', (e) => {
+        const previewImg = document.getElementById('quick-nav-icon-preview');
+        if (previewImg) {
+          previewImg.src = e.target.value.trim() || '/jkdh-icon.png';
+        }
       });
 
       // 5. FAQ 问答库
@@ -4073,10 +4737,43 @@
         if (cmsData.footer) {
           cmsData.footer.bottomText = document.getElementById('footer-bottom-text').value.trim();
           cmsData.footer.githubUrl = document.getElementById('footer-github-url').value.trim();
+          const qIcon = document.getElementById('quick-nav-icon') ? document.getElementById('quick-nav-icon').value.trim() : '/jkdh-icon.png';
+          const qText = document.getElementById('quick-nav-text') ? document.getElementById('quick-nav-text').value.trim() : '家宽导航';
+          const qUrl = document.getElementById('quick-nav-url') ? document.getElementById('quick-nav-url').value.trim() : 'https://jiakuan.link/';
+          cmsData.footer.quickNav = {
+            icon: qIcon || '/jkdh-icon.png',
+            text: qText || '家宽导航',
+            url: qUrl || 'https://jiakuan.link/'
+          };
+          cmsData.quickNav = cmsData.footer.quickNav;
         }
 
-        // 本地模式优先尝试本地落盘接口
-        if (isLocal) {
+        const rowsInput = document.getElementById('input-card-rows');
+        const colsInput = document.getElementById('input-card-cols');
+        if (rowsInput && colsInput) {
+          const r = parseInt(rowsInput.value, 10);
+          const c = parseInt(colsInput.value, 10);
+          cmsData.cardLayout = {
+            rows: isNaN(r) || r < 0 ? 0 : r,
+            cols: isNaN(c) || c < 1 ? 5 : Math.min(c, 10)
+          };
+        }
+
+        // 获取当前 PAT (优先读取页面输入框中的即时值，若页面没有输入框则回退至 localStorage)
+        const patInput = document.getElementById('github-pat-input');
+        let token = patInput ? patInput.value.trim() : (localStorage.getItem('bxkp_github_pat') || '').trim();
+
+        // 同步持久化状态：如果有值则存，若输入框已清空则清除缓存
+        if (patInput) {
+          if (token) {
+            localStorage.setItem('bxkp_github_pat', token);
+          } else {
+            localStorage.removeItem('bxkp_github_pat');
+          }
+        }
+
+        // 当 PAT 为空时：绝不弹出填写 PAT 的提示，直接修改本地内容并在本地预览修改
+        if (!token) {
           try {
             const resp = await fetch('/api/cms/save', {
               method: 'POST',
@@ -4087,36 +4784,46 @@
               })
             });
             const res = await resp.json();
-            btn.disabled = false;
-            btn.innerHTML = '<span>💾</span> <span>应用</span>';
-
-            if (res.success) {
-              showToast(`全站数据保存成功！快照：${res.backupId}`);
-              return;
-            } else {
-              alert('本地保存失败: ' + res.error);
-              return;
+            if (!res.success) {
+              console.warn('[CMS] 本地保存接口提示:', res.error);
             }
           } catch (e) {
-            console.warn('[CMS] 本地 /api/cms/save 异常，准备转入 GitHub 模式');
+            console.warn('[CMS] 本地 /api/cms/save 接口请求异常:', e);
           }
+
+          btn.disabled = false;
+          btn.innerHTML = '<span>💾</span> <span>应用</span>';
+          showToast('本地内容已成功修改！正在打开本地预览...');
+          window.open('/', '_blank');
+          return;
         }
 
-        // 线上 GitHub 模式
+        // 当填写了 PAT 时：先落盘本地内容，然后提示是否提交到 GitHub
         try {
-          let token = localStorage.getItem('bxkp_github_pat') || '';
-          if (!token) {
-            token = prompt('【线上管理】请输入您的 GitHub Personal Access Token (PAT，仅保留在本地浏览器)：');
-            if (!token || !token.trim()) {
-              btn.disabled = false;
-              btn.innerHTML = '<span>💾</span> <span>应用</span>';
-              return alert('已取消保存：未提供授权 Token。');
-            }
-            token = token.trim();
-            localStorage.setItem('bxkp_github_pat', token);
-            document.getElementById('github-pat-input').value = token;
-          }
+          await fetch('/api/cms/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              data: cmsData,
+              note: '本地掌柜后台保存'
+            })
+          });
+        } catch (e) {
+          console.warn('[CMS] 本地落盘异常:', e);
+        }
 
+        // 提示是否提交到 GitHub
+        const shouldCommit = confirm('本地内容已修改保存！\n检测到已填写 GitHub PAT，是否提交到 GitHub 仓库？');
+        if (!shouldCommit) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>💾</span> <span>应用</span>';
+          showToast('已更新本地内容，未提交到 GitHub');
+          window.open('/', '_blank');
+          return;
+        }
+
+        // 提交到 GitHub 流程
+        try {
           showToast('正在向 GitHub 仓库提交原子更新...');
 
           const owner = document.getElementById('github-owner-input').value.trim() || 'kanpianer';

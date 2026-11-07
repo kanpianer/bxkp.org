@@ -911,6 +911,19 @@
       color: var(--cinnabar);
     }
 
+    .theme-red-text {
+      color: var(--cinnabar) !important;
+      font-weight: inherit;
+    }
+
+    .preview-card-replica.preview-dark .theme-red-text {
+      color: #e6b0aa !important;
+    }
+
+    .preview-card-replica:not(.preview-dark) .theme-red-text {
+      color: #9e2a2b !important;
+    }
+
     .card-tags-wrap {
       display: inline-flex;
       flex-wrap: wrap;
@@ -2367,6 +2380,35 @@
           <div id="footer-related-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
 
+        <!-- 左上角常驻快捷导航配置卡片 (原家宽导航) -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
+          <div style="margin-bottom: 14px;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--cinnabar); display: flex; align-items: center; gap: 8px;">
+              <span>🧭 左上角快捷导航设置</span>
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+              自定义前台网页左上角常驻的快捷入口（默认：家宽导航），支持图标、文字名称与跳转链接。
+            </p>
+          </div>
+          <div class="modal-grid-2" style="margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">导航图标 (本地路径或图片URL)：</label>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input type="text" id="quick-nav-icon" class="form-control" placeholder="如: /jkdh-icon.png 或 https://...">
+                <img id="quick-nav-icon-preview" src="/jkdh-icon.png" alt="预览" style="width: 28px; height: 28px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border-color); padding: 2px; background: var(--bg-card); flex-shrink: 0;" onerror="this.style.opacity='0.2'">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">导航文字名称：</label>
+              <input type="text" id="quick-nav-text" class="form-control" placeholder="如: 家宽导航 (支持 #文字# 主题红高亮)">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">跳转链接 (单链接直接打开；多个链接用逗号或换行隔开可实现随机分流)：</label>
+            <input type="text" id="quick-nav-url" class="form-control" placeholder="如: https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/">
+          </div>
+        </div>
+
         <!-- 底部推广说明链接 (可选) -->
         <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
@@ -2793,7 +2835,27 @@
       let currentEditingIndex = -1;
       let currentCategoryFilter = 'all';
       let currentSearchQuery = '';
-      let isLocal = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname);
+      function checkIsLocal() {
+        const h = window.location.hostname;
+        const p = window.location.port;
+        return (
+          h === 'localhost' ||
+          h === '127.0.0.1' ||
+          h === '[::1]' ||
+          h === '0.0.0.0' ||
+          h === '' ||
+          h.endsWith('.local') ||
+          h.endsWith('.test') ||
+          h.startsWith('192.168.') ||
+          h.startsWith('10.') ||
+          /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(h) ||
+          window.location.protocol === 'file:' ||
+          p === '5173' ||
+          p === '3000' ||
+          p === '8080'
+        );
+      }
+      let isLocal = checkIsLocal();
       let previewIsDark = false;
 
       // 预设高频标签
@@ -2821,6 +2883,18 @@
           toast.style.opacity = '0';
           setTimeout(() => toast.remove(), 300);
         }, 3200);
+      }
+
+      // 将用两个 # 包裹的文字转换为主题红色 span
+      function formatThemeRedHtml(str) {
+        if (!str) return '';
+        const escaped = String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+        return escaped.replace(/#([^#\r\n]+)#/g, '<span class="theme-red-text">$1</span>');
       }
 
       // 昼夜模式切换 (仅显示太阳/月亮图标)
@@ -2926,19 +3000,25 @@
 
       // 1. 数据装载 (本地开发接口优先，降级到静态文件)
       async function loadInitialData() {
-        if (isLocal) {
-          try {
-            const resp = await fetch('/api/cms/data');
+        try {
+          const resp = await fetch('/api/cms/data');
+          if (resp.ok) {
             const res = await resp.json();
             if (res.success && res.data) {
+              isLocal = true;
+              const badge = document.getElementById('cms-mode-badge');
+              if (badge) {
+                badge.textContent = '🍀 本地模式';
+                badge.className = 'cms-badge badge-local';
+              }
               cmsData = res.data;
               onDataLoaded();
               showToast(`本地数据装载成功！共加载 ${cmsData.sites.length} 处影视站点`);
               return;
             }
-          } catch (e) {
-            console.warn('[CMS] 本地 /api/cms/data 连接失败，尝试静态载入');
           }
+        } catch (e) {
+          console.warn('[CMS] 本地 /api/cms/data 连接失败，尝试静态载入');
         }
 
         // 线上或静态模式
@@ -3052,7 +3132,7 @@
               <div class="card-meta-main">
                 <div class="card-title-line">
                   <span class="card-site-name">
-                    ${site.name}
+                    ${formatThemeRedHtml(site.name)}
                     ${site.isHidden ? '<span style="font-size: 0.72rem; color: #ef4444; margin-left: 4px;">[已隐藏]</span>' : ''}
                   </span>
                   <div class="card-tags-wrap">${tagsHtml}</div>
@@ -3423,7 +3503,7 @@
         const previewName = document.getElementById('preview-card-name');
         const previewBadge = document.getElementById('preview-card-badge');
 
-        previewName.textContent = name;
+        previewName.innerHTML = formatThemeRedHtml(name);
         previewBadge.textContent = backupUrl ? '备份网址' : '没有备份';
 
         if (previewIsDark) {
@@ -3648,7 +3728,7 @@
                 <div class="footer-related-fields" style="display: flex; gap: 8px; align-items: center; flex: 1; min-width: 240px; flex-wrap: wrap;">
                   <div class="footer-field-item" style="display: flex; align-items: center; gap: 4px; flex: 1; min-width: 110px;">
                     <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">名称:</span>
-                    <input type="text" class="form-control input-name" placeholder="如: 不想翻墙" value="${escapeAttr(item.name || '')}" onchange="updateFooterRelated(${idx}, 'name', this.value)">
+                    <input type="text" class="form-control input-name" placeholder="前缀名称 (留空不显示冒号)" value="${escapeAttr(item.name || '')}" onchange="updateFooterRelated(${idx}, 'name', this.value)">
                   </div>
                   <div class="footer-field-item" style="display: flex; align-items: center; gap: 4px; flex: 2; min-width: 140px;">
                     <span style="font-size: 0.82rem; color: var(--text-muted); white-space: nowrap;">链接:</span>
@@ -3703,6 +3783,23 @@
 
         const githubUrlInput = document.getElementById('footer-github-url');
         if (githubUrlInput) githubUrlInput.value = footer.githubUrl || 'https://github.com/kanpianer/bxkp.org';
+
+        // 5. 左上角快捷导航
+        const quickNav = footer.quickNav || cmsData.quickNav || {
+          icon: '/jkdh-icon.png',
+          text: '家宽导航',
+          url: 'https://jiakuan.link/, https://jkdh.sld.tw/, https://jkdh.pages.dev/'
+        };
+        const quickNavIconInput = document.getElementById('quick-nav-icon');
+        const quickNavIconPreview = document.getElementById('quick-nav-icon-preview');
+        if (quickNavIconInput) {
+          quickNavIconInput.value = quickNav.icon || '';
+          if (quickNavIconPreview) quickNavIconPreview.src = quickNav.icon || '/jkdh-icon.png';
+        }
+        const quickNavTextInput = document.getElementById('quick-nav-text');
+        if (quickNavTextInput) quickNavTextInput.value = quickNav.text || '';
+        const quickNavUrlInput = document.getElementById('quick-nav-url');
+        if (quickNavUrlInput) quickNavUrlInput.value = quickNav.url || '';
       }
 
       window.updateFooterBackup = function(idx, key, val) {
@@ -3777,6 +3874,13 @@
         if (!cmsData.footer.promoLinks) cmsData.footer.promoLinks = [];
         cmsData.footer.promoLinks.push({ title: '新推荐标题', url: 'https://...', description: '说明文案' });
         renderFooterForms();
+      });
+
+      document.getElementById('quick-nav-icon')?.addEventListener('input', (e) => {
+        const previewImg = document.getElementById('quick-nav-icon-preview');
+        if (previewImg) {
+          previewImg.src = e.target.value.trim() || '/jkdh-icon.png';
+        }
       });
 
       // 5. FAQ 问答库
@@ -4633,6 +4737,15 @@
         if (cmsData.footer) {
           cmsData.footer.bottomText = document.getElementById('footer-bottom-text').value.trim();
           cmsData.footer.githubUrl = document.getElementById('footer-github-url').value.trim();
+          const qIcon = document.getElementById('quick-nav-icon') ? document.getElementById('quick-nav-icon').value.trim() : '/jkdh-icon.png';
+          const qText = document.getElementById('quick-nav-text') ? document.getElementById('quick-nav-text').value.trim() : '家宽导航';
+          const qUrl = document.getElementById('quick-nav-url') ? document.getElementById('quick-nav-url').value.trim() : 'https://jiakuan.link/';
+          cmsData.footer.quickNav = {
+            icon: qIcon || '/jkdh-icon.png',
+            text: qText || '家宽导航',
+            url: qUrl || 'https://jiakuan.link/'
+          };
+          cmsData.quickNav = cmsData.footer.quickNav;
         }
 
         const rowsInput = document.getElementById('input-card-rows');
@@ -4646,8 +4759,21 @@
           };
         }
 
-        // 本地模式优先尝试本地落盘接口
-        if (isLocal) {
+        // 获取当前 PAT (优先读取页面输入框中的即时值，若页面没有输入框则回退至 localStorage)
+        const patInput = document.getElementById('github-pat-input');
+        let token = patInput ? patInput.value.trim() : (localStorage.getItem('bxkp_github_pat') || '').trim();
+
+        // 同步持久化状态：如果有值则存，若输入框已清空则清除缓存
+        if (patInput) {
+          if (token) {
+            localStorage.setItem('bxkp_github_pat', token);
+          } else {
+            localStorage.removeItem('bxkp_github_pat');
+          }
+        }
+
+        // 当 PAT 为空时：绝不弹出填写 PAT 的提示，直接修改本地内容并在本地预览修改
+        if (!token) {
           try {
             const resp = await fetch('/api/cms/save', {
               method: 'POST',
@@ -4658,36 +4784,46 @@
               })
             });
             const res = await resp.json();
-            btn.disabled = false;
-            btn.innerHTML = '<span>💾</span> <span>应用</span>';
-
-            if (res.success) {
-              showToast(`全站数据保存成功！快照：${res.backupId}`);
-              return;
-            } else {
-              alert('本地保存失败: ' + res.error);
-              return;
+            if (!res.success) {
+              console.warn('[CMS] 本地保存接口提示:', res.error);
             }
           } catch (e) {
-            console.warn('[CMS] 本地 /api/cms/save 异常，准备转入 GitHub 模式');
+            console.warn('[CMS] 本地 /api/cms/save 接口请求异常:', e);
           }
+
+          btn.disabled = false;
+          btn.innerHTML = '<span>💾</span> <span>应用</span>';
+          showToast('本地内容已成功修改！正在打开本地预览...');
+          window.open('/', '_blank');
+          return;
         }
 
-        // 线上 GitHub 模式
+        // 当填写了 PAT 时：先落盘本地内容，然后提示是否提交到 GitHub
         try {
-          let token = localStorage.getItem('bxkp_github_pat') || '';
-          if (!token) {
-            token = prompt('【线上管理】请输入您的 GitHub Personal Access Token (PAT，仅保留在本地浏览器)：');
-            if (!token || !token.trim()) {
-              btn.disabled = false;
-              btn.innerHTML = '<span>💾</span> <span>应用</span>';
-              return alert('已取消保存：未提供授权 Token。');
-            }
-            token = token.trim();
-            localStorage.setItem('bxkp_github_pat', token);
-            document.getElementById('github-pat-input').value = token;
-          }
+          await fetch('/api/cms/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              data: cmsData,
+              note: '本地掌柜后台保存'
+            })
+          });
+        } catch (e) {
+          console.warn('[CMS] 本地落盘异常:', e);
+        }
 
+        // 提示是否提交到 GitHub
+        const shouldCommit = confirm('本地内容已修改保存！\n检测到已填写 GitHub PAT，是否提交到 GitHub 仓库？');
+        if (!shouldCommit) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>💾</span> <span>应用</span>';
+          showToast('已更新本地内容，未提交到 GitHub');
+          window.open('/', '_blank');
+          return;
+        }
+
+        // 提交到 GitHub 流程
+        try {
           showToast('正在向 GitHub 仓库提交原子更新...');
 
           const owner = document.getElementById('github-owner-input').value.trim() || 'kanpianer';
