@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-07",
+  "updatedAt": "2026-11-13",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -493,22 +493,13 @@
     "notice": "* 购买前确保你可以访问相关Emby服线路。文中提到的Emby服仅作为示例展示，不是广告。"
   },
   "ok": {
-    "title": "OK影视",
-    "description": "OK影视和Nuvio使用起来和Emby差不多，一般在客户端填写好资源仓库地址就可以了。",
-    "apps": [
-      {
-        "name": "OK影视 (GitHub)",
-        "url": "https://github.com/FongMi/Release/tree/fongmi/apk"
-      },
-      {
-        "name": "Nuvio",
-        "url": "https://nuvioapp.space"
-      }
-    ],
+    "title": "TVBox",
+    "description": "TVBox 和 Nuvio 使用起来和 Emby 差不多，TVBox 一般在客户端填写好资源仓库地址就可以了。Nuvio 到插件商店获取 Manifest 资源接口，注册账号可以同步观看记录和资源接口。",
+    "apps": [],
     "resources": [
       {
-        "name": "Nuvio 仓库地址",
-        "url": "https://nuvio-plugin-library.vercel.app"
+        "name": "TVBox(FongMi版)",
+        "url": "https://github.com/FongMi/Release/releases"
       },
       {
         "name": "TVBox电视版安装配置全指南",
@@ -521,9 +512,17 @@
       {
         "name": "OK影视各种客户端和配置接口",
         "url": "https://github.com/qist/tvbox"
+      },
+      {
+        "name": "Nuvio 插件商店",
+        "url": "https://nuvio-plugin-library.vercel.app"
+      },
+      {
+        "name": "Nuvio 官网",
+        "url": "https://nuvio.tv"
       }
     ],
-    "notice": "* OK影视和Nuvio都是资源聚合的播放器，OK影视高清内容通常需要配合网盘VIP使用。"
+    "notice": "* OK影视和 Nuvio 都是资源聚合的播放器，OK影视高清内容通常需要配合网盘VIP使用。"
   },
   "faqs": [
     {
