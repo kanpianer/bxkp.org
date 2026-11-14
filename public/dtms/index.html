@@ -2094,7 +2094,7 @@
   <!-- 选项卡导航栏 -->
   <nav class="cms-tabs-bar">
     <div class="cms-tab-item active" data-tab="tab-sites">🗂️ 影视站点库 (<span id="count-total">0</span>)</div>
-    <div class="cms-tab-item" data-tab="tab-emby-ok">📺 Emby与OK影视</div>
+    <div class="cms-tab-item" data-tab="tab-emby-ok">🔘 底部按钮</div>
     <div class="cms-tab-item" data-tab="tab-popup">🎬 弹窗视频管理 (<span id="count-popup">0</span>)</div>
     <div class="cms-tab-item" data-tab="tab-footer">🏮 页脚与友情扩展</div>
     <div class="cms-tab-item" data-tab="tab-faqs">💡 FAQ问答与SEO</div>
@@ -2208,70 +2208,88 @@
       </div>
     </section>
 
-    <!-- TAB 2: Emby与OK影视 -->
+    <!-- TAB 2: 底部按钮 (Emby & TVBox) -->
     <section id="tab-emby-ok" class="tab-panel">
+      <!-- 顶部功能简介条 -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 20px;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--cinnabar); display: flex; align-items: center; gap: 8px; margin: 0 0 6px 0;">
+          <span>🔘 底部按钮与弹出专区管理</span>
+        </h2>
+        <div style="font-size: 0.86rem; color: var(--text-light); line-height: 1.5;">
+          在此管理主站底部的两个功能按钮（左侧：Emby服专区；右侧：TVBox专区）的内容、分类与外部链接。
+          前端底部的按钮名称将与下方的「专区标题」实时联动，说明与提示中支持插入超链接（如 <code>[yui](https://sss.com)</code>）以及 <code>#主题红高亮#</code>。
+        </div>
+      </div>
+
       <div class="modal-grid-2">
         <!-- Emby服配置卡片 -->
         <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
           <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--cinnabar); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-            <span>🎬 Emby公益服与稳定服配置</span>
+            <span>🎬 左侧按钮：Emby服专区配置</span>
           </h3>
           <div class="form-group" style="margin-bottom: 12px;">
-            <label class="form-label">专区标题：</label>
-            <input type="text" id="emby-title-input" class="form-control">
+            <label class="form-label">专区标题（对应主站左侧底部按钮名称）：</label>
+            <input type="text" id="emby-title-input" class="form-control" placeholder="Emby服">
+            <div style="font-size: 0.76rem; color: var(--text-light); margin-top: 3px;">主站左侧底部按钮将直接显示此文字</div>
           </div>
           <div class="form-group" style="margin-bottom: 16px;">
-            <label class="form-label">简介说明：</label>
-            <textarea id="emby-desc-input" class="form-control" rows="2"></textarea>
+            <label class="form-label">专区简介说明：</label>
+            <textarea id="emby-desc-input" class="form-control" rows="3" placeholder="专区说明介绍..."></textarea>
+            <div style="font-size: 0.76rem; color: var(--text-light); margin-top: 3px;">💡 支持插入类似超链接：<code>[yui](https://sss.com)</code> 与 <code>#主题红高亮#</code></div>
           </div>
           
           <div style="margin-bottom: 16px;">
+            <label class="form-label">⭐ 公益服分类设置：</label>
+            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+              <input type="text" id="emby-public-label-input" class="form-control" placeholder="分类名 (默认: 公益服)" style="width: 130px;" title="公益服分类名">
+              <input type="text" id="emby-public-desc-input" class="form-control" placeholder="分类提示说明" style="flex: 1;" title="公益服提示说明">
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label class="form-label">⭐ 公益服线路列表：</label>
-              <button id="btn-add-emby-public" class="btn btn-sm">+ 添加</button>
+              <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-light);">公益服线路列表：</span>
+              <button id="btn-add-emby-public" class="btn btn-sm">+ 添加线路</button>
             </div>
             <div id="emby-public-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
           </div>
 
           <div style="margin-bottom: 16px;">
+            <label class="form-label">💳 付费服分类设置：</label>
+            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+              <input type="text" id="emby-paid-label-input" class="form-control" placeholder="分类名 (默认: 付费服)" style="width: 130px;" title="付费服分类名">
+              <input type="text" id="emby-paid-desc-input" class="form-control" placeholder="分类提示说明" style="flex: 1;" title="付费服提示说明">
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label class="form-label">💳 付费服线路列表：</label>
-              <button id="btn-add-emby-paid" class="btn btn-sm">+ 添加</button>
+              <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-light);">付费服线路列表：</span>
+              <button id="btn-add-emby-paid" class="btn btn-sm">+ 添加线路</button>
             </div>
             <div id="emby-paid-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
           </div>
 
           <div class="form-group">
             <label class="form-label">购买须知与声明：</label>
-            <input type="text" id="emby-notice-input" class="form-control">
+            <textarea id="emby-notice-input" class="form-control" rows="2" placeholder="* 购买须知与免责声明..."></textarea>
+            <div style="font-size: 0.76rem; color: var(--text-light); margin-top: 3px;">💡 支持超链接 <code>[文本](链接)</code> 与 <code>#主题红#</code></div>
           </div>
         </div>
 
-        <!-- OK影视配置卡片 -->
+        <!-- TVBox 配置卡片 -->
         <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px;">
           <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--indigo); margin-bottom: 12px;">
-            📺 OK影视与TVBox多仓配置
+            📺 右侧按钮：TVBox专区配置
           </h3>
           <div class="form-group" style="margin-bottom: 12px;">
-            <label class="form-label">专区标题：</label>
-            <input type="text" id="ok-title-input" class="form-control">
+            <label class="form-label">专区标题（对应主站右侧底部按钮名称）：</label>
+            <input type="text" id="ok-title-input" class="form-control" placeholder="TVBox">
+            <div style="font-size: 0.76rem; color: var(--text-light); margin-top: 3px;">主站右侧底部按钮将直接显示此文字</div>
           </div>
           <div class="form-group" style="margin-bottom: 16px;">
             <label class="form-label">播放器描述说明：</label>
-            <textarea id="ok-desc-input" class="form-control" rows="2"></textarea>
+            <textarea id="ok-desc-input" class="form-control" rows="3" placeholder="播放器描述说明..."></textarea>
+            <div style="font-size: 0.76rem; color: var(--text-light); margin-top: 3px;">💡 支持插入类似超链接：<code>[yui](https://sss.com)</code> 与 <code>#主题红高亮#</code></div>
           </div>
 
           <div style="margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label class="form-label">📱 推荐播放器客户端：</label>
-              <button id="btn-add-ok-app" class="btn btn-sm">+ 添加客户端</button>
-            </div>
-            <div id="ok-apps-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-          </div>
-
-          <div style="margin-bottom: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label class="form-label">📦 接口仓库与配置指南教程：</label>
+              <label class="form-label" style="margin-bottom: 0;">📦 接口仓库与配置指南教程：</label>
               <button id="btn-add-ok-resource" class="btn btn-sm">+ 添加接口/指南</button>
             </div>
             <div id="ok-resources-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -2279,7 +2297,8 @@
 
           <div class="form-group">
             <label class="form-label">播放器免责与提示：</label>
-            <input type="text" id="ok-notice-input" class="form-control">
+            <textarea id="ok-notice-input" class="form-control" rows="2" placeholder="* 播放器免责与提示..."></textarea>
+            <div style="font-size: 0.76rem; color: var(--text-light); margin-top: 3px;">💡 支持超链接 <code>[文本](链接)</code> 与 <code>#主题红#</code></div>
           </div>
         </div>
       </div>
@@ -2574,8 +2593,8 @@
           <span class="drawer-tab-badge" id="drawer-count-total">0</span>
         </button>
         <button class="drawer-nav-item" data-tab="tab-emby-ok">
-          <span class="drawer-tab-icon">📺</span>
-          <span class="drawer-tab-name">Emby与OK影视</span>
+          <span class="drawer-tab-icon">🔘</span>
+          <span class="drawer-tab-name">底部按钮</span>
         </button>
         <button class="drawer-nav-item" data-tab="tab-popup">
           <span class="drawer-tab-icon">🎬</span>
@@ -2811,14 +2830,17 @@
         emby: {
           title: 'Emby服',
           description: '',
+          publicLabel: '公益服',
+          publicDesc: '无需付费，但可能有一定入服门槛。',
+          paidLabel: '付费服',
+          paidDesc: '需要付费，但服务会相对比较稳定。',
           publicServers: [],
           paidServers: [],
           notice: ''
         },
         ok: {
-          title: 'OK影视',
+          title: 'TVBox',
           description: '',
-          apps: [],
           resources: [],
           notice: ''
         },
@@ -2972,7 +2994,7 @@
 
         const titles = {
           'tab-sites': '🗂️ 影视站点库',
-          'tab-emby-ok': '📺 Emby与OK影视',
+          'tab-emby-ok': '🔘 底部按钮',
           'tab-popup': '🎬 弹窗视频管理',
           'tab-footer': '🏮 页脚与友情扩展',
           'tab-faqs': '💡 FAQ问答与SEO',
@@ -3567,23 +3589,102 @@
         updateCountBadges();
       });
 
-      // 4. Emby & OK 影视表单渲染与更新
+      // 4. 底部按钮 (Emby & TVBox) 表单渲染与交互
+      function syncEmbyAndOkFromDom() {
+        if (!cmsData.emby) cmsData.emby = {};
+        if (!cmsData.ok) cmsData.ok = {};
+
+        const embyTitleEl = document.getElementById('emby-title-input');
+        const embyDescEl = document.getElementById('emby-desc-input');
+        const embyNoticeEl = document.getElementById('emby-notice-input');
+        const embyPubLabelEl = document.getElementById('emby-public-label-input');
+        const embyPubDescEl = document.getElementById('emby-public-desc-input');
+        const embyPaidLabelEl = document.getElementById('emby-paid-label-input');
+        const embyPaidDescEl = document.getElementById('emby-paid-desc-input');
+
+        if (embyTitleEl) cmsData.emby.title = embyTitleEl.value.trim() || 'Emby服';
+        if (embyDescEl) cmsData.emby.description = embyDescEl.value.trim();
+        if (embyNoticeEl) cmsData.emby.notice = embyNoticeEl.value.trim();
+        if (embyPubLabelEl) cmsData.emby.publicLabel = embyPubLabelEl.value.trim();
+        if (embyPubDescEl) cmsData.emby.publicDesc = embyPubDescEl.value.trim();
+        if (embyPaidLabelEl) cmsData.emby.paidLabel = embyPaidLabelEl.value.trim();
+        if (embyPaidDescEl) cmsData.emby.paidDesc = embyPaidDescEl.value.trim();
+
+        const pubRows = document.querySelectorAll('#emby-public-list .emby-server-row');
+        if (pubRows && pubRows.length > 0) {
+          cmsData.emby.publicServers = Array.from(pubRows).map(row => ({
+            name: (row.querySelector('.input-name')?.value || '').trim(),
+            url: (row.querySelector('.input-url')?.value || '').trim()
+          }));
+        }
+
+        const paidRows = document.querySelectorAll('#emby-paid-list .emby-server-row');
+        if (paidRows && paidRows.length > 0) {
+          cmsData.emby.paidServers = Array.from(paidRows).map(row => ({
+            name: (row.querySelector('.input-name')?.value || '').trim(),
+            url: (row.querySelector('.input-url')?.value || '').trim()
+          }));
+        }
+
+        const okTitleEl = document.getElementById('ok-title-input');
+        const okDescEl = document.getElementById('ok-desc-input');
+        const okNoticeEl = document.getElementById('ok-notice-input');
+
+        if (okTitleEl) cmsData.ok.title = okTitleEl.value.trim() || 'TVBox';
+        if (okDescEl) cmsData.ok.description = okDescEl.value.trim();
+        if (okNoticeEl) cmsData.ok.notice = okNoticeEl.value.trim();
+
+        const resRows = document.querySelectorAll('#ok-resources-list .ok-item-row');
+        if (resRows && resRows.length > 0) {
+          cmsData.ok.resources = Array.from(resRows).map(row => ({
+            name: (row.querySelector('.input-name')?.value || '').trim(),
+            url: (row.querySelector('.input-url')?.value || '').trim()
+          }));
+        }
+
+        delete cmsData.ok.apps;
+      }
+      window.syncEmbyAndOkFromDom = syncEmbyAndOkFromDom;
+
       function renderEmbyAndOkForms() {
         const emby = cmsData.emby || {};
-        document.getElementById('emby-title-input').value = emby.title || 'Emby服';
-        document.getElementById('emby-desc-input').value = emby.description || '';
-        document.getElementById('emby-notice-input').value = emby.notice || '';
+        if (document.getElementById('emby-title-input')) {
+          document.getElementById('emby-title-input').value = emby.title || 'Emby服';
+        }
+        if (document.getElementById('emby-desc-input')) {
+          document.getElementById('emby-desc-input').value = emby.description || '';
+        }
+        if (document.getElementById('emby-notice-input')) {
+          document.getElementById('emby-notice-input').value = emby.notice || '';
+        }
+        if (document.getElementById('emby-public-label-input')) {
+          document.getElementById('emby-public-label-input').value = emby.publicLabel || '公益服';
+        }
+        if (document.getElementById('emby-public-desc-input')) {
+          document.getElementById('emby-public-desc-input').value = emby.publicDesc !== undefined ? emby.publicDesc : '无需付费，但可能有一定入服门槛。';
+        }
+        if (document.getElementById('emby-paid-label-input')) {
+          document.getElementById('emby-paid-label-input').value = emby.paidLabel || '付费服';
+        }
+        if (document.getElementById('emby-paid-desc-input')) {
+          document.getElementById('emby-paid-desc-input').value = emby.paidDesc !== undefined ? emby.paidDesc : '需要付费，但服务会相对比较稳定。';
+        }
 
         const renderServerList = (containerId, list, type) => {
           const c = document.getElementById(containerId);
+          if (!c) return;
           c.innerHTML = '';
           (list || []).forEach((s, i) => {
             const item = document.createElement('div');
             item.className = 'emby-server-row';
             item.innerHTML = `
-              <input type="text" class="form-control input-name" placeholder="名称" value="${escapeAttr(s.name || '')}" onchange="updateEmbyServer('${type}', ${i}, 'name', this.value)">
-              <input type="url" class="form-control input-url" placeholder="连接地址 (https://...)" value="${escapeAttr(s.url || '')}" onchange="updateEmbyServer('${type}', ${i}, 'url', this.value)">
-              <button class="btn btn-sm btn-danger" onclick="deleteEmbyServer('${type}', ${i})">✕</button>
+              <input type="text" class="form-control input-name" placeholder="名称" value="${escapeAttr(s.name || '')}" oninput="updateEmbyServer('${type}', ${i}, 'name', this.value)">
+              <input type="url" class="form-control input-url" placeholder="连接地址 (https://...)" value="${escapeAttr(s.url || '')}" oninput="updateEmbyServer('${type}', ${i}, 'url', this.value)">
+              <div style="display: flex; gap: 4px; align-items: center;">
+                <button class="btn btn-sm" onclick="moveEmbyServer('${type}', ${i}, -1)" ${i === 0 ? 'disabled' : ''} title="上移">↑</button>
+                <button class="btn btn-sm" onclick="moveEmbyServer('${type}', ${i}, 1)" ${i === (list || []).length - 1 ? 'disabled' : ''} title="下移">↓</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteEmbyServer('${type}', ${i})" title="删除">✕</button>
+              </div>
             `;
             c.appendChild(item);
           });
@@ -3592,72 +3693,108 @@
         renderServerList('emby-public-list', emby.publicServers, 'public');
         renderServerList('emby-paid-list', emby.paidServers, 'paid');
 
-        // OK 影视
+        // TVBox (右侧按钮)
         const ok = cmsData.ok || {};
-        document.getElementById('ok-title-input').value = ok.title || 'OK影视';
-        document.getElementById('ok-desc-input').value = ok.description || '';
-        document.getElementById('ok-notice-input').value = ok.notice || '';
+        if (document.getElementById('ok-title-input')) {
+          document.getElementById('ok-title-input').value = ok.title || 'TVBox';
+        }
+        if (document.getElementById('ok-desc-input')) {
+          document.getElementById('ok-desc-input').value = ok.description || '';
+        }
+        if (document.getElementById('ok-notice-input')) {
+          document.getElementById('ok-notice-input').value = ok.notice || '';
+        }
 
-        const renderOkList = (containerId, list, type) => {
-          const c = document.getElementById(containerId);
+        const renderResourceList = () => {
+          const c = document.getElementById('ok-resources-list');
+          if (!c) return;
           c.innerHTML = '';
-          (list || []).forEach((itemData, i) => {
+          const list = ok.resources || [];
+          list.forEach((itemData, i) => {
             const row = document.createElement('div');
             row.className = 'ok-item-row';
             row.innerHTML = `
-              <input type="text" class="form-control input-name" placeholder="名称" value="${escapeAttr(itemData.name || '')}" onchange="updateOkItem('${type}', ${i}, 'name', this.value)">
-              <input type="url" class="form-control input-url" placeholder="地址 (https://...)" value="${escapeAttr(itemData.url || '')}" onchange="updateOkItem('${type}', ${i}, 'url', this.value)">
-              <button class="btn btn-sm btn-danger" onclick="deleteOkItem('${type}', ${i})">✕</button>
+              <input type="text" class="form-control input-name" placeholder="名称" value="${escapeAttr(itemData.name || '')}" oninput="updateOkResource(${i}, 'name', this.value)">
+              <input type="url" class="form-control input-url" placeholder="地址 (https://...)" value="${escapeAttr(itemData.url || '')}" oninput="updateOkResource(${i}, 'url', this.value)">
+              <div style="display: flex; gap: 4px; align-items: center;">
+                <button class="btn btn-sm" onclick="moveOkResource(${i}, -1)" ${i === 0 ? 'disabled' : ''} title="上移">↑</button>
+                <button class="btn btn-sm" onclick="moveOkResource(${i}, 1)" ${i === list.length - 1 ? 'disabled' : ''} title="下移">↓</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteOkResource(${i})" title="删除">✕</button>
+              </div>
             `;
             c.appendChild(row);
           });
         };
 
-        renderOkList('ok-apps-list', ok.apps, 'apps');
-        renderOkList('ok-resources-list', ok.resources, 'resources');
+        renderResourceList();
       }
 
       window.updateEmbyServer = function(type, idx, key, val) {
         const list = type === 'public' ? cmsData.emby.publicServers : cmsData.emby.paidServers;
-        if (list[idx]) list[idx][key] = val.trim();
+        if (list && list[idx]) list[idx][key] = val.trim();
+      };
+
+      window.moveEmbyServer = function(type, idx, dir) {
+        syncEmbyAndOkFromDom();
+        const list = type === 'public' ? cmsData.emby.publicServers : cmsData.emby.paidServers;
+        if (!list) return;
+        const targetIdx = idx + dir;
+        if (targetIdx < 0 || targetIdx >= list.length) return;
+        const temp = list[idx];
+        list[idx] = list[targetIdx];
+        list[targetIdx] = temp;
+        renderEmbyAndOkForms();
       };
 
       window.deleteEmbyServer = function(type, idx) {
+        syncEmbyAndOkFromDom();
         const list = type === 'public' ? cmsData.emby.publicServers : cmsData.emby.paidServers;
+        if (!list) return;
         list.splice(idx, 1);
         renderEmbyAndOkForms();
       };
 
       document.getElementById('btn-add-emby-public').addEventListener('click', () => {
+        syncEmbyAndOkFromDom();
         if (!cmsData.emby.publicServers) cmsData.emby.publicServers = [];
         cmsData.emby.publicServers.push({ name: '新公益服', url: 'https://...' });
         renderEmbyAndOkForms();
       });
 
       document.getElementById('btn-add-emby-paid').addEventListener('click', () => {
+        syncEmbyAndOkFromDom();
         if (!cmsData.emby.paidServers) cmsData.emby.paidServers = [];
         cmsData.emby.paidServers.push({ name: '新稳定服', url: 'https://...' });
         renderEmbyAndOkForms();
       });
 
-      window.updateOkItem = function(type, idx, key, val) {
-        const list = type === 'apps' ? cmsData.ok.apps : cmsData.ok.resources;
-        if (list[idx]) list[idx][key] = val.trim();
+      window.updateOkResource = function(idx, key, val) {
+        if (cmsData.ok && cmsData.ok.resources && cmsData.ok.resources[idx]) {
+          cmsData.ok.resources[idx][key] = val.trim();
+        }
       };
 
-      window.deleteOkItem = function(type, idx) {
-        const list = type === 'apps' ? cmsData.ok.apps : cmsData.ok.resources;
-        list.splice(idx, 1);
+      window.moveOkResource = function(idx, dir) {
+        syncEmbyAndOkFromDom();
+        const list = cmsData.ok.resources;
+        if (!list) return;
+        const targetIdx = idx + dir;
+        if (targetIdx < 0 || targetIdx >= list.length) return;
+        const temp = list[idx];
+        list[idx] = list[targetIdx];
+        list[targetIdx] = temp;
         renderEmbyAndOkForms();
       };
 
-      document.getElementById('btn-add-ok-app').addEventListener('click', () => {
-        if (!cmsData.ok.apps) cmsData.ok.apps = [];
-        cmsData.ok.apps.push({ name: '新客户端', url: 'https://...' });
+      window.deleteOkResource = function(idx) {
+        syncEmbyAndOkFromDom();
+        if (!cmsData.ok.resources) return;
+        cmsData.ok.resources.splice(idx, 1);
         renderEmbyAndOkForms();
-      });
+      };
 
       document.getElementById('btn-add-ok-resource').addEventListener('click', () => {
+        syncEmbyAndOkFromDom();
         if (!cmsData.ok.resources) cmsData.ok.resources = [];
         cmsData.ok.resources.push({ name: '新接口配置', url: 'https://...' });
         renderEmbyAndOkForms();
@@ -4724,16 +4861,7 @@
         btn.innerHTML = '<span>⏳</span> <span>正在应用...</span>';
 
         // 收集表单修改
-        if (cmsData.emby) {
-          cmsData.emby.title = document.getElementById('emby-title-input').value.trim();
-          cmsData.emby.description = document.getElementById('emby-desc-input').value.trim();
-          cmsData.emby.notice = document.getElementById('emby-notice-input').value.trim();
-        }
-        if (cmsData.ok) {
-          cmsData.ok.title = document.getElementById('ok-title-input').value.trim();
-          cmsData.ok.description = document.getElementById('ok-desc-input').value.trim();
-          cmsData.ok.notice = document.getElementById('ok-notice-input').value.trim();
-        }
+        syncEmbyAndOkFromDom();
         if (cmsData.footer) {
           cmsData.footer.bottomText = document.getElementById('footer-bottom-text').value.trim();
           cmsData.footer.githubUrl = document.getElementById('footer-github-url').value.trim();

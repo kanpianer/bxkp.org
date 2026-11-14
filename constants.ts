@@ -20,6 +20,10 @@ export interface EmbySection {
   publicServers: EmbyServer[];
   paidServers: EmbyServer[];
   notice: string;
+  publicLabel?: string;
+  publicDesc?: string;
+  paidLabel?: string;
+  paidDesc?: string;
 }
 
 export interface OkItem {
@@ -30,7 +34,7 @@ export interface OkItem {
 export interface OkSection {
   title: string;
   description: string;
-  apps: OkItem[];
+  apps?: OkItem[];
   resources: OkItem[];
   notice: string;
 }

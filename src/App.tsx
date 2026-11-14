@@ -394,14 +394,18 @@ export default function App() {
         <button 
             onClick={() => toggleInfo('emby')}
             className={getButtonClass(infoType === 'emby', true)}
+            title={stripHashes(EMBY_SECTION.title || 'Emby服')}
+            aria-label={stripHashes(EMBY_SECTION.title || 'Emby服')}
         >
-            Emby服
+            {formatThemeRed(EMBY_SECTION.title || 'Emby服', isDarkActive, { allowLinks: false })}
         </button>
         <button 
             onClick={() => toggleInfo('ok')}
             className={getButtonClass(infoType === 'ok', true)}
+            title={stripHashes(OK_SECTION.title || 'TVBox')}
+            aria-label={stripHashes(OK_SECTION.title || 'TVBox')}
         >
-            OK影视
+            {formatThemeRed(OK_SECTION.title || 'TVBox', isDarkActive, { allowLinks: false })}
         </button>
     </>
   );
@@ -532,48 +536,42 @@ export default function App() {
             }`}>
               {infoType === 'emby' ? (
                 <div className="space-y-4">
-                  <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{formatThemeRed(EMBY_SECTION.title, isDarkActive)}</h3>
-                  <p>{formatThemeRed(EMBY_SECTION.description, isDarkActive)}</p>
+                  <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{formatThemeRed(EMBY_SECTION.title || 'Emby服', isDarkActive, { allowLinks: false })}</h3>
+                  <p className="leading-relaxed">{formatThemeRed(EMBY_SECTION.description, isDarkActive)}</p>
                   <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
-                     <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>公益服：</span>无需付费，但可能有一定入服门槛。
+                     <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>{formatThemeRed(EMBY_SECTION.publicLabel || '公益服', isDarkActive, { allowLinks: false })}：</span>{formatThemeRed(EMBY_SECTION.publicDesc !== undefined ? EMBY_SECTION.publicDesc : '无需付费，但可能有一定入服门槛。', isDarkActive)}
                         <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
                            {EMBY_SECTION.publicServers.map(server => (
-                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(server.name, isDarkActive)}</a>
+                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(server.name, isDarkActive, { allowLinks: false })}</a>
                            ))}
                         </div>
                      </li>
-                     <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>付费服：</span>需要付费，但服务会相对比较稳定。
+                     <li><span className={`font-bold ${isDarkActive ? 'text-white' : 'text-ink-900'}`}>{formatThemeRed(EMBY_SECTION.paidLabel || '付费服', isDarkActive, { allowLinks: false })}：</span>{formatThemeRed(EMBY_SECTION.paidDesc !== undefined ? EMBY_SECTION.paidDesc : '需要付费，但服务会相对比较稳定。', isDarkActive)}
                         <div className={`mt-1 text-sm flex flex-wrap gap-2 ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>
                            {EMBY_SECTION.paidServers.map(server => (
-                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(server.name, isDarkActive)}</a>
+                             <a key={server.name} href={server.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(server.name, isDarkActive, { allowLinks: false })}</a>
                            ))}
                         </div>
                      </li>
                   </ul>
-                  <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
+                  <p className={`text-sm mt-4 italic border-t pt-4 leading-relaxed ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
                      {formatThemeRed(EMBY_SECTION.notice, isDarkActive)}
                   </p>
                 </div>
               ) : (
                 <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{formatThemeRed(OK_SECTION.title, isDarkActive)}</h3>
-                    <p>
-                      {OK_SECTION.apps.map((app, idx) => (
-                        <React.Fragment key={app.name}>
-                          {idx > 0 && ' 和 '}
-                          <a href={app.url} target="_blank" rel="noopener noreferrer" className="hover:text-cinnabar underline">{formatThemeRed(app.name, isDarkActive)}</a>
-                        </React.Fragment>
-                      ))}
+                    <h3 className="text-2xl font-bold text-cinnabar-light text-center mb-6 border-b border-paper-300/30 pb-2">{formatThemeRed(OK_SECTION.title || 'TVBox', isDarkActive, { allowLinks: false })}</h3>
+                    <p className="leading-relaxed">
                       {formatThemeRed(OK_SECTION.description, isDarkActive)}
                     </p>
                     <ul className={`list-disc pl-6 space-y-2 ${isDarkActive ? 'text-gray-300' : 'text-ink-700'}`}>
                         {OK_SECTION.resources.map(res => (
                           <li key={res.name}>
-                            <a href={res.url} target="_blank" rel="noopener noreferrer" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>{formatThemeRed(res.name, isDarkActive)}</a>
+                            <a href={res.url} target="_blank" rel="noopener noreferrer" className={`hover:text-cinnabar underline ${isDarkActive ? 'text-cinnabar-light' : 'text-indigo-stone'}`}>{formatThemeRed(res.name, isDarkActive, { allowLinks: false })}</a>
                           </li>
                         ))}
                     </ul>
-                     <p className={`text-sm mt-4 italic border-t pt-4 ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
+                     <p className={`text-sm mt-4 italic border-t pt-4 leading-relaxed ${isDarkActive ? 'border-white/10 text-gray-400' : 'border-paper-300 text-ink-500'}`}>
                         {formatThemeRed(OK_SECTION.notice, isDarkActive)}
                     </p>
                 </div>
@@ -709,15 +707,17 @@ export default function App() {
                     <button 
                         onClick={() => toggleInfo('emby')}
                         className={getButtonClass(infoType === 'emby', true, true)}
+                        title={stripHashes(EMBY_SECTION.title || 'Emby服')}
+                        aria-label={stripHashes(EMBY_SECTION.title || 'Emby服')}
                     >
-                        Emby服
+                        {formatThemeRed(EMBY_SECTION.title || 'Emby服', isDarkActive, { allowLinks: false })}
                     </button>
                 </div>
 
                 {/* Center Links */}
                 <div className={`flex justify-center items-center text-xs tracking-widest gap-6 font-serif transition-colors duration-[800ms] ${isDarkActive ? 'text-cinnabar-light' : 'text-cinnabar'}`}>
                     <span className="flex items-center gap-1">
-                        {formatThemeRed(FOOTER_SECTION.bottomText || 'Made with ❤', isDarkActive)}
+                        {formatThemeRed(FOOTER_SECTION.bottomText || 'Made with ❤', isDarkActive, { allowLinks: false })}
                     </span>
                     {FOOTER_SECTION.githubUrl && (
                       <a href={FOOTER_SECTION.githubUrl} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>Github</a>
@@ -729,8 +729,10 @@ export default function App() {
                     <button 
                         onClick={() => toggleInfo('ok')}
                         className={getButtonClass(infoType === 'ok', true, true)}
+                        title={stripHashes(OK_SECTION.title || 'TVBox')}
+                        aria-label={stripHashes(OK_SECTION.title || 'TVBox')}
                     >
-                        OK影视
+                        {formatThemeRed(OK_SECTION.title || 'TVBox', isDarkActive, { allowLinks: false })}
                     </button>
                 </div>
             </div>

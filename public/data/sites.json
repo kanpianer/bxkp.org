@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-13",
+  "updatedAt": "2026-11-14",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -461,7 +461,11 @@
   ],
   "emby": {
     "title": "Emby服",
-    "description": "没有各种广告和高画质是Emby服/Jellyfin服的特点，大致分为以下两类：",
+    "description": "没有各种广告和高画质是 Emby服/Jellyfin 服的特点，更多的影视服为 Emby 服，它们大致分为以下两类：",
+    "publicLabel": "公益服",
+    "publicDesc": "无需付费，但可能有一定入服门槛。",
+    "paidLabel": "付费服",
+    "paidDesc": "需要付费，但服务会相对比较稳定。",
     "publicServers": [
       {
         "name": "二次元Emby",
@@ -495,8 +499,15 @@
   "ok": {
     "title": "TVBox",
     "description": "TVBox 和 Nuvio 使用起来和 Emby 差不多，TVBox 一般在客户端填写好资源仓库地址就可以了。Nuvio 到插件商店获取 Manifest 资源接口，注册账号可以同步观看记录和资源接口。",
-    "apps": [],
     "resources": [
+      {
+        "name": "Nuvio 官网",
+        "url": "https://nuvio.tv"
+      },
+      {
+        "name": "Nuvio 插件商店",
+        "url": "https://nuvio-plugin-library.vercel.app"
+      },
       {
         "name": "TVBox(FongMi版)",
         "url": "https://github.com/FongMi/Release/releases"
@@ -512,17 +523,9 @@
       {
         "name": "OK影视各种客户端和配置接口",
         "url": "https://github.com/qist/tvbox"
-      },
-      {
-        "name": "Nuvio 插件商店",
-        "url": "https://nuvio-plugin-library.vercel.app"
-      },
-      {
-        "name": "Nuvio 官网",
-        "url": "https://nuvio.tv"
       }
     ],
-    "notice": "* OK影视和 Nuvio 都是资源聚合的播放器，OK影视高清内容通常需要配合网盘VIP使用。"
+    "notice": "* TVBox 和 Nuvio 都是资源聚合的播放器，高清内容通常需要配合网盘VIP使用。"
   },
   "faqs": [
     {
