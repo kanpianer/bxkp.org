@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14",
+  "updatedAt": "2026-11-19",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -155,8 +155,8 @@
     },
     {
       "name": "Movy",
-      "main_url": "https://www.movy.bz",
-      "backup_url": "https://www.vidy.st",
+      "main_url": "https://www.movy.sx",
+      "backup_url": "https://www.movy.bz",
       "tags": [
         "在线"
       ],
@@ -441,7 +441,7 @@
     {
       "name": "LimeTorrents",
       "main_url": "https://www.limetorrents.asia",
-      "backup_url": "https://limetorrent.si/",
+      "backup_url": "https://limetorrent.io",
       "tags": [
         "BT"
       ],
