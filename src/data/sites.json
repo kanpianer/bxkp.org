@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-19",
+  "updatedAt": "2026-11-22",
   "sites": [
     {
       "name": "PPnix/中文",
@@ -103,14 +103,15 @@
       "desc": "精选公开 Alist 影视云盘直链挂载"
     },
     {
-      "name": "NEPU",
-      "main_url": "https://4k.beer",
-      "backup_url": "https://rar.to",
+      "name": "StreamFlix",
+      "main_url": "https://watch.streamflix.one/invite/DOUNITURS",
+      "backup_url": "",
       "tags": [
-        "在线"
+        "在线",
+        "极简无广告"
       ],
       "isHidden": false,
-      "desc": "老牌海外极简电影剧集聚合"
+      "desc": "无广告，需邀请，功能丰富"
     },
     {
       "name": "Atlantic",
@@ -122,16 +123,6 @@
       ],
       "isHidden": false,
       "desc": "海外优质直连多媒体流播放平台"
-    },
-    {
-      "name": "Stream",
-      "main_url": "https://dexter.pw",
-      "backup_url": "",
-      "tags": [
-        "在线"
-      ],
-      "isHidden": false,
-      "desc": "简洁流媒体在线观看"
     },
     {
       "name": "Cinegram",
@@ -152,6 +143,26 @@
       ],
       "isHidden": false,
       "desc": "稳定快速的穿梭海外流媒体平台"
+    },
+    {
+      "name": "NEPU",
+      "main_url": "https://4k.beer",
+      "backup_url": "https://rar.to",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "老牌海外极简电影剧集聚合"
+    },
+    {
+      "name": "Stream",
+      "main_url": "https://dexter.pw",
+      "backup_url": "",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "简洁流媒体在线观看"
     },
     {
       "name": "Movy",
