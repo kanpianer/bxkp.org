@@ -103,26 +103,14 @@
       "desc": "精选公开 Alist 影视云盘直链挂载"
     },
     {
-      "name": "StreamFlix",
-      "main_url": "https://watch.streamflix.one/invite/DOUNITURS",
-      "backup_url": "",
+      "name": "Cinecat",
+      "main_url": "https://cinecat.eu/discover",
+      "backup_url": "https://discord.gg/mSKTq4FnC",
       "tags": [
-        "在线",
-        "极简无广告"
+        "在线"
       ],
       "isHidden": false,
-      "desc": "无广告，需邀请，功能丰富"
-    },
-    {
-      "name": "Atlantic",
-      "main_url": "https://atlantic.st",
-      "backup_url": "https://fprime.at/",
-      "tags": [
-        "在线",
-        "海外直连"
-      ],
-      "isHidden": false,
-      "desc": "海外优质直连多媒体流播放平台"
+      "desc": "多语言界面，最高4K画质。"
     },
     {
       "name": "Cinegram",
@@ -145,14 +133,15 @@
       "desc": "稳定快速的穿梭海外流媒体平台"
     },
     {
-      "name": "NEPU",
-      "main_url": "https://4k.beer",
-      "backup_url": "https://rar.to",
+      "name": "Atlantic",
+      "main_url": "https://atlantic.st",
+      "backup_url": "https://fprime.at/",
       "tags": [
-        "在线"
+        "在线",
+        "海外直连"
       ],
       "isHidden": false,
-      "desc": "老牌海外极简电影剧集聚合"
+      "desc": "海外优质直连多媒体流播放平台"
     },
     {
       "name": "Stream",
@@ -163,6 +152,27 @@
       ],
       "isHidden": false,
       "desc": "简洁流媒体在线观看"
+    },
+    {
+      "name": "StreamFlix",
+      "main_url": "https://watch.streamflix.one/",
+      "backup_url": "https://discord.gg/streamflix",
+      "tags": [
+        "在线",
+        "极简无广告"
+      ],
+      "isHidden": false,
+      "desc": "无广告，需邀请，功能丰富"
+    },
+    {
+      "name": "NEPU",
+      "main_url": "https://4k.beer",
+      "backup_url": "https://rar.to",
+      "tags": [
+        "在线"
+      ],
+      "isHidden": false,
+      "desc": "老牌海外极简电影剧集聚合"
     },
     {
       "name": "Movy",
@@ -634,7 +644,7 @@
   },
   "cardLayout": {
     "rows": 3,
-    "cols": 4
+    "cols": 5
   },
   "quickNav": {
     "icon": "/jkdh-icon.png",
